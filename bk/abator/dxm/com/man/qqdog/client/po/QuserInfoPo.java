@@ -2,57 +2,54 @@ package com.man.qqdog.client.po;
 
 import java.util.Date;
 
-public class QuserInfoPo implements java.io.Serializable {
-	
-	public static final long serialVersionUID = -4967606172886644103L;
+public class QuserInfoPo {
+    private Long id;
 
-	public Long id;
+    private Long uid;
 
-    public Long uid;
+    private String nickname;
 
-    public String nickname;
+    private String sex;
 
-    public String sex;
+    private String sexType;
 
-    public String sexType;
+    private String age;
 
-    public String age;
+    private String birthyear;
 
-    public String birthyear;
+    private String birthday;
 
-    public String birthday;
+    private String bloodtype;
 
-    public String bloodtype;
+    private String country;
 
-    public String country;
+    private String province;
 
-    public String province;
+    private String city;
 
-    public String city;
+    private String career;
 
-    public String career;
+    private String company;
 
-    public String company;
+    private String hc;
 
-    public String hc;
+    private String hp;
 
-    public String hp;
+    private String hco;
 
-    public String hco;
+    private String marriage;
 
-    public String marriage;
+    private Integer msgNum;
 
-    public Integer msgNum;
+    private Integer emotNum;
 
-    public Integer emotNum;
+    private Integer flag;
 
-    public Integer flag;
+    private Integer photoNum;
 
-    public Integer photoNum;
+    private Integer imgNum;
 
-    public Integer imgNum;
-
-    public Date createGmt;
+    private Date createGmt;
 
     public Long getId() {
         return id;

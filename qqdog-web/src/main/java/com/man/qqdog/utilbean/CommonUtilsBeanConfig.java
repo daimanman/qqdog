@@ -3,7 +3,7 @@ package com.man.qqdog.utilbean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.man.qqscry.util.IdWorker;
+import com.man.utils.IdWorker;
 
 @Configuration
 public class CommonUtilsBeanConfig {

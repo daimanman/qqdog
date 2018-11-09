@@ -1,35 +1,60 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.man.qqdog.biz.mapper.QuserInfoPoMapper">
-	<resultMap id="BaseResultMap" type="com.man.qqdog.client.po.QuserInfoPo">
-		<id column="id" property="id" jdbcType="BIGINT" />
-		<result column="uid" property="uid" jdbcType="BIGINT" />
-		<result column="nickname" property="nickname" jdbcType="VARCHAR" />
-		<result column="sex" property="sex" jdbcType="VARCHAR" />
-		<result column="sex_type" property="sexType" jdbcType="VARCHAR" />
-		<result column="age" property="age" jdbcType="VARCHAR" />
-		<result column="birthyear" property="birthyear" jdbcType="VARCHAR" />
-		<result column="birthday" property="birthday" jdbcType="VARCHAR" />
-		<result column="bloodtype" property="bloodtype" jdbcType="VARCHAR" />
-		<result column="country" property="country" jdbcType="VARCHAR" />
-		<result column="province" property="province" jdbcType="VARCHAR" />
-		<result column="city" property="city" jdbcType="VARCHAR" />
-		<result column="career" property="career" jdbcType="VARCHAR" />
-		<result column="company" property="company" jdbcType="VARCHAR" />
-		<result column="hc" property="hc" jdbcType="VARCHAR" />
-		<result column="hp" property="hp" jdbcType="VARCHAR" />
-		<result column="hco" property="hco" jdbcType="VARCHAR" />
-		<result column="marriage" property="marriage" jdbcType="VARCHAR" />
-	</resultMap>
-
-
-	
-	
-	<select id="getTen" resultType="map">
-		select a.* from quser_info a limit 10
-	</select>
-
-
-
-
+<mapper namespace="com.man.qqdog.biz.mapper.QuserInfoPoMapper" >
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.QuserInfoPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="sex_type" property="sexType" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="birthyear" property="birthyear" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+    <result column="bloodtype" property="bloodtype" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="career" property="career" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="hc" property="hc" jdbcType="VARCHAR" />
+    <result column="hp" property="hp" jdbcType="VARCHAR" />
+    <result column="hco" property="hco" jdbcType="VARCHAR" />
+    <result column="marriage" property="marriage" jdbcType="VARCHAR" />
+    <result column="msg_num" property="msgNum" jdbcType="INTEGER" />
+    <result column="emot_num" property="emotNum" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="photo_num" property="photoNum" jdbcType="INTEGER" />
+    <result column="img_num" property="imgNum" jdbcType="INTEGER" />
+    <result column="create_gmt" property="createGmt" jdbcType="TIMESTAMP" />
+    <result column="spacename" property="spacename" jdbcType="VARCHAR" />
+    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="cco" property="cco" jdbcType="VARCHAR" />
+    <result column="cp" property="cp" jdbcType="VARCHAR" />
+    <result column="cc" property="cc" jdbcType="VARCHAR" />
+    <result column="cb" property="cb" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id=addQuserInfo parameterType="com.man.qqdog.client.po.QuserInfoPo" >
+    insert into quser_info (id, uid, nickname, 
+      sex, sex_type, age, 
+      birthyear, birthday, bloodtype, 
+      country, province, city, 
+      career, company, hc, 
+      hp, hco, marriage, 
+      msg_num, emot_num, flag, 
+      photo_num, img_num, create_gmt, 
+      spacename, describe, cco, 
+      cp, cc, cb)
+    values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{sexType,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR}, 
+      #{birthyear,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{bloodtype,jdbcType=VARCHAR}, 
+      #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{career,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, #{hc,jdbcType=VARCHAR}, 
+      #{hp,jdbcType=VARCHAR}, #{hco,jdbcType=VARCHAR}, #{marriage,jdbcType=VARCHAR}, 
+      #{msgNum,jdbcType=INTEGER}, #{emotNum,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, 
+      #{photoNum,jdbcType=INTEGER}, #{imgNum,jdbcType=INTEGER}, #{createGmt,jdbcType=TIMESTAMP}, 
+      #{spacename,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, #{cco,jdbcType=VARCHAR}, 
+      #{cp,jdbcType=VARCHAR}, #{cc,jdbcType=VARCHAR}, #{cb,jdbcType=VARCHAR})
+  </insert>
+  
 </mapper>

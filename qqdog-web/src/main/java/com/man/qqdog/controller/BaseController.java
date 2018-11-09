@@ -16,6 +16,7 @@ import org.apache.commons.io.IOUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.man.utils.ObjectUtil;
 
 
 public class BaseController {
@@ -40,6 +41,57 @@ public class BaseController {
 		OutputStream os = response.getOutputStream();
 		IOUtils.write(JSON.toJSONStringWithDateFormat(targetObj, dateFormat, sf), os, "utf-8");
 		IOUtils.closeQuietly(os);
+	}
+	
+	@SuppressWarnings("finally")
+	protected Map<String, Object> getReqParams(HttpServletRequest request) {
+
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+
+		/**
+		 * key-value 参数
+		 */
+		Map<String, String[]> requestParam = request.getParameterMap();
+		Set<String> keys = requestParam.keySet();
+		for (String key : keys) {
+			String[] ps = requestParam.get(key);
+
+			if (ps.length > 1 || key.endsWith("[]")) {
+				key = key.substring(0, key.length() - 2);
+				List<String> listStr = new ArrayList<String>();
+				for (String p : ps) {
+					listStr.add(ObjectUtil.toString(p, "").trim());
+				}
+				paramMap.put(key, listStr);
+			} else {
+				paramMap.put(key, ObjectUtil.toString(ps[0], "").trim());
+			}
+		}
+
+		/**
+		 * 解析json 格式参数 application/json
+		 */
+		try {
+			InputStream is = request.getInputStream();
+			if (null != is) {
+				String jsonString = IOUtils.toString(is, "utf-8");
+				if (null != jsonString && !"".equals(jsonString.trim())) {
+					Map<String, Object> jsonMapParam = JSON.parseObject(jsonString, Map.class);
+					paramMap.putAll(jsonMapParam);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			paramMap.put("rows",ObjectUtil.parseInt(paramMap.get("rows"),15));
+			paramMap.put("page",ObjectUtil.parseInt(paramMap.get("page"),1));
+			paramMap.put("pageSize",ObjectUtil.parseInt(paramMap.get("rows"),15));
+			paramMap.put("start",
+					(ObjectUtil.parseInt(paramMap.get("page"),1) - 1) * ObjectUtil.parseInt(paramMap.get("rows"),15));
+			
+			return paramMap;
+		}
+
 	}
 
 }

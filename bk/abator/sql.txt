@@ -1,0 +1,72 @@
+
+-------------------------构造insert语句
+
+select 
+CONCAT(
+'insert into ',
+ a.TABLE_NAME,
+'\r\n(',
+GROUP_CONCAT(concat('\r\n',LOWER(a.column_name))),
+'\r\n)\r\n values \r\n(\r\n',
+group_concat(concat('\r\n#{',lower(a.column_name),'}')),
+'\r\n)'
+) 
+from 
+(
+  select TABLE_NAME,column_name from information_schema.COLUMNS  order by ORDINAL_POSITION
+) a
+ group by a.TABLE_NAME HAVING a.TABLE_NAME = 't_b_deviceinfo'
+
+
+
+-------------构造update语句
+
+select 
+CONCAT(
+'update ',
+ a.TABLE_NAME,
+'\r\n',
+' set ',
+'\r\n',
+GROUP_CONCAT(concat('\r\n',LOWER(a.column_name),'=#{',lower(a.column_name),'}'))
+
+) 
+from 
+(
+  select TABLE_NAME,column_name from information_schema.COLUMNS  order by ORDINAL_POSITION
+) a
+ group by a.TABLE_NAME HAVING a.TABLE_NAME = 't_b_deviceinfo'
+
+
+--------构造select语句
+
+select 
+CONCAT(
+'select  ',
+GROUP_CONCAT(concat('\r\na.',LOWER(a.column_name))),
+'\r\n from \r\n',
+a.table_name,
+' a'
+) 
+from 
+(
+  select TABLE_NAME,column_name from information_schema.COLUMNS  order by ORDINAL_POSITION
+) a
+ group by a.TABLE_NAME HAVING a.TABLE_NAME = 't_b_deviceinfo'
+
+
+
+
+
+----------获取表的字段
+
+
+select 
+CONCAT(
+GROUP_CONCAT(concat('\r\n',LOWER(a.column_name)))
+) 
+from 
+(
+  select TABLE_NAME,column_name from information_schema.COLUMNS  order by ORDINAL_POSITION
+) a
+ group by a.TABLE_NAME HAVING a.TABLE_NAME = 't_b_deviceinfo'

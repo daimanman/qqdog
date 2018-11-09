@@ -45,11 +45,13 @@
 				<artifactId>qqdog-client</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<!-- 
 			<dependency>
 				<groupId>com.man</groupId>
 				<artifactId>dxmcommon</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
+			 -->
 			<dependency>
 				<groupId>com.man</groupId>
 				<artifactId>qqdog-biz</artifactId>

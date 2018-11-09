@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.qqdog.biz.mapper.QsessionInfoPoMapper" >
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.QsessionInfoPo" >
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="cookie" property="cookie" jdbcType="LONGVARCHAR" />
+    <result column="params" property="params" jdbcType="LONGVARCHAR" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <insert id="addQsessionInfo" parameterType="com.man.qqdog.client.po.QsessionInfoPo" >
+    insert into qsession_info (uid, create_date, cookie, 
+      params,flag,update_date)
+    values (#{uid,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{cookie,jdbcType=LONGVARCHAR}, 
+      #{params,jdbcType=LONGVARCHAR},#{flag},#{updateDate})
+  </insert>
+  
+  <delete id="deleteByUid" parameterType="string">
+  	delete a from 	qsession_info a where a.uid = #{uid}
+  </delete>  
+  
+  <select id="getSessions" resultMap="BaseResultMap" parameterType="string">
+  		select a.* from qsession_info a where a.flag = 0
+  			<if test="uid != null and uid != '' ">
+  				and a.uid = #{uid}
+  			</if>
+  </select>
+  <update id="updateSessionInfo" parameterType="com.man.qqdog.client.po.QsessionInfoPo" >
+    update qsession_info
+    <set >
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upateDate != null" >
+        upate_date = #{upateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="cookie != null" >
+        cookie = #{cookie,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="params != null" >
+        params = #{params,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+</mapper>

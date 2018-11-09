@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="test.QuserInfoPoMapper" >
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.QuserInfoPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="sex_type" property="sexType" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="birthyear" property="birthyear" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+    <result column="bloodtype" property="bloodtype" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="career" property="career" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="hc" property="hc" jdbcType="VARCHAR" />
+    <result column="hp" property="hp" jdbcType="VARCHAR" />
+    <result column="hco" property="hco" jdbcType="VARCHAR" />
+    <result column="marriage" property="marriage" jdbcType="VARCHAR" />
+    <result column="msg_num" property="msgNum" jdbcType="INTEGER" />
+    <result column="emot_num" property="emotNum" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="photo_num" property="photoNum" jdbcType="INTEGER" />
+    <result column="img_num" property="imgNum" jdbcType="INTEGER" />
+    <result column="create_gmt" property="createGmt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uid, nickname, sex, sex_type, age, birthyear, birthday, bloodtype, country, province, 
+    city, career, company, hc, hp, hco, marriage, msg_num, emot_num, flag, photo_num, 
+    img_num, create_gmt
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.man.qqdog.client.po.QuserInfoPoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from quser_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from quser_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from quser_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.man.qqdog.client.po.QuserInfoPoExample" >
+    delete from quser_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.man.qqdog.client.po.QuserInfoPo" >
+    insert into quser_info (id, uid, nickname, 
+      sex, sex_type, age, 
+      birthyear, birthday, bloodtype, 
+      country, province, city, 
+      career, company, hc, 
+      hp, hco, marriage, 
+      msg_num, emot_num, flag, 
+      photo_num, img_num, create_gmt
+      )
+    values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{sexType,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR}, 
+      #{birthyear,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{bloodtype,jdbcType=VARCHAR}, 
+      #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{career,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, #{hc,jdbcType=VARCHAR}, 
+      #{hp,jdbcType=VARCHAR}, #{hco,jdbcType=VARCHAR}, #{marriage,jdbcType=VARCHAR}, 
+      #{msgNum,jdbcType=INTEGER}, #{emotNum,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, 
+      #{photoNum,jdbcType=INTEGER}, #{imgNum,jdbcType=INTEGER}, #{createGmt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.man.qqdog.client.po.QuserInfoPo" >
+    insert into quser_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="sexType != null" >
+        sex_type,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="birthyear != null" >
+        birthyear,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="bloodtype != null" >
+        bloodtype,
+      </if>
+      <if test="country != null" >
+        country,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="career != null" >
+        career,
+      </if>
+      <if test="company != null" >
+        company,
+      </if>
+      <if test="hc != null" >
+        hc,
+      </if>
+      <if test="hp != null" >
+        hp,
+      </if>
+      <if test="hco != null" >
+        hco,
+      </if>
+      <if test="marriage != null" >
+        marriage,
+      </if>
+      <if test="msgNum != null" >
+        msg_num,
+      </if>
+      <if test="emotNum != null" >
+        emot_num,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="photoNum != null" >
+        photo_num,
+      </if>
+      <if test="imgNum != null" >
+        img_num,
+      </if>
+      <if test="createGmt != null" >
+        create_gmt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="sexType != null" >
+        #{sexType,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="birthyear != null" >
+        #{birthyear,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="bloodtype != null" >
+        #{bloodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="career != null" >
+        #{career,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="hc != null" >
+        #{hc,jdbcType=VARCHAR},
+      </if>
+      <if test="hp != null" >
+        #{hp,jdbcType=VARCHAR},
+      </if>
+      <if test="hco != null" >
+        #{hco,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null" >
+        #{marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="msgNum != null" >
+        #{msgNum,jdbcType=INTEGER},
+      </if>
+      <if test="emotNum != null" >
+        #{emotNum,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="photoNum != null" >
+        #{photoNum,jdbcType=INTEGER},
+      </if>
+      <if test="imgNum != null" >
+        #{imgNum,jdbcType=INTEGER},
+      </if>
+      <if test="createGmt != null" >
+        #{createGmt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.man.qqdog.client.po.QuserInfoPoExample" resultType="java.lang.Integer" >
+    select count(*) from quser_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update quser_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=BIGINT},
+      </if>
+      <if test="record.nickname != null" >
+        nickname = #{record.nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sexType != null" >
+        sex_type = #{record.sexType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.age != null" >
+        age = #{record.age,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthyear != null" >
+        birthyear = #{record.birthyear,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bloodtype != null" >
+        bloodtype = #{record.bloodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.country != null" >
+        country = #{record.country,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.career != null" >
+        career = #{record.career,jdbcType=VARCHAR},
+      </if>
+      <if test="record.company != null" >
+        company = #{record.company,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hc != null" >
+        hc = #{record.hc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hp != null" >
+        hp = #{record.hp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hco != null" >
+        hco = #{record.hco,jdbcType=VARCHAR},
+      </if>
+      <if test="record.marriage != null" >
+        marriage = #{record.marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msgNum != null" >
+        msg_num = #{record.msgNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.emotNum != null" >
+        emot_num = #{record.emotNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+      <if test="record.photoNum != null" >
+        photo_num = #{record.photoNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.imgNum != null" >
+        img_num = #{record.imgNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.createGmt != null" >
+        create_gmt = #{record.createGmt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update quser_info
+    set id = #{record.id,jdbcType=BIGINT},
+      uid = #{record.uid,jdbcType=BIGINT},
+      nickname = #{record.nickname,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      sex_type = #{record.sexType,jdbcType=VARCHAR},
+      age = #{record.age,jdbcType=VARCHAR},
+      birthyear = #{record.birthyear,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=VARCHAR},
+      bloodtype = #{record.bloodtype,jdbcType=VARCHAR},
+      country = #{record.country,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      career = #{record.career,jdbcType=VARCHAR},
+      company = #{record.company,jdbcType=VARCHAR},
+      hc = #{record.hc,jdbcType=VARCHAR},
+      hp = #{record.hp,jdbcType=VARCHAR},
+      hco = #{record.hco,jdbcType=VARCHAR},
+      marriage = #{record.marriage,jdbcType=VARCHAR},
+      msg_num = #{record.msgNum,jdbcType=INTEGER},
+      emot_num = #{record.emotNum,jdbcType=INTEGER},
+      flag = #{record.flag,jdbcType=INTEGER},
+      photo_num = #{record.photoNum,jdbcType=INTEGER},
+      img_num = #{record.imgNum,jdbcType=INTEGER},
+      create_gmt = #{record.createGmt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.man.qqdog.client.po.QuserInfoPo" >
+    update quser_info
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="sexType != null" >
+        sex_type = #{sexType,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="birthyear != null" >
+        birthyear = #{birthyear,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="bloodtype != null" >
+        bloodtype = #{bloodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="career != null" >
+        career = #{career,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="hc != null" >
+        hc = #{hc,jdbcType=VARCHAR},
+      </if>
+      <if test="hp != null" >
+        hp = #{hp,jdbcType=VARCHAR},
+      </if>
+      <if test="hco != null" >
+        hco = #{hco,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null" >
+        marriage = #{marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="msgNum != null" >
+        msg_num = #{msgNum,jdbcType=INTEGER},
+      </if>
+      <if test="emotNum != null" >
+        emot_num = #{emotNum,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="photoNum != null" >
+        photo_num = #{photoNum,jdbcType=INTEGER},
+      </if>
+      <if test="imgNum != null" >
+        img_num = #{imgNum,jdbcType=INTEGER},
+      </if>
+      <if test="createGmt != null" >
+        create_gmt = #{createGmt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.man.qqdog.client.po.QuserInfoPo" >
+    update quser_info
+    set uid = #{uid,jdbcType=BIGINT},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      sex_type = #{sexType,jdbcType=VARCHAR},
+      age = #{age,jdbcType=VARCHAR},
+      birthyear = #{birthyear,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=VARCHAR},
+      bloodtype = #{bloodtype,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      career = #{career,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      hc = #{hc,jdbcType=VARCHAR},
+      hp = #{hp,jdbcType=VARCHAR},
+      hco = #{hco,jdbcType=VARCHAR},
+      marriage = #{marriage,jdbcType=VARCHAR},
+      msg_num = #{msgNum,jdbcType=INTEGER},
+      emot_num = #{emotNum,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=INTEGER},
+      photo_num = #{photoNum,jdbcType=INTEGER},
+      img_num = #{imgNum,jdbcType=INTEGER},
+      create_gmt = #{createGmt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

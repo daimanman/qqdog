@@ -1,8 +1,8 @@
-package com.man.qqdog.biz.mapper;
+package com.man.qqdog.client.service;
 
 import com.man.qqdog.client.po.QuserInfoPo;
 
-public interface QuserInfoPoMapper {
-	
+public interface QUserService extends BaseService {
+
 	public int addQuserInfo(QuserInfoPo userInfo);
 }
