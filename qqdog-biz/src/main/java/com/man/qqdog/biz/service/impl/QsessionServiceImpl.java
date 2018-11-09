@@ -1,6 +1,5 @@
 package com.man.qqdog.biz.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,8 +23,6 @@ public class QsessionServiceImpl implements QsessionService {
 	@Autowired
 	private QsessionInfoPoMapper qsessionInfoPoMapper;
 	
-	//缓存会话
-	private Map<String,QsessionInfoPo> sessionMap = new HashMap<>();
 	
 	
 	public int addQsessionInfo(QsessionInfoPo info) {
