@@ -17,6 +17,7 @@ import org.apache.commons.io.IOUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.man.utils.ObjectUtil;
+import com.man.utils.ReqParam;
 
 
 public class BaseController {
@@ -32,6 +33,21 @@ public class BaseController {
 		response.setContentType("application/json;charset=utf-8");
 		OutputStream os = response.getOutputStream();
 		IOUtils.write(JSON.toJSONString(targetObj, sf), os, "utf-8");
+		IOUtils.closeQuietly(os);
+	}
+	
+	protected void sendDefaultJson(HttpServletResponse response, Object targetObj)
+			throws IOException {
+		response.setContentType("application/json;charset=utf-8");
+		OutputStream os = response.getOutputStream();
+		IOUtils.write(JSON.toJSONString(targetObj), os, "utf-8");
+		IOUtils.closeQuietly(os);
+	}
+	
+	protected void sendHtml(HttpServletResponse response,String html) throws IOException {
+		response.setContentType("text/html;charset=utf-8");
+		OutputStream os = response.getOutputStream();
+		IOUtils.write(html, os, "utf-8");
 		IOUtils.closeQuietly(os);
 	}
 
@@ -92,6 +108,48 @@ public class BaseController {
 			return paramMap;
 		}
 
+	}
+	
+	public ReqParam getParams(HttpServletRequest request)
+	{
+		ReqParam paramMap = new ReqParam();
+
+		/**
+		 * key-value 参数
+		 */
+		Map<String, String[]> requestParam = request.getParameterMap();
+		Set<String> keys = requestParam.keySet();
+		for (String key : keys) {
+			String[] ps = requestParam.get(key);
+
+			if (ps.length > 1 || key.endsWith("[]")) {
+				key = key.substring(0, key.length() - 2);
+				List<String> listStr = new ArrayList<String>();
+				for (String p : ps) {
+					listStr.add(ObjectUtil.toString(p, "").trim());
+				}
+				paramMap.put(key, listStr);
+			} else {
+				paramMap.put(key, ObjectUtil.toString(ps[0], "").trim());
+			}
+		}
+
+		/**
+		 * 解析json 格式参数 application/json
+		 */
+		try {
+			InputStream is = request.getInputStream();
+			if (null != is) {
+				String jsonString = IOUtils.toString(is, "utf-8");
+				if (null != jsonString && !"".equals(jsonString.trim())) {
+					Map<String, Object> jsonMapParam = JSON.parseObject(jsonString, Map.class);
+					paramMap.putAll(jsonMapParam);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return paramMap;
 	}
 
 }

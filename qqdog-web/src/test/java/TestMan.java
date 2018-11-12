@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.man.qq.QqConfig;
 import com.man.utils.YhHttpUtil;
 
 
@@ -18,7 +19,7 @@ public class TestMan {
 	public static String QQ_PHOTOINFO_URL = "https://h5.qzone.qq.com/proxy/domain/alist.photo.qq.com/fcgi-bin/fcg_list_album_v3";
 	public static String QQ_IMGINFO_URL = "https://h5.qzone.qq.com/proxy/domain/plist.photo.qzone.qq.com/fcgi-bin/cgi_list_photo";
 	public static String QQ_VISITINFO_URL = "https://h5.qzone.qq.com/proxy/domain/g.qzone.qq.com/cgi-bin/friendshow/cgi_get_visitor_simple";
-	
+	public static String QQ_SENT_EMOT = "https://user.qzone.qq.com/proxy/domain/taotao.qzone.qq.com/cgi-bin/emotion_cgi_publish_v6";
 	public Map<String,String> getHeader()  {
 		Properties prop = new Properties();
 		try {
@@ -57,6 +58,35 @@ public class TestMan {
 	}
 	
 	@Test
+	public void testSentEmot01() {
+		Map<String, Object> newParamMap = new HashMap<String, Object>();
+	newParamMap.put("g_tk","1225134021");
+	newParamMap.put("qzonetoken", "550221b9c7a2b78fa8ad40861bf00f36074878d701f45778a2017c2c8f41ce64aac63f18eb67607c6cd4");
+		
+		
+		newParamMap.put("syn_tweet_verson",1);
+		newParamMap.put("paramstr", 1);
+		newParamMap.put("pic_template", "");
+		newParamMap.put("richval", "");
+		newParamMap.put("special_url","");
+		
+		newParamMap.put("subrichtype","");
+		newParamMap.put("con","qm9087");
+		newParamMap.put("feedversion", "1");
+		newParamMap.put("ver", "1");
+		newParamMap.put("ugc_right","1");
+		
+		newParamMap.put("to_sign","1");
+		newParamMap.put("hostuin","1843594995");
+		newParamMap.put("feedversion", "1");
+		newParamMap.put("code_version", "1");
+		newParamMap.put("format","fs");
+		newParamMap.put("qzreferrer","https://user.qzone.qq.com/1843594995?ADUIN=1843594995&ADSESSION=1541985158&ADTAG=CLIENT.QQ.5575_MyInfo_PersonalInfo.0&ADPUBNO=26809&source=namecardstar");
+		String resp = YhHttpUtil.sendHttpGetWithRetry(QQ_SENT_EMOT, newParamMap, getHeader());
+		System.out.println(resp);
+	}
+	
+	@Test
 	public void testLink() {
 		LinkedList<String> datas = new LinkedList<>(Arrays.asList("12","3","9","90"));
 		for(int i = 0;i<6;i++) {
@@ -67,5 +97,10 @@ public class TestMan {
 		System.out.println(datas);
 		System.out.println("-------------");
 		}
+	}
+	
+	@Test
+	public  void testSentEmot() {
+		
 	}
 }

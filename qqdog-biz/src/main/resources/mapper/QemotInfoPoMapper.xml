@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.qqdog.biz.mapper.QemotInfoPoMapper" >
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.QemotInfoPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="cmtnum" property="cmtnum" jdbcType="INTEGER" />
+    <result column="createTime" property="createtime" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="VARCHAR" />
+    <result column="editMask" property="editmask" jdbcType="VARCHAR" />
+    <result column="fwdnum" property="fwdnum" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="pictotal" property="pictotal" jdbcType="INTEGER" />
+    <result column="right" property="right" jdbcType="VARCHAR" />
+    <result column="rt_sum" property="rtSum" jdbcType="VARCHAR" />
+    <result column="secret" property="secret" jdbcType="VARCHAR" />
+    <result column="tid" property="tid" jdbcType="VARCHAR" />
+    <result column="ugc_right" property="ugcRight" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="wbid" property="wbid" jdbcType="VARCHAR" />
+    <result column="lbs_id" property="lbsId" jdbcType="VARCHAR" />
+    <result column="lbs_idname" property="lbsIdname" jdbcType="VARCHAR" />
+    <result column="lbs_name" property="lbsName" jdbcType="VARCHAR" />
+    <result column="lbs_pos_x" property="lbsPosX" jdbcType="VARCHAR" />
+    <result column="lbs_pos_y" property="lbsPosY" jdbcType="VARCHAR" />
+    <result column="source_name" property="sourceName" jdbcType="VARCHAR" />
+    <result column="create_gmt" property="createGmt" jdbcType="TIMESTAMP" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <resultMap id="QemotCommentPoBaseResultMap" type="com.man.qqdog.client.po.QemotCommentPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="emot_id" property="emotId" jdbcType="BIGINT" />
+    <result column="tid" property="tid" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="muid" property="muid" jdbcType="VARCHAR" />
+    <result column="mname" property="mname" jdbcType="VARCHAR" />
+    <result column="create_time2" property="createTime2" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="reply_num" property="replyNum" jdbcType="VARCHAR" />
+    <result column="create_time1" property="createTime1" jdbcType="VARCHAR" />
+    <result column="create_gmt" property="createGmt" jdbcType="TIMESTAMP" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <insert id="insertQemotInfoBatch" parameterType="java.util.List">
+    insert into qemot_info (
+      id,
+      cmtnum, 
+      createTime, 
+      created_time, 
+      editMask, 
+      fwdnum, 
+      name, 
+      pictotal, 
+      `right`, 
+      rt_sum, 
+      secret, 
+      tid, 
+      ugc_right, 
+      uid, 
+      wbid, 
+      lbs_id, 
+      lbs_idname,
+      lbs_name, 
+      lbs_pos_x, 
+      lbs_pos_y, 
+      source_name, 
+      content,
+      create_gmt
+      )
+    values 
+    <foreach collection="list" item="qemotInfo" separator=",">
+	    (
+	      #{qemotInfo.id},
+	      #{qemotInfo.cmtnum}, 
+	      #{qemotInfo.createtime}, 
+	      #{qemotInfo.createdTime}, 
+	      #{qemotInfo.editmask}, 
+	      #{qemotInfo.fwdnum}, 
+	      #{qemotInfo.name},
+	      #{qemotInfo.pictotal},
+	      #{qemotInfo.right}, 
+	      #{qemotInfo.rtSum},
+	      #{qemotInfo.secret},
+	      #{qemotInfo.tid},
+	      #{qemotInfo.ugcRight},
+	      #{qemotInfo.uid},
+	      #{qemotInfo.wbid}, 
+	      #{qemotInfo.lbsId},
+	      #{qemotInfo.lbsIdname},
+	      #{qemotInfo.lbsName}, 
+	      #{qemotInfo.lbsPosX},
+	      #{qemotInfo.lbsPosY},
+	      #{qemotInfo.sourceName}, 
+	      #{qemotInfo.content},
+	      now()
+	      )
+    </foreach>
+  </insert>
+  
+  <insert id="insertBatchPicsByList" parameterType="java.util.List" >
+    insert into qemot_pic (
+    	tid, 
+    	emot_id, 
+      	uid, 
+      	height, 
+      	width, 
+      	url1, 
+      	url2, 
+      	url3,
+      	create_gmt
+      	)
+    values 
+    <foreach collection="list" item="item" index="index" separator="," >
+    ( 
+      #{item.tid}, 
+      #{item.emotId}, 
+      #{item.uid}, 
+      #{item.height},
+      #{item.width}, 
+      #{item.url1}, 
+      #{item.url2},
+      #{item.url3},
+      now()
+     )
+     </foreach>
+  </insert>
+  
+  <insert id="insertQemotCommentBatch" parameterType="java.util.List" >
+    insert into qemot_comment (
+      id,
+      emot_id, 
+      tid, 
+      uid,
+      muid,
+      mname, 
+      content, 
+      create_time2, 
+      create_time,
+      create_time1, 
+      reply_num,
+      create_gmt
+      )
+    values 
+    <foreach collection="list" item="comment" separator=",">
+    		 ( 
+    		  #{comment.id},
+		      #{comment.emotId}, 
+		      #{comment.tid}, 
+		      #{comment.uid}, 
+		      #{comment.muid}, 
+		      #{comment.mname}, 
+		      #{comment.content}, 
+		      #{comment.createtime2},
+		      #{comment.createTime}, 
+		      #{comment.createTime1},
+		      #{comment.replyNum},
+		      now()
+     		 )
+    
+    </foreach>
+  </insert>
+  
+  
+   <insert id="insertBatchCommentReplyByList" parameterType="java.util.List"   >
+    insert into qemot_comment_reply (
+    	comment_id,
+    	uid, 
+      	content, 
+      	create_time0, 
+      	create_time2, 
+      	create_time3, 
+      	name, 
+      	source_name, 
+      	tid,
+      	create_gmt
+      	)
+    values 
+    <foreach collection="list" item="reply" index="index" separator=",">
+      (
+      #{reply.commentId},
+      #{reply.uid}, 
+      #{reply.content},
+      #{reply.createTime0},
+      #{reply.createTime2}, 
+      #{reply.createTime3},
+      #{reply.name},
+      #{reply.sourceName}, 
+      #{reply.tid},
+      now()
+      )
+      </foreach>
+  </insert>
+  
+  
+  
+  
+</mapper>

@@ -51,6 +51,18 @@ public class QuserInfoPo {
 
     private Date createGmt;
 
+    private String spacename;
+
+    private String describe;
+
+    private String cco;
+
+    private String cp;
+
+    private String cc;
+
+    private String cb;
+
     public Long getId() {
         return id;
     }
@@ -241,5 +253,53 @@ public class QuserInfoPo {
 
     public void setCreateGmt(Date createGmt) {
         this.createGmt = createGmt;
+    }
+
+    public String getSpacename() {
+        return spacename;
+    }
+
+    public void setSpacename(String spacename) {
+        this.spacename = spacename == null ? null : spacename.trim();
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe == null ? null : describe.trim();
+    }
+
+    public String getCco() {
+        return cco;
+    }
+
+    public void setCco(String cco) {
+        this.cco = cco == null ? null : cco.trim();
+    }
+
+    public String getCp() {
+        return cp;
+    }
+
+    public void setCp(String cp) {
+        this.cp = cp == null ? null : cp.trim();
+    }
+
+    public String getCc() {
+        return cc;
+    }
+
+    public void setCc(String cc) {
+        this.cc = cc == null ? null : cc.trim();
+    }
+
+    public String getCb() {
+        return cb;
+    }
+
+    public void setCb(String cb) {
+        this.cb = cb == null ? null : cb.trim();
     }
 }

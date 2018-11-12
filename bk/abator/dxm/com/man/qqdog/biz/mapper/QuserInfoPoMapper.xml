@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="test.QuserInfoPoMapper" >
+<mapper namespace="com.man.qqdog.biz.mapper.QuserInfoPoMapper" >
   <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.QuserInfoPo" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="uid" property="uid" jdbcType="BIGINT" />
@@ -26,6 +26,12 @@
     <result column="photo_num" property="photoNum" jdbcType="INTEGER" />
     <result column="img_num" property="imgNum" jdbcType="INTEGER" />
     <result column="create_gmt" property="createGmt" jdbcType="TIMESTAMP" />
+    <result column="spacename" property="spacename" jdbcType="VARCHAR" />
+    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="cco" property="cco" jdbcType="VARCHAR" />
+    <result column="cp" property="cp" jdbcType="VARCHAR" />
+    <result column="cc" property="cc" jdbcType="VARCHAR" />
+    <result column="cb" property="cb" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -88,7 +94,7 @@
   <sql id="Base_Column_List" >
     id, uid, nickname, sex, sex_type, age, birthyear, birthday, bloodtype, country, province, 
     city, career, company, hc, hp, hco, marriage, msg_num, emot_num, flag, photo_num, 
-    img_num, create_gmt
+    img_num, create_gmt, spacename, describe, cco, cp, cc, cb
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.man.qqdog.client.po.QuserInfoPoExample" >
     select
@@ -128,8 +134,9 @@
       career, company, hc, 
       hp, hco, marriage, 
       msg_num, emot_num, flag, 
-      photo_num, img_num, create_gmt
-      )
+      photo_num, img_num, create_gmt, 
+      spacename, describe, cco, 
+      cp, cc, cb)
     values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, 
       #{sex,jdbcType=VARCHAR}, #{sexType,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR}, 
       #{birthyear,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{bloodtype,jdbcType=VARCHAR}, 
@@ -137,8 +144,9 @@
       #{career,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, #{hc,jdbcType=VARCHAR}, 
       #{hp,jdbcType=VARCHAR}, #{hco,jdbcType=VARCHAR}, #{marriage,jdbcType=VARCHAR}, 
       #{msgNum,jdbcType=INTEGER}, #{emotNum,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, 
-      #{photoNum,jdbcType=INTEGER}, #{imgNum,jdbcType=INTEGER}, #{createGmt,jdbcType=TIMESTAMP}
-      )
+      #{photoNum,jdbcType=INTEGER}, #{imgNum,jdbcType=INTEGER}, #{createGmt,jdbcType=TIMESTAMP}, 
+      #{spacename,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, #{cco,jdbcType=VARCHAR}, 
+      #{cp,jdbcType=VARCHAR}, #{cc,jdbcType=VARCHAR}, #{cb,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.man.qqdog.client.po.QuserInfoPo" >
     insert into quser_info
@@ -215,6 +223,24 @@
       <if test="createGmt != null" >
         create_gmt,
       </if>
+      <if test="spacename != null" >
+        spacename,
+      </if>
+      <if test="describe != null" >
+        describe,
+      </if>
+      <if test="cco != null" >
+        cco,
+      </if>
+      <if test="cp != null" >
+        cp,
+      </if>
+      <if test="cc != null" >
+        cc,
+      </if>
+      <if test="cb != null" >
+        cb,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -288,6 +314,24 @@
       </if>
       <if test="createGmt != null" >
         #{createGmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spacename != null" >
+        #{spacename,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="cco != null" >
+        #{cco,jdbcType=VARCHAR},
+      </if>
+      <if test="cp != null" >
+        #{cp,jdbcType=VARCHAR},
+      </if>
+      <if test="cc != null" >
+        #{cc,jdbcType=VARCHAR},
+      </if>
+      <if test="cb != null" >
+        #{cb,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -372,6 +416,24 @@
       <if test="record.createGmt != null" >
         create_gmt = #{record.createGmt,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.spacename != null" >
+        spacename = #{record.spacename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.describe != null" >
+        describe = #{record.describe,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cco != null" >
+        cco = #{record.cco,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cp != null" >
+        cp = #{record.cp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cc != null" >
+        cc = #{record.cc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cb != null" >
+        cb = #{record.cb,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -402,7 +464,13 @@
       flag = #{record.flag,jdbcType=INTEGER},
       photo_num = #{record.photoNum,jdbcType=INTEGER},
       img_num = #{record.imgNum,jdbcType=INTEGER},
-      create_gmt = #{record.createGmt,jdbcType=TIMESTAMP}
+      create_gmt = #{record.createGmt,jdbcType=TIMESTAMP},
+      spacename = #{record.spacename,jdbcType=VARCHAR},
+      describe = #{record.describe,jdbcType=VARCHAR},
+      cco = #{record.cco,jdbcType=VARCHAR},
+      cp = #{record.cp,jdbcType=VARCHAR},
+      cc = #{record.cc,jdbcType=VARCHAR},
+      cb = #{record.cb,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -479,6 +547,24 @@
       <if test="createGmt != null" >
         create_gmt = #{createGmt,jdbcType=TIMESTAMP},
       </if>
+      <if test="spacename != null" >
+        spacename = #{spacename,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null" >
+        describe = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="cco != null" >
+        cco = #{cco,jdbcType=VARCHAR},
+      </if>
+      <if test="cp != null" >
+        cp = #{cp,jdbcType=VARCHAR},
+      </if>
+      <if test="cc != null" >
+        cc = #{cc,jdbcType=VARCHAR},
+      </if>
+      <if test="cb != null" >
+        cb = #{cb,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -506,7 +592,13 @@
       flag = #{flag,jdbcType=INTEGER},
       photo_num = #{photoNum,jdbcType=INTEGER},
       img_num = #{imgNum,jdbcType=INTEGER},
-      create_gmt = #{createGmt,jdbcType=TIMESTAMP}
+      create_gmt = #{createGmt,jdbcType=TIMESTAMP},
+      spacename = #{spacename,jdbcType=VARCHAR},
+      describe = #{describe,jdbcType=VARCHAR},
+      cco = #{cco,jdbcType=VARCHAR},
+      cp = #{cp,jdbcType=VARCHAR},
+      cc = #{cc,jdbcType=VARCHAR},
+      cb = #{cb,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

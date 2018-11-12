@@ -34,7 +34,7 @@
     <result column="cb" property="cb" jdbcType="VARCHAR" />
   </resultMap>
   
-  <insert id=addQuserInfo parameterType="com.man.qqdog.client.po.QuserInfoPo" >
+  <insert id="addQuserInfo" parameterType="com.man.qqdog.client.po.QuserInfoPo" >
     insert into quser_info (id, uid, nickname, 
       sex, sex_type, age, 
       birthyear, birthday, bloodtype, 
