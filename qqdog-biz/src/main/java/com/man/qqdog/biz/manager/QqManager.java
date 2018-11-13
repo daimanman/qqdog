@@ -1,9 +1,11 @@
 package com.man.qqdog.biz.manager;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -14,8 +16,14 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 import com.man.constant.QcodeEnum;
 import com.man.qq.QqConfig;
+import com.man.qqdog.biz.utils.QqModelTransform;
 import com.man.qqdog.client.po.QsessionInfoPo;
+import com.man.qqdog.client.po.QtaskInfoPo;
+import com.man.qqdog.client.po.QuserInfoPo;
+import com.man.qqdog.client.service.QUserService;
+import com.man.qqdog.client.service.QmsgService;
 import com.man.qqdog.client.service.QsessionService;
+import com.man.qqdog.client.service.QtaskInfoService;
 import com.man.utils.ObjectUtil;
 import com.man.utils.YhHttpUtil;
 
@@ -24,6 +32,15 @@ public class QqManager {
 
 	@Autowired
 	private QsessionService qsessionService;
+
+	@Autowired
+	private QUserService quserService;
+
+	@Autowired
+	private QtaskInfoService qtaskService;
+
+	@Autowired
+	private QmsgService qmsgService;
 
 	public Map<String, QsessionInfoPo> sessionMap = new HashMap<>();
 
@@ -51,10 +68,45 @@ public class QqManager {
 
 	public ConcurrentHashMap<String, Object> visitLock = new ConcurrentHashMap<>();
 
+	// 记录最后uidsSize 最后一次集合为空的时间戳
+	public Map<String, Long> lastClearMap = new HashMap<String, Long>();
+
+	// 等待最长时间 15m
+	public static long MAX_WAIT_TIME = 1000 * 60 * 15;
+	public static String BASE_KEY = "base_key";// 基本信息key
+	public static String MSG_KEY = "msg_key";// msg key
+	public static String PHOTO_KEY = "photo_key";// photo key
+	public static String EMOT_KEY = "emto_key";// emot key
+
 	// record remove uid log
 	public Logger removeLogger = LoggerFactory.getLogger("removeUidLogger");
 
 	public Logger logger = LoggerFactory.getLogger(QqManager.class);
+
+	// uid 起始位置
+	private long startUid;
+
+	private Set<Long> noVisitSet = new HashSet<>(100);
+
+	private ConcurrentHashMap<String, Object> noVisitSetLock = new ConcurrentHashMap<>();
+
+	public void addNoVisit(long uid) {
+		synchronized (noVisitSetLock) {
+			noVisitSet.add(uid);
+			if (noVisitSet.size() >= 100) {
+				quserService.batchInsertUidsN(noVisitSet);
+				noVisitSet = new HashSet<>(100);
+			}
+		}
+	}
+
+	public void initStartUid(long uid) {
+		this.startUid = uid;
+	}
+
+	public synchronized long getNextUid() {
+		return ++startUid;
+	}
 
 	public void addUids(String uid) {
 		msgUidsList.remove(uid);
@@ -108,8 +160,13 @@ public class QqManager {
 
 	public void removeEmotUid(String uid) {
 		synchronized (emotLock) {
-			emotUidsList.remove(uid);
+			if (emotUidsList.size() > 0) {
+				emotUidsList.remove(uid);
+			}
 			removeLogger.info("remove emot uid {} ", uid);
+			if (emotUidsList.size() == 0) {
+				lastClearMap.put(EMOT_KEY, System.currentTimeMillis());
+			}
 		}
 	}
 
@@ -144,8 +201,13 @@ public class QqManager {
 
 	public void removeMsgUid(String uid) {
 		synchronized (msgLock) {
-			msgUidsList.remove(uid);
+			if (msgUidsList.size() > 0) {
+				msgUidsList.remove(uid);
+			}
 			removeLogger.info("remove msg uid {} ", uid);
+			if (msgUidsList.size() == 0) {
+				lastClearMap.put(MSG_KEY, System.currentTimeMillis());
+			}
 		}
 	}
 
@@ -162,8 +224,13 @@ public class QqManager {
 
 	public void removePhotoUid(String uid) {
 		synchronized (photoLock) {
-			photoUidsList.remove(uid);
+			if (photoUidsList.size() > 0) {
+				photoUidsList.remove(uid);
+			}
 			removeLogger.info("remove  photo uid {} ", uid);
+			if (photoUidsList.size() == 0) {
+				lastClearMap.put(PHOTO_KEY, System.currentTimeMillis());
+			}
 		}
 	}
 
@@ -237,7 +304,7 @@ public class QqManager {
 
 		String content = YhHttpUtil.sendHttpGetWithRetry(QqConfig.QQ_BASEINFO_URL, newParamMap, cookieMap);
 		try {
-			Map<String, Object> contentMap = JSON.parseObject(content, Map.class);
+			Map contentMap = JSON.parseObject(content, Map.class);
 			Object code = contentMap.get("code");
 			Object subcode = contentMap.get("subcode");
 			String codeStr = code != null ? code.toString() : "";
@@ -253,7 +320,7 @@ public class QqManager {
 			}
 			return contentMap;
 		} catch (Exception e) {
-			Map<String, Object> eMap = new HashMap<String, Object>();
+			Map eMap = new HashMap();
 			eMap.put("gateWay", true);
 			e.printStackTrace();
 			logger.info("basinfo------{}", content);
@@ -270,11 +337,11 @@ public class QqManager {
 
 		String effectUid = getMsgUid();
 		QsessionInfoPo session = sessionMap.get(effectUid);
-		logger.info("current uid is {}", effectUid);
+		//logger.info("current uid is {}", effectUid);
 		// 获取参数
 		Map<String, Object> originMap = session.paramsMap;
 		Map<String, Object> newParamMap = new HashMap<String, Object>();
-		logger.info("parmas = {}", JSON.toJSONString(originMap));
+		//logger.info("parmas = {}", JSON.toJSONString(originMap));
 		newParamMap.put("g_tk", originMap.get("g_tk"));
 		newParamMap.put("qzonetoken", originMap.get("qzonetoken"));
 		newParamMap.put("format", "json");
@@ -498,51 +565,111 @@ public class QqManager {
 			return eMap;
 		}
 	}
-	
-	//TODO 此方法不可用 
-	public String sendEmot(String uid,String content) {
+
+	// TODO 此方法不可用
+	public String sendEmot(String uid, String content) {
 		QsessionInfoPo session = sessionMap.get(uid);
-		if(null == session) {
-			return "<h1> "+uid+"uid please login first </h1>";
+		if (null == session) {
+			return "<h1> " + uid + "uid please login first </h1>";
 		}
-		Map<String,Object> originMap = session.paramsMap;
-		Map<String,String> cookieMap = session.cookieMap;
-		
+		Map<String, Object> originMap = session.paramsMap;
+		Map<String, String> cookieMap = session.cookieMap;
+
 		Map<String, Object> newParamMap = new HashMap<String, Object>();
 		newParamMap.put("g_tk", originMap.get("g_tk"));
 		newParamMap.put("qzonetoken", originMap.get("qzonetoken"));
-		
-		
-		newParamMap.put("syn_tweet_verson",1);
+
+		newParamMap.put("syn_tweet_verson", 1);
 		newParamMap.put("paramstr", 1);
 		newParamMap.put("pic_template", "");
 		newParamMap.put("richval", "");
-		newParamMap.put("special_url","");
-		
-		newParamMap.put("subrichtype","");
-		newParamMap.put("con","qm"+content);
+		newParamMap.put("special_url", "");
+
+		newParamMap.put("subrichtype", "");
+		newParamMap.put("con", "qm" + content);
 		newParamMap.put("feedversion", "1");
 		newParamMap.put("ver", "1");
-		newParamMap.put("ugc_right","1");
-		
-		newParamMap.put("to_sign","1");
-		newParamMap.put("hostuin",uid);
+		newParamMap.put("ugc_right", "1");
+
+		newParamMap.put("to_sign", "1");
+		newParamMap.put("hostuin", uid);
 		newParamMap.put("feedversion", "1");
 		newParamMap.put("code_version", "1");
-		newParamMap.put("format","fs");
-		newParamMap.put("qzreferrer","https://user.qzone.qq.com/1843594995?ADUIN=1843594995&ADSESSION=1541985158&ADTAG=CLIENT.QQ.5575_MyInfo_PersonalInfo.0&ADPUBNO=26809&source=namecardstar");
+		newParamMap.put("format", "fs");
+		newParamMap.put("qzreferrer",
+				"https://user.qzone.qq.com/1843594995?ADUIN=1843594995&ADSESSION=1541985158&ADTAG=CLIENT.QQ.5575_MyInfo_PersonalInfo.0&ADPUBNO=26809&source=namecardstar");
 		String resp = YhHttpUtil.sendHttpGetWithRetry(QqConfig.QQ_SENT_EMOT_URL, newParamMap, cookieMap);
 		logger.info(resp);
 		return resp;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	// get all info of uid include msg,baseinfo ,emot,photo
+	public void downAllQqInfo(long uid) {
+
+		Map<String, Object> contentMap = crawlQzoneBaseInfoContent(uid + "");
+		if (null == contentMap) {
+			return;
+		}
+		// 无访问权限
+		String ncode = "-4009";
+		if (contentMap.get("gateWay") != null) {
+			return;
+		}
+		Object code = contentMap.get("code");
+		String codeStr = code != null ? code.toString() : "";
+		if (!"0".equals(codeStr) && ncode.equals(codeStr)) {
+			// get baseinfo is error
+			addNoVisit(uid);
+			return;
+		}
+
+		QtaskInfoPo taskInfo = new QtaskInfoPo();
+		taskInfo.uid = uid;
+		taskInfo.msgStart = 0;
+		taskInfo.emotStart = 0;
+		taskInfo.photoStart = 0;
+		// baseinfo
+		if ("0".equals(codeStr)) {
+			QuserInfoPo quserInfoPo = QqModelTransform.converQuserInfo(contentMap);
+			quserInfoPo.id = quserService.getId();
+			quserInfoPo.uid = uid;
+			quserService.addQuserInfo(quserInfoPo);
+			qtaskService.insertQtaskInfo(taskInfo);
+
+		}
+
+		// msg
+		Map<String, Object> firstMsgMap = crawlQzoneMsgInfoContent(uid + "", 0);
+		if (firstMsgMap != null) {
+			Map<String, Object> dataMap = ObjectUtil.castMapObj(firstMsgMap.get("data"));
+			// 总记录数
+			int totalNum = ObjectUtil.getInt(dataMap, "total");
+			// 计算页数
+			int pageNum = (totalNum + QqConfig.DEFAULT_MSG_NUM - 1) / QqConfig.DEFAULT_MSG_NUM;
+			logger.info("uid={} total={} totalPage={} pos={} msgUidSize={}",uid,totalNum,pageNum,0,msgUidsList.size());
+			// 存储第一页
+			qmsgService.saveMsgList(dataMap,uid);
+			taskInfo.msgStart = 1;
+			taskInfo.msgTotal = totalNum;
+			taskInfo.msgGet = 1;
+			taskInfo.msgPage = pageNum;
+			if (pageNum > 1) {
+				int startPos = QqConfig.DEFAULT_MSG_NUM;
+				for (int startPage = 2; startPage <= pageNum; startPage++) {
+					startPos = (startPage - 1) * QqConfig.DEFAULT_MSG_NUM;
+					firstMsgMap = crawlQzoneMsgInfoContent(uid + "", startPos);
+					if (firstMsgMap != null) {
+						dataMap = ObjectUtil.castMapObj(firstMsgMap.get("data"));
+						qmsgService.saveMsgList(dataMap,uid);
+						taskInfo.msgGet = startPage;
+						logger.info("uid={} total={} totalPage={} pos={} msgUidSize={}",uid,totalNum,pageNum,startPos,msgUidsList.size());
+					}
+				}
+			}
+		}
+		qtaskService.updateByPrimaryKeySelective(taskInfo);
+		//msg end
+
+	}
 
 }

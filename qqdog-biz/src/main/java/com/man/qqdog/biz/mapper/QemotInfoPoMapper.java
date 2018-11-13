@@ -17,4 +17,5 @@ public interface QemotInfoPoMapper {
 	public int insertQemotCommentBatch(List<QemotCommentPo> commentList);
 	
 	public int insertBatchCommentReplyByList(List<QemotCommentReplyPo> commentReplyList);
+	
 }

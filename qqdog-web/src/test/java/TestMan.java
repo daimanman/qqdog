@@ -9,6 +9,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.man.qq.QqConfig;
+import com.man.qqdog.biz.manager.QqManager;
 import com.man.utils.YhHttpUtil;
 
 
@@ -101,6 +102,31 @@ public class TestMan {
 	
 	@Test
 	public  void testSentEmot() {
+		long start = System.currentTimeMillis();
+		try {
+			Thread.sleep(1000*3);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		long end = System.currentTimeMillis();
+		System.out.println(end-start);
+	}
+	
+	@Test
+	public void testThread10() {
+		QqManager qq = new QqManager();
+		qq.initStartUid(0);
+		for(int i = 0;i<30;i++) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					System.out.println(Thread.currentThread().getName()+"----"+qq.getNextUid());
+				}
+			}).start();
+		}
 		
 	}
+	
+	
 }

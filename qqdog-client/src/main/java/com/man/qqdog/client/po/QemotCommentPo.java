@@ -21,7 +21,7 @@ public class QemotCommentPo implements java.io.Serializable {
 
     public String mname;
 
-    public String createTime2;
+    public String createtime2;
 
     public String createTime;
 
@@ -81,15 +81,17 @@ public class QemotCommentPo implements java.io.Serializable {
         this.mname = mname == null ? null : mname.trim();
     }
 
-    public String getCreateTime2() {
-        return createTime2;
-    }
+   
 
-    public void setCreateTime2(String createTime2) {
-        this.createTime2 = createTime2 == null ? null : createTime2.trim();
-    }
+    public String getCreatetime2() {
+		return createtime2;
+	}
 
-    public String getCreateTime() {
+	public void setCreatetime2(String createtime2) {
+		this.createtime2 = createtime2;
+	}
+
+	public String getCreateTime() {
         return createTime;
     }
 

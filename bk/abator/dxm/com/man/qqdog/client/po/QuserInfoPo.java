@@ -63,6 +63,8 @@ public class QuserInfoPo {
 
     private String cb;
 
+    private String signature;
+
     public Long getId() {
         return id;
     }
@@ -301,5 +303,13 @@ public class QuserInfoPo {
 
     public void setCb(String cb) {
         this.cb = cb == null ? null : cb.trim();
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature == null ? null : signature.trim();
     }
 }

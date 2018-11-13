@@ -2,11 +2,8 @@ package com.man.qqdog.client.po;
 
 import java.util.Date;
 
-public class QuserInfoPo implements java.io.Serializable {
-	
-	public static final long serialVersionUID = -4967606172886644103L;
-
-	public Long id;
+public class QuserInfoPo {
+    public Long id;
 
     public Long uid;
 
@@ -54,7 +51,31 @@ public class QuserInfoPo implements java.io.Serializable {
 
     public Date createGmt;
 
-    public Long getId() {
+    public String spacename;
+
+    public String describe;
+
+    public String cco;
+
+    public String cp;
+
+    public String cc;
+
+    public String cb;
+    
+    public String signature;
+    
+    
+
+    public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -244,5 +265,53 @@ public class QuserInfoPo implements java.io.Serializable {
 
     public void setCreateGmt(Date createGmt) {
         this.createGmt = createGmt;
+    }
+
+    public String getSpacename() {
+        return spacename;
+    }
+
+    public void setSpacename(String spacename) {
+        this.spacename = spacename == null ? null : spacename.trim();
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe == null ? null : describe.trim();
+    }
+
+    public String getCco() {
+        return cco;
+    }
+
+    public void setCco(String cco) {
+        this.cco = cco == null ? null : cco.trim();
+    }
+
+    public String getCp() {
+        return cp;
+    }
+
+    public void setCp(String cp) {
+        this.cp = cp == null ? null : cp.trim();
+    }
+
+    public String getCc() {
+        return cc;
+    }
+
+    public void setCc(String cc) {
+        this.cc = cc == null ? null : cc.trim();
+    }
+
+    public String getCb() {
+        return cb;
+    }
+
+    public void setCb(String cb) {
+        this.cb = cb == null ? null : cb.trim();
     }
 }

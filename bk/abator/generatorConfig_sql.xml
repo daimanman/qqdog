@@ -55,6 +55,15 @@
 
 		<table tableName="qemot_comment_reply" domainObjectName="QemotCommentReplyPo">
 		</table>
+		
+		<table tableName="qmsg_info" domainObjectName="QmsgInfoPo">
+		</table>
+		
+		<table tableName="qmsg_info_reply" domainObjectName="QmsgInfoReplyPo">
+		</table>
+		
+		<table tableName="qtask_info" domainObjectName="QtaskInfoPo">
+		</table>
 
 
 

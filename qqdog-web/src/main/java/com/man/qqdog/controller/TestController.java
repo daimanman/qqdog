@@ -6,9 +6,11 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.alibaba.fastjson.JSON;
 import com.man.qqdog.biz.manager.QqManager;
 import com.man.qqdog.biz.mapper.QemotInfoPoMapper;
+import com.man.qqdog.biz.mapper.QuserInfoPoMapper;
 import com.man.qqdog.client.po.QemotInfoPo;
 import com.man.qqdog.client.po.QsessionInfoPo;
 import com.man.qqdog.client.po.QuserInfoPo;
@@ -31,6 +34,7 @@ import com.man.qqdog.client.service.QUserService;
 import com.man.qqdog.client.service.QsessionService;
 import com.man.utils.ObjectUtil;
 import com.man.utils.ReqParam;
+import com.man.utils.ResultJson;
 
 @Controller
 public class TestController extends BaseController {
@@ -52,6 +56,9 @@ public class TestController extends BaseController {
 
 	@Autowired
 	private QqManager qqManager;
+	
+	@Autowired
+	private QuserInfoPoMapper userInfoMapper;
 
 	@RequestMapping("/id")
 	public void id(HttpServletResponse response) throws IOException {
@@ -78,7 +85,9 @@ public class TestController extends BaseController {
 	}
 
 	@RequestMapping("/addU")
-	public void addU(HttpServletResponse response) throws IOException {
+	public void addU(HttpServletResponse response,HttpServletRequest request) throws IOException {
+		ResultJson<QuserInfoPo> result = new ResultJson<>();
+		ReqParam param = getParams(request);
 		QuserInfoPo u = new QuserInfoPo();
 		u.age = "1";
 		u.birthday = "2018-09-09";
@@ -94,9 +103,11 @@ public class TestController extends BaseController {
 		u.hc = "昆明";
 		u.hco = "云南";
 		u.id = quserService.getId();
-		u.uid = 1018765522L;
-		u.nickname = "do";
-		sendJson(response, quserService.addQuserInfo(u));
+		u.uid = param.getLong("uid");
+		u.nickname = "do98";
+		u.describe="dsds";
+		quserService.addQuserInfo(u);
+		sendJson(response,result.success("操作成功",u));
 
 	}
 
@@ -159,6 +170,14 @@ public class TestController extends BaseController {
 		sendJson(response,qqManager.crawlQzoneBaseInfoContent(uid));
 	}
 	
+	@RequestMapping("/saveInfo")
+	public void saveInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		long uid = params.getLong("uid");
+		qqManager.downAllQqInfo(uid);
+		sendJson(response,"ok");
+	}
+	
 	@RequestMapping("/getMsg")
 	public void getMsg(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		ReqParam params = getParams(request);
@@ -212,5 +231,22 @@ public class TestController extends BaseController {
 		}
 		emotMapper.insertQemotInfoBatch(datas);
 		sendDefaultJson(response, "ok");
+	}
+	
+	@RequestMapping("/batchUserN")
+	public void batchUserN(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam param = getParams(request);
+		int  n = param.getInt("n");
+		Set<Long> sets = new HashSet<Long>();
+		for(long i = 0;i<n;i++) {
+			sets.add(i);
+		}
+		userInfoMapper.batchInsertUidsN(sets);
+		sendDefaultJson(response, "ok");
+	}
+	
+	@RequestMapping("/getMaxUid")
+	public void getMaxUid(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		sendDefaultJson(response, userInfoMapper.getMaxUid());
 	}
 }

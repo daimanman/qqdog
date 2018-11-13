@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.qqdog.biz.mapper.QmsgInfoPoMapper" >
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.QmsgInfoPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="msgid" property="msgid" jdbcType="VARCHAR" />
+    <result column="secret" property="secret" jdbcType="VARCHAR" />
+    <result column="pasterid" property="pasterid" jdbcType="VARCHAR" />
+    <result column="bmp" property="bmp" jdbcType="VARCHAR" />
+    <result column="pubtime" property="pubtime" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="VARCHAR" />
+    <result column="effect" property="effect" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="uin" property="uin" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="capacity" property="capacity" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="create_gmt" property="createGmt" jdbcType="TIMESTAMP" />
+     <result column="html_content" property="htmlContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+ 
+  <insert id="insertQmsgBatch" parameterType="com.man.qqdog.client.po.QmsgInfoPo" >
+    insert into qmsg_info (id, msgid, secret, 
+      pasterid, bmp, pubtime, 
+      modifytime, effect, type, 
+      uin, nickname, capacity, 
+      uid, create_gmt, html_content
+      )
+    values 
+    <foreach collection="list" item="po" separator=",">
+    (#{po.id,jdbcType=BIGINT}, #{po.msgid,jdbcType=VARCHAR}, #{po.secret,jdbcType=VARCHAR}, 
+      #{po.pasterid,jdbcType=VARCHAR}, #{po.bmp,jdbcType=VARCHAR}, #{po.pubtime,jdbcType=VARCHAR}, 
+      #{po.modifytime,jdbcType=VARCHAR}, #{po.effect,jdbcType=VARCHAR}, #{po.type,jdbcType=VARCHAR}, 
+      #{po.uin,jdbcType=VARCHAR}, #{po.nickname,jdbcType=VARCHAR}, #{po.capacity,jdbcType=VARCHAR}, 
+      #{po.uid,jdbcType=VARCHAR}, #{po.createGmt,jdbcType=TIMESTAMP}, #{po.htmlContent,jdbcType=LONGVARCHAR}
+      )
+    </foreach>
+    
+  </insert>
+  
+  <insert id="insertMsgReplyBatch" parameterType="com.man.qqdog.client.po.QmsgInfoReplyPo" >
+    insert into qmsg_info_reply (id, time, nick, 
+      msg_id, create_gmt, content,uin
+      )
+    values 
+    <foreach collection="list" separator="," item="po">
+    (#{po.id,jdbcType=BIGINT}, #{po.time,jdbcType=VARCHAR}, #{po.nick,jdbcType=VARCHAR}, 
+      #{po.msgId,jdbcType=BIGINT}, #{po.createGmt,jdbcType=TIMESTAMP}, #{po.content,jdbcType=LONGVARCHAR},#{po.uin}
+      )
+    </foreach>
+    
+  </insert>
+  
+</mapper>

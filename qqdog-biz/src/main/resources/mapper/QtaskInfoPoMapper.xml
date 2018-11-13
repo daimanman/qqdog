@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.qqdog.biz.mapper.QtaskInfoPoMapper" >
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.QtaskInfoPo" >
+    <id column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="msg_total" property="msgTotal" jdbcType="INTEGER" />
+    <result column="msg_page" property="msgPage" jdbcType="INTEGER" />
+    <result column="msg_get" property="msgGet" jdbcType="INTEGER" />
+    <result column="msg_start" property="msgStart" jdbcType="INTEGER" />
+    <result column="emot_total" property="emotTotal" jdbcType="INTEGER" />
+    <result column="emot_page" property="emotPage" jdbcType="INTEGER" />
+    <result column="emot_get" property="emotGet" jdbcType="INTEGER" />
+    <result column="emot_start" property="emotStart" jdbcType="INTEGER" />
+    <result column="photo_total" property="photoTotal" jdbcType="INTEGER" />
+    <result column="photo_get" property="photoGet" jdbcType="INTEGER" />
+    <result column="photo_page" property="photoPage" jdbcType="INTEGER" />
+    <result column="photo_start" property="photoStart" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="getQtaskByUid" parameterType="long" resultMap="BaseResultMap">
+  	select a.* from qtask_info a where a.uid = #{uid}
+  </select>
+  
+  <insert id="insertQtaskInfo" parameterType="com.man.qqdog.client.po.QtaskInfoPo" >
+    insert into qtask_info (uid, msg_total, msg_page, 
+      msg_get, msg_start, emot_total, 
+      emot_page, emot_get, emot_start, 
+      photo_total, photo_get, photo_page, 
+      photo_start)
+    values (#{uid,jdbcType=BIGINT}, #{msgTotal,jdbcType=INTEGER}, #{msgPage,jdbcType=INTEGER}, 
+      #{msgGet,jdbcType=INTEGER}, #{msgStart,jdbcType=INTEGER}, #{emotTotal,jdbcType=INTEGER}, 
+      #{emotPage,jdbcType=INTEGER}, #{emotGet,jdbcType=INTEGER}, #{emotStart,jdbcType=INTEGER}, 
+      #{photoTotal,jdbcType=INTEGER}, #{photoGet,jdbcType=INTEGER}, #{photoPage,jdbcType=INTEGER}, 
+      #{photoStart,jdbcType=INTEGER})
+  </insert>
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.man.qqdog.client.po.QtaskInfoPo" >
+    update qtask_info
+    <set >
+      <if test="msgTotal != null" >
+        msg_total = #{msgTotal,jdbcType=INTEGER},
+      </if>
+      <if test="msgPage != null" >
+        msg_page = #{msgPage,jdbcType=INTEGER},
+      </if>
+      <if test="msgGet != null" >
+        msg_get = #{msgGet,jdbcType=INTEGER},
+      </if>
+      <if test="msgStart != null" >
+        msg_start = #{msgStart,jdbcType=INTEGER},
+      </if>
+      <if test="emotTotal != null" >
+        emot_total = #{emotTotal,jdbcType=INTEGER},
+      </if>
+      <if test="emotPage != null" >
+        emot_page = #{emotPage,jdbcType=INTEGER},
+      </if>
+      <if test="emotGet != null" >
+        emot_get = #{emotGet,jdbcType=INTEGER},
+      </if>
+      <if test="emotStart != null" >
+        emot_start = #{emotStart,jdbcType=INTEGER},
+      </if>
+      <if test="photoTotal != null" >
+        photo_total = #{photoTotal,jdbcType=INTEGER},
+      </if>
+      <if test="photoGet != null" >
+        photo_get = #{photoGet,jdbcType=INTEGER},
+      </if>
+      <if test="photoPage != null" >
+        photo_page = #{photoPage,jdbcType=INTEGER},
+      </if>
+      <if test="photoStart != null" >
+        photo_start = #{photoStart,jdbcType=INTEGER},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=BIGINT}
+  </update>
+  
+</mapper>

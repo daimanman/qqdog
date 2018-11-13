@@ -32,6 +32,7 @@
     <result column="cp" property="cp" jdbcType="VARCHAR" />
     <result column="cc" property="cc" jdbcType="VARCHAR" />
     <result column="cb" property="cb" jdbcType="VARCHAR" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -94,7 +95,7 @@
   <sql id="Base_Column_List" >
     id, uid, nickname, sex, sex_type, age, birthyear, birthday, bloodtype, country, province, 
     city, career, company, hc, hp, hco, marriage, msg_num, emot_num, flag, photo_num, 
-    img_num, create_gmt, spacename, describe, cco, cp, cc, cb
+    img_num, create_gmt, spacename, describe, cco, cp, cc, cb, signature
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.man.qqdog.client.po.QuserInfoPoExample" >
     select
@@ -136,7 +137,8 @@
       msg_num, emot_num, flag, 
       photo_num, img_num, create_gmt, 
       spacename, describe, cco, 
-      cp, cc, cb)
+      cp, cc, cb, signature
+      )
     values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, 
       #{sex,jdbcType=VARCHAR}, #{sexType,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR}, 
       #{birthyear,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{bloodtype,jdbcType=VARCHAR}, 
@@ -146,7 +148,8 @@
       #{msgNum,jdbcType=INTEGER}, #{emotNum,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, 
       #{photoNum,jdbcType=INTEGER}, #{imgNum,jdbcType=INTEGER}, #{createGmt,jdbcType=TIMESTAMP}, 
       #{spacename,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, #{cco,jdbcType=VARCHAR}, 
-      #{cp,jdbcType=VARCHAR}, #{cc,jdbcType=VARCHAR}, #{cb,jdbcType=VARCHAR})
+      #{cp,jdbcType=VARCHAR}, #{cc,jdbcType=VARCHAR}, #{cb,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.man.qqdog.client.po.QuserInfoPo" >
     insert into quser_info
@@ -241,6 +244,9 @@
       <if test="cb != null" >
         cb,
       </if>
+      <if test="signature != null" >
+        signature,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -332,6 +338,9 @@
       </if>
       <if test="cb != null" >
         #{cb,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null" >
+        #{signature,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -434,6 +443,9 @@
       <if test="record.cb != null" >
         cb = #{record.cb,jdbcType=VARCHAR},
       </if>
+      <if test="record.signature != null" >
+        signature = #{record.signature,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -470,7 +482,8 @@
       cco = #{record.cco,jdbcType=VARCHAR},
       cp = #{record.cp,jdbcType=VARCHAR},
       cc = #{record.cc,jdbcType=VARCHAR},
-      cb = #{record.cb,jdbcType=VARCHAR}
+      cb = #{record.cb,jdbcType=VARCHAR},
+      signature = #{record.signature,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -565,6 +578,9 @@
       <if test="cb != null" >
         cb = #{cb,jdbcType=VARCHAR},
       </if>
+      <if test="signature != null" >
+        signature = #{signature,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -598,7 +614,8 @@
       cco = #{cco,jdbcType=VARCHAR},
       cp = #{cp,jdbcType=VARCHAR},
       cc = #{cc,jdbcType=VARCHAR},
-      cb = #{cb,jdbcType=VARCHAR}
+      cb = #{cb,jdbcType=VARCHAR},
+      signature = #{signature,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

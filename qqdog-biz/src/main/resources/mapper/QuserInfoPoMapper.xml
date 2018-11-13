@@ -32,6 +32,8 @@
     <result column="cp" property="cp" jdbcType="VARCHAR" />
     <result column="cc" property="cc" jdbcType="VARCHAR" />
     <result column="cb" property="cb" jdbcType="VARCHAR" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
+    
   </resultMap>
   
   <insert id="addQuserInfo" parameterType="com.man.qqdog.client.po.QuserInfoPo" >
@@ -43,8 +45,8 @@
       hp, hco, marriage, 
       msg_num, emot_num, flag, 
       photo_num, img_num, create_gmt, 
-      spacename, describe, cco, 
-      cp, cc, cb)
+      spacename, `describe`, cco, 
+      cp, cc, cb,signature)
     values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, 
       #{sex,jdbcType=VARCHAR}, #{sexType,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR}, 
       #{birthyear,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{bloodtype,jdbcType=VARCHAR}, 
@@ -54,7 +56,27 @@
       #{msgNum,jdbcType=INTEGER}, #{emotNum,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, 
       #{photoNum,jdbcType=INTEGER}, #{imgNum,jdbcType=INTEGER}, #{createGmt,jdbcType=TIMESTAMP}, 
       #{spacename,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, #{cco,jdbcType=VARCHAR}, 
-      #{cp,jdbcType=VARCHAR}, #{cc,jdbcType=VARCHAR}, #{cb,jdbcType=VARCHAR})
+      #{cp,jdbcType=VARCHAR}, #{cc,jdbcType=VARCHAR}, #{cb,jdbcType=VARCHAR},#{signature})
   </insert>
+  
+  <insert id="batchInsertUidsN" parameterType="java.util.Set"
+		useGeneratedKeys="true">
+		insert into quser_info_n(uid) values
+		<foreach collection="set" item="uid" separator=",">
+			(#{uid})
+		</foreach>
+	</insert>
+	
+	<select id="getMaxUid" resultType="long">
+		select ifnull(max(uin),0) maxuid from 
+	(
+			select max(uid) uin from (
+			select * from quser_info order by id desc
+			limit 10
+			) a
+			union
+			select max(uid) as uin from quser_info_n
+	 ) b 
+	</select>
   
 </mapper>
