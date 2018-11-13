@@ -47,6 +47,10 @@ public class QmsgServiceImpl extends BaseServiceImpl implements QmsgService {
 			List<QmsgInfoReplyPo> replyDatas = new ArrayList<>(commentList.size());
 			for(Object comment:commentList) {
 				Map<String,Object> msgMap = ObjectUtil.castMapObj(comment);
+				String content = ObjectUtil.getStr(msgMap, "htmlContent");
+				if(content.trim().length() == 0) {
+					continue;
+				}
 				long msgId = getId();
 				QmsgInfoPo infoPo = QqModelTransform.converQmsgInfo(msgMap);
 				infoPo.id = msgId;

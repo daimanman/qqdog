@@ -638,7 +638,7 @@ public class QqManager {
 
 		}
 
-		// msg
+		// msg start
 		Map<String, Object> firstMsgMap = crawlQzoneMsgInfoContent(uid + "", 0);
 		if (firstMsgMap != null) {
 			Map<String, Object> dataMap = ObjectUtil.castMapObj(firstMsgMap.get("data"));
@@ -669,7 +669,14 @@ public class QqManager {
 		}
 		qtaskService.updateByPrimaryKeySelective(taskInfo);
 		//msg end
-
+		
+		
+		//emot start
+		Map<String,Object> firstEmotMap = crwalQzoneEmotInfoContent(uid+"",0);
+		if(firstEmotMap != null) {
+			
+		}
+		
 	}
 
 }
