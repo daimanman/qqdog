@@ -44,9 +44,7 @@
       #{po.uid,jdbcType=VARCHAR}, #{po.createGmt,jdbcType=TIMESTAMP}, #{po.getnum,jdbcType=INTEGER}, 
       #{po.desc,jdbcType=LONGVARCHAR}, #{po.name,jdbcType=LONGVARCHAR}, #{po.pre,jdbcType=LONGVARCHAR}
       )
-    
     </foreach>
-     
   </insert>
   
   <update id="updatePhotoSelective" parameterType="com.man.qqdog.client.po.QphotoInfoPo" >
