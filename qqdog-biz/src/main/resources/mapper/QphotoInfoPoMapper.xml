@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.qqdog.biz.mapper.QphotoInfoPoMapper" >
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.QphotoInfoPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="allow_access" property="allowAccess" jdbcType="VARCHAR" />
+    <result column="anonymity" property="anonymity" jdbcType="VARCHAR" />
+    <result column="bitmap" property="bitmap" jdbcType="VARCHAR" />
+    <result column="classid" property="classid" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="VARCHAR" />
+    <result column="handset" property="handset" jdbcType="VARCHAR" />
+    <result column="topicid" property="topicid" jdbcType="VARCHAR" />
+    <result column="lastuploadtime" property="lastuploadtime" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="VARCHAR" />
+    <result column="order" property="order" jdbcType="VARCHAR" />
+    <result column="priv" property="priv" jdbcType="VARCHAR" />
+    <result column="totalnum" property="totalnum" jdbcType="INTEGER" />
+    <result column="viewtype" property="viewtype" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="create_gmt" property="createGmt" jdbcType="TIMESTAMP" />
+    <result column="getnum" property="getnum" jdbcType="INTEGER" />
+    <result column="desc" property="desc" jdbcType="LONGVARCHAR" />
+    <result column="name" property="name" jdbcType="LONGVARCHAR" />
+    <result column="pre" property="pre" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <insert id="addPhotoBatch" parameterType="com.man.qqdog.client.po.QphotoInfoPo" >
+    insert into qphoto_info (id, allow_access, anonymity, 
+      bitmap, classid, comment, 
+      createtime, handset, topicid, 
+      lastuploadtime, modifytime, order, 
+      priv, totalnum, viewtype, 
+      uid, create_gmt, getnum, 
+      `desc`, name, pre
+      )
+    values
+    <foreach collection="list" item="po" separator=",">
+    (#{po.id,jdbcType=BIGINT}, #{po.allowAccess,jdbcType=VARCHAR}, #{po.anonymity,jdbcType=VARCHAR}, 
+      #{po.bitmap,jdbcType=VARCHAR}, #{po.classid,jdbcType=VARCHAR}, #{po.comment,jdbcType=VARCHAR}, 
+      #{po.createtime,jdbcType=VARCHAR}, #{po.handset,jdbcType=VARCHAR}, #{po.topicid,jdbcType=VARCHAR}, 
+      #{po.lastuploadtime,jdbcType=VARCHAR}, #{po.modifytime,jdbcType=VARCHAR}, #{po.order,jdbcType=VARCHAR}, 
+      #{po.priv,jdbcType=VARCHAR}, #{po.totalnum,jdbcType=INTEGER}, #{po.viewtype,jdbcType=VARCHAR}, 
+      #{po.uid,jdbcType=VARCHAR}, #{po.createGmt,jdbcType=TIMESTAMP}, #{po.getnum,jdbcType=INTEGER}, 
+      #{po.desc,jdbcType=LONGVARCHAR}, #{po.name,jdbcType=LONGVARCHAR}, #{po.pre,jdbcType=LONGVARCHAR}
+      )
+    
+    </foreach>
+     
+  </insert>
+  
+  <update id="updatePhotoSelective" parameterType="com.man.qqdog.client.po.QphotoInfoPo" >
+    update qphoto_info
+    <set >
+      <if test="allowAccess != null" >
+        allow_access = #{allowAccess,jdbcType=VARCHAR},
+      </if>
+      <if test="anonymity != null" >
+        anonymity = #{anonymity,jdbcType=VARCHAR},
+      </if>
+      <if test="bitmap != null" >
+        bitmap = #{bitmap,jdbcType=VARCHAR},
+      </if>
+      <if test="classid != null" >
+        classid = #{classid,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="handset != null" >
+        handset = #{handset,jdbcType=VARCHAR},
+      </if>
+      <if test="topicid != null" >
+        topicid = #{topicid,jdbcType=VARCHAR},
+      </if>
+      <if test="lastuploadtime != null" >
+        lastuploadtime = #{lastuploadtime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime,jdbcType=VARCHAR},
+      </if>
+      <if test="order != null" >
+        order = #{order,jdbcType=VARCHAR},
+      </if>
+      <if test="priv != null" >
+        priv = #{priv,jdbcType=VARCHAR},
+      </if>
+      <if test="totalnum != null" >
+        totalnum = #{totalnum,jdbcType=INTEGER},
+      </if>
+      <if test="viewtype != null" >
+        viewtype = #{viewtype,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="createGmt != null" >
+        create_gmt = #{createGmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="getnum != null" >
+        getnum = #{getnum,jdbcType=INTEGER},
+      </if>
+      <if test="desc != null" >
+        desc = #{desc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="pre != null" >
+        pre = #{pre,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+</mapper>

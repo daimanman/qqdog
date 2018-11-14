@@ -680,6 +680,21 @@ public class QqManager {
 		qtaskService.updateByPrimaryKeySelective(taskInfo);
 		// emot end
 	}
+	
+	public void downAllPhoto(long uid) {
+		QtaskInfoPo taskInfo = new QtaskInfoPo();
+		taskInfo.uid = uid;
+		taskInfo.photoStart = 0;
+		qtaskService.insertQtaskInfo(taskInfo);
+		Map<String,Object> photoFirstMap = crawlQzonePhotoInfo(uid+"");
+		if(null == photoFirstMap) {
+			logger.error("get photo is null maybe photoUids is null option too offen {} ",uid);
+			return;
+		}
+		
+		
+		
+	}
 
 	// get all info of uid include msg,baseinfo ,emot,photo
 	public void downAllQqInfo(long uid) {

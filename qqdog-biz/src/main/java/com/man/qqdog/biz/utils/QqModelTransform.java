@@ -46,54 +46,7 @@ public class QqModelTransform {
 	}
 	public static QemotInfoPo converQemotInfo(Map qqmap){
 		QemotInfoPo info = new QemotInfoPo();
-//		 #{qemotInfo.qemotInfoId},
-//	      #{qemotInfo.cmtnum}, 
-//	      #{qemotInfo.createTime}, 
-//	      #{qemotInfo.created_time}, 
-//	      #{qemotInfo.editMask}, 
-//	      #{qemotInfo.fwdnum}, 
-//	      #{qemotInfo.name},
-//	      #{qemotInfo.pictotal},
-//	      #{qemotInfo.right}, 
-//	      #{qemotInfo.rt_sum},
-//	      #{qemotInfo.secret},
-//	      #{qemotInfo.tid},
-//	      #{qemotInfo.ugc_right},
-//	      #{qemotInfo.uin},
-//	      #{qemotInfo.wbid}, 
-//	      #{qemotInfo.lbs.id},
-//	      #{qemotInfo.lbs.idname},
-//	      #{qemotInfo.lbs.name}, 
-//	      #{qemotInfo.lbs.pos_x},
-//	      #{qemotInfo.lbs.pos_y},
-//	      #{qemotInfo.source_name}, 
-//	      #{qemotInfo.content},
 		
-		
-//		 id,
-//	      cmtnum, 
-//	      createTime, 
-//	      created_time, 
-//	      editMask, 
-//	      fwdnum, 
-//	      name, 
-//	      pictotal, 
-//	      `right`, 
-//	      rt_sum, 
-//	      secret, 
-//	      tid, 
-//	      ugc_right, 
-//	      uid, 
-//	      wbid, 
-//	      lbs_id, 
-//	      lbs_idname,
-//	      lbs_name, 
-//	      lbs_pos_x, 
-//	      lbs_pos_y, 
-//	      source_name, 
-//	      content,
-	      
-	      
 		info.id = ObjectUtil.parseLong(qqmap.get("qemotInfoId"));
 		info.cmtnum = ObjectUtil.parseInteger(qqmap.get("cmtnum"));
 		info.createtime = ObjectUtil.toString(qqmap.get("createTime"));
@@ -127,31 +80,6 @@ public class QqModelTransform {
 	}
 	
 	public static QemotPicPo converQemotPic(Map picMap){
-//		 insert into qemot_pic (
-//			    	tid, 
-//			    	emot_id, 
-//			      	uid, 
-//			      	height, 
-//			      	width, 
-//			      	url1, 
-//			      	url2, 
-//			      	url3,
-//			      	create_gmt
-//			      	)
-//			    values 
-//			    <foreach collection="picList" item="item" index="index" separator="," >
-//			    ( 
-//			      #{item.tid}, 
-//			      #{item.qemotInfoId}, 
-//			      #{item.uin}, 
-//			      #{item.height},
-//			      #{item.width}, 
-//			      #{item.url1}, 
-//			      #{item.url2},
-//			      #{item.url3},
-//			      now()
-//			     )
-		
 		QemotPicPo pic = new QemotPicPo();
 		pic.tid = ObjectUtil.toString(picMap.get("tid"));
 		pic.emotId = ObjectUtil.parseLong(picMap.get("qemotInfoId"));
@@ -166,37 +94,6 @@ public class QqModelTransform {
 	}
 	
 	public static QemotCommentPo converQemotComment(Map commentMap){
-//		 insert into qemot_comment (
-//			      id,
-//			      emot_id, 
-//			      tid, 
-//			      uid,
-//			      muid,
-//			      mname, 
-//			      content, 
-//			      create_time2, 
-//			      create_time,
-//			      create_time1, 
-//			      reply_num,
-//			      create_gmt
-//			      )
-//			    values 
-//			    <foreach collection="commentList" item="comment" separator=",">
-//			    		 ( 
-//			    		  #{comment.emotCommentId},
-//					      #{comment.qemotInfoId}, 
-//					      #{comment.tid}, 
-//					      #{comment.qemotInfoUin}, 
-//					      #{comment.uin}, 
-//					      #{comment.name}, 
-//					      #{comment.content}, 
-//					      #{comment.createtime2},
-//					      #{comment.createTime}, 
-//					      #{comment.create_time},
-//					      #{comment.reply_num},
-//					      now()
-//			     		 )
-		
 		QemotCommentPo comment =  new QemotCommentPo();
 		comment.id = ObjectUtil.parseLong(commentMap.get("emotCommentId"));
 		comment.emotId = ObjectUtil.parseLong(commentMap.get("qemotInfoId"));
@@ -214,33 +111,7 @@ public class QqModelTransform {
 	}
 	
 	public static QemotCommentReplyPo converQemotCommentReply(Map replyMap){
-//		 insert into qemot_comment_reply (
-//			    	comment_id,
-//			    	uid, 
-//			      	content, 
-//			      	create_time0, 
-//			      	create_time2, 
-//			      	create_time3, 
-//			      	name, 
-//			      	source_name, 
-//			      	tid,
-//			      	create_gmt
-//			      	)
-//			    values 
-//			    <foreach collection="replyList" item="reply" index="index" separator=",">
-//			      (
-//			      #{reply.qemotCommentId},
-//			      #{reply.uin}, 
-//			      #{reply.content},
-//			      #{reply.create_time},
-//			      #{reply.createTime2}, 
-//			      #{reply.createTime},
-//			      #{reply.name},
-//			      #{reply.source_name}, 
-//			      #{reply.tid},
-//			      now()
-//			      )
-//			      </foreach>
+
 		QemotCommentReplyPo reply = new QemotCommentReplyPo();
 		reply.commentId = ObjectUtil.parseLong(replyMap.get("qemotCommentId"));
 		reply.uid = ObjectUtil.toString(replyMap.get("uin"));
@@ -280,6 +151,4 @@ public class QqModelTransform {
 		po.uin = ObjectUtil.getStr(data,"uin");
 		return po;
 	}
-	
-	
 }
