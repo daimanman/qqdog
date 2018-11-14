@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -6,10 +9,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import com.man.qq.QqConfig;
+import com.alibaba.fastjson.JSON;
 import com.man.qqdog.biz.manager.QqManager;
+import com.man.utils.ObjectUtil;
 import com.man.utils.YhHttpUtil;
 
 
@@ -126,6 +131,13 @@ public class TestMan {
 			}).start();
 		}
 		
+	}
+	
+	@Test
+	public void testEmotJson() throws FileNotFoundException, IOException {
+		String json = IOUtils.toString(new FileInputStream(new File("D:\\1.json")),"utf-8");
+		Map<String,Object> m = JSON.parseObject(json,Map.class);
+		System.out.println(ObjectUtil.getSize(m.get("msglist")));
 	}
 	
 	

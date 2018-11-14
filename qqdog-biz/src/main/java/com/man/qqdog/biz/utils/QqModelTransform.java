@@ -279,6 +279,7 @@ public class QqModelTransform {
 		po.time = ObjectUtil.getStr(data, "time");
 		po.uin = ObjectUtil.getStr(data,"uin");
 		return po;
-		
 	}
+	
+	
 }

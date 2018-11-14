@@ -21,6 +21,7 @@ import com.man.qqdog.client.po.QsessionInfoPo;
 import com.man.qqdog.client.po.QtaskInfoPo;
 import com.man.qqdog.client.po.QuserInfoPo;
 import com.man.qqdog.client.service.QUserService;
+import com.man.qqdog.client.service.QemotService;
 import com.man.qqdog.client.service.QmsgService;
 import com.man.qqdog.client.service.QsessionService;
 import com.man.qqdog.client.service.QtaskInfoService;
@@ -41,6 +42,9 @@ public class QqManager {
 
 	@Autowired
 	private QmsgService qmsgService;
+
+	@Autowired
+	private QemotService qemotService;
 
 	public Map<String, QsessionInfoPo> sessionMap = new HashMap<>();
 
@@ -337,11 +341,11 @@ public class QqManager {
 
 		String effectUid = getMsgUid();
 		QsessionInfoPo session = sessionMap.get(effectUid);
-		//logger.info("current uid is {}", effectUid);
+		// logger.info("current uid is {}", effectUid);
 		// 获取参数
 		Map<String, Object> originMap = session.paramsMap;
 		Map<String, Object> newParamMap = new HashMap<String, Object>();
-		//logger.info("parmas = {}", JSON.toJSONString(originMap));
+		// logger.info("parmas = {}", JSON.toJSONString(originMap));
 		newParamMap.put("g_tk", originMap.get("g_tk"));
 		newParamMap.put("qzonetoken", originMap.get("qzonetoken"));
 		newParamMap.put("format", "json");
@@ -494,7 +498,7 @@ public class QqManager {
 		newParamMap.put("qzonetoken", originMap.get("qzonetoken"));
 		newParamMap.put("format", "json");
 		newParamMap.put("pos", pos);
-		newParamMap.put("num", QqConfig.DEFAULT_NUM);
+		newParamMap.put("num", QqConfig.DEFAULT_EMOT_NUM);
 		newParamMap.put("code_version", QqConfig.CODE_VERSION);
 		newParamMap.put("replynum", QqConfig.REPLYNUM);
 		newParamMap.put("ftype", 0);
@@ -603,6 +607,80 @@ public class QqManager {
 		return resp;
 	}
 
+	public void downAllMsg(long uid) {
+		QtaskInfoPo taskInfo = new QtaskInfoPo();
+		taskInfo.uid = uid;
+		taskInfo.msgStart = 0;
+		qtaskService.insertQtaskInfo(taskInfo);
+		// msg start
+		Map<String, Object> firstMsgMap = crawlQzoneMsgInfoContent(uid + "", 0);
+		if (firstMsgMap != null) {
+			Map<String, Object> dataMap = ObjectUtil.castMapObj(firstMsgMap.get("data"));
+			// 总记录数
+			int msgTotalNum = ObjectUtil.getInt(dataMap, "total");
+			// 计算页数
+			int msgPageNum = (msgTotalNum + QqConfig.DEFAULT_MSG_NUM - 1) / QqConfig.DEFAULT_MSG_NUM;
+			logger.info("msg uid={} total={} totalPage={} pos={} msgUidSize={}", uid, msgTotalNum, msgPageNum, 0,
+					msgUidsList.size());
+			// 存储第一页
+			qmsgService.saveMsgList(dataMap, uid);
+			taskInfo.msgStart = 1;
+			taskInfo.msgTotal = msgTotalNum;
+			taskInfo.msgGet = 1;
+			taskInfo.msgPage = msgPageNum;
+			if (msgPageNum > 1) {
+				int startPos = QqConfig.DEFAULT_MSG_NUM;
+				for (int startPage = 2; startPage <= msgPageNum; startPage++) {
+					startPos = (startPage - 1) * QqConfig.DEFAULT_MSG_NUM;
+					firstMsgMap = crawlQzoneMsgInfoContent(uid + "", startPos);
+					if (firstMsgMap != null) {
+						dataMap = ObjectUtil.castMapObj(firstMsgMap.get("data"));
+						qmsgService.saveMsgList(dataMap, uid);
+						taskInfo.msgGet = startPage;
+						logger.info("msg uid={} total={} totalPage={} pos={} msgUidSize={}", uid, msgTotalNum,
+								msgPageNum, startPos, msgUidsList.size());
+					}
+				}
+			}
+		}
+		qtaskService.updateByPrimaryKeySelective(taskInfo);
+		// msg end
+
+	}
+
+	public void downAllEmot(long uid) {
+		QtaskInfoPo taskInfo = new QtaskInfoPo();
+		taskInfo.uid = uid;
+		taskInfo.emotStart = 0;
+		qtaskService.insertQtaskInfo(taskInfo);
+		// emot start
+		Map<String, Object> firstEmotMap = crwalQzoneEmotInfoContent(uid + "", 0);
+		if (firstEmotMap != null) {
+			qemotService.saveEmotInfoMap(firstEmotMap, uid);
+			int emotTotalNum = ObjectUtil.getInt(firstEmotMap, "total");
+			int emotPageNum = (emotTotalNum + QqConfig.DEFAULT_EMOT_REAL_NUM - 1) / QqConfig.DEFAULT_EMOT_REAL_NUM;
+			int emotStartPos = QqConfig.DEFAULT_EMOT_REAL_NUM;
+			logger.info("emot uid={} total={} totalPage={} pos={} emotUidSize={}", uid, emotTotalNum, emotPageNum, 0,
+					emotUidsList.size());
+			taskInfo.emotStart = 1;
+			taskInfo.emotTotal = emotTotalNum;
+			taskInfo.emotGet = 1;
+			taskInfo.emotPage = emotPageNum;
+			for (int startPage = 2; startPage <= emotPageNum; startPage++) {
+				emotStartPos = (startPage - 1) * QqConfig.DEFAULT_EMOT_REAL_NUM;
+				firstEmotMap = crwalQzoneEmotInfoContent(uid + "", emotStartPos);
+				if (null != firstEmotMap) {
+					logger.info("emot uid={} total={} totalPage={} pos={} emotUidSize={}", uid, emotTotalNum,
+							emotPageNum, emotStartPos, emotUidsList.size());
+					qemotService.saveEmotInfoMap(firstEmotMap, uid);
+					taskInfo.emotGet = startPage;
+				}
+			}
+		}
+		qtaskService.updateByPrimaryKeySelective(taskInfo);
+		// emot end
+	}
+
 	// get all info of uid include msg,baseinfo ,emot,photo
 	public void downAllQqInfo(long uid) {
 
@@ -637,46 +715,9 @@ public class QqManager {
 			qtaskService.insertQtaskInfo(taskInfo);
 
 		}
-
-		// msg start
-		Map<String, Object> firstMsgMap = crawlQzoneMsgInfoContent(uid + "", 0);
-		if (firstMsgMap != null) {
-			Map<String, Object> dataMap = ObjectUtil.castMapObj(firstMsgMap.get("data"));
-			// 总记录数
-			int totalNum = ObjectUtil.getInt(dataMap, "total");
-			// 计算页数
-			int pageNum = (totalNum + QqConfig.DEFAULT_MSG_NUM - 1) / QqConfig.DEFAULT_MSG_NUM;
-			logger.info("uid={} total={} totalPage={} pos={} msgUidSize={}",uid,totalNum,pageNum,0,msgUidsList.size());
-			// 存储第一页
-			qmsgService.saveMsgList(dataMap,uid);
-			taskInfo.msgStart = 1;
-			taskInfo.msgTotal = totalNum;
-			taskInfo.msgGet = 1;
-			taskInfo.msgPage = pageNum;
-			if (pageNum > 1) {
-				int startPos = QqConfig.DEFAULT_MSG_NUM;
-				for (int startPage = 2; startPage <= pageNum; startPage++) {
-					startPos = (startPage - 1) * QqConfig.DEFAULT_MSG_NUM;
-					firstMsgMap = crawlQzoneMsgInfoContent(uid + "", startPos);
-					if (firstMsgMap != null) {
-						dataMap = ObjectUtil.castMapObj(firstMsgMap.get("data"));
-						qmsgService.saveMsgList(dataMap,uid);
-						taskInfo.msgGet = startPage;
-						logger.info("uid={} total={} totalPage={} pos={} msgUidSize={}",uid,totalNum,pageNum,startPos,msgUidsList.size());
-					}
-				}
-			}
-		}
-		qtaskService.updateByPrimaryKeySelective(taskInfo);
-		//msg end
 		
-		
-		//emot start
-		Map<String,Object> firstEmotMap = crwalQzoneEmotInfoContent(uid+"",0);
-		if(firstEmotMap != null) {
-			
-		}
-		
+		downAllMsg(uid);
+		downAllEmot(uid);
 	}
 
 }

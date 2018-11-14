@@ -249,4 +249,25 @@ public class TestController extends BaseController {
 	public void getMaxUid(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		sendDefaultJson(response, userInfoMapper.getMaxUid());
 	}
+	
+	
+	@RequestMapping("/downEmot")
+	public void downEmot(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		long uid = params.getLong("uid");
+		if(uid > 0) {
+			qqManager.downAllEmot(uid);
+		}
+		sendDefaultJson(response, "ok");
+	}
+	@RequestMapping("/downMsg")
+	public void downMsg(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		long uid = params.getLong("uid");
+		if(uid > 0) {
+			qqManager.downAllMsg(uid);
+		}
+		sendDefaultJson(response, "ok");
+	}
+	
 }

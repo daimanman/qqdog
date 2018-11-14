@@ -100,6 +100,7 @@
   
   <insert id="insertBatchPicsByList" parameterType="java.util.List" >
     insert into qemot_pic (
+    	id,
     	tid, 
     	emot_id, 
       	uid, 
@@ -113,6 +114,7 @@
     values 
     <foreach collection="list" item="item" index="index" separator="," >
     ( 
+      #{item.id},
       #{item.tid}, 
       #{item.emotId}, 
       #{item.uid}, 
@@ -164,6 +166,7 @@
   
    <insert id="insertBatchCommentReplyByList" parameterType="java.util.List"   >
     insert into qemot_comment_reply (
+        id,
     	comment_id,
     	uid, 
       	content, 
@@ -178,6 +181,7 @@
     values 
     <foreach collection="list" item="reply" index="index" separator=",">
       (
+      #{reply.id},
       #{reply.commentId},
       #{reply.uid}, 
       #{reply.content},
