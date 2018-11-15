@@ -1,0 +1,11 @@
+TRUNCATE qtask_info;
+TRUNCATE qemot_pic;
+TRUNCATE qmsg_info;
+TRUNCATE quser_info;
+TRUNCATE qphoto_img;
+TRUNCATE qemot_info;
+TRUNCATE qphoto_info;
+TRUNCATE quser_info_n;
+TRUNCATE qemot_comment;
+TRUNCATE qemot_comment_reply;
+TRUNCATE qmsg_info_reply;

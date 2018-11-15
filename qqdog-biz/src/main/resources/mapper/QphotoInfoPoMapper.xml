@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.man.qqdog.biz.mapper.QphotoInfoPoMapper" >
-  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.QphotoInfoPo" >
+  <resultMap id="QphotoInfoPoResultMap" type="com.man.qqdog.client.po.QphotoInfoPo" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="allow_access" property="allowAccess" jdbcType="VARCHAR" />
     <result column="anonymity" property="anonymity" jdbcType="VARCHAR" />
@@ -25,11 +25,45 @@
     <result column="pre" property="pre" jdbcType="LONGVARCHAR" />
   </resultMap>
   
-  <insert id="addPhotoBatch" parameterType="com.man.qqdog.client.po.QphotoInfoPo" >
+  <resultMap id="QphotoImgPoResultMap" type="com.man.qqdog.client.po.QphotoImgPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="batchId" property="batchid" jdbcType="VARCHAR" />
+    <result column="browser" property="browser" jdbcType="VARCHAR" />
+    <result column="cameratype" property="cameratype" jdbcType="VARCHAR" />
+    <result column="cp_flag" property="cpFlag" jdbcType="VARCHAR" />
+    <result column="cp_x" property="cpX" jdbcType="VARCHAR" />
+    <result column="cp_y" property="cpY" jdbcType="VARCHAR" />
+    <result column="forum" property="forum" jdbcType="VARCHAR" />
+    <result column="frameno" property="frameno" jdbcType="VARCHAR" />
+    <result column="height" property="height" jdbcType="VARCHAR" />
+    <result column="is_video" property="isVideo" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="owner" property="owner" jdbcType="VARCHAR" />
+    <result column="ownername" property="ownername" jdbcType="VARCHAR" />
+    <result column="photocubage" property="photocubage" jdbcType="VARCHAR" />
+    <result column="phototype" property="phototype" jdbcType="VARCHAR" />
+    <result column="picrefer" property="picrefer" jdbcType="VARCHAR" />
+    <result column="platformId" property="platformid" jdbcType="VARCHAR" />
+    <result column="platformSubId" property="platformsubid" jdbcType="VARCHAR" />
+    <result column="pre" property="pre" jdbcType="VARCHAR" />
+    <result column="rawshoottime" property="rawshoottime" jdbcType="VARCHAR" />
+    <result column="uploadtime" property="uploadtime" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="width" property="width" jdbcType="VARCHAR" />
+    <result column="photo_id" property="photoId" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="create_gmt" property="createGmt" jdbcType="TIMESTAMP" />
+    <result column="desc" property="desc" jdbcType="LONGVARCHAR" />
+    <result column="origin_url" property="originUrl" jdbcType="LONGVARCHAR" />
+    <result column="poiname" property="poiname" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <insert id="addPhotoBatch" parameterType="list" >
     insert into qphoto_info (id, allow_access, anonymity, 
       bitmap, classid, comment, 
       createtime, handset, topicid, 
-      lastuploadtime, modifytime, order, 
+      lastuploadtime, modifytime, `order`, 
       priv, totalnum, viewtype, 
       uid, create_gmt, getnum, 
       `desc`, name, pre
@@ -41,7 +75,7 @@
       #{po.createtime,jdbcType=VARCHAR}, #{po.handset,jdbcType=VARCHAR}, #{po.topicid,jdbcType=VARCHAR}, 
       #{po.lastuploadtime,jdbcType=VARCHAR}, #{po.modifytime,jdbcType=VARCHAR}, #{po.order,jdbcType=VARCHAR}, 
       #{po.priv,jdbcType=VARCHAR}, #{po.totalnum,jdbcType=INTEGER}, #{po.viewtype,jdbcType=VARCHAR}, 
-      #{po.uid,jdbcType=VARCHAR}, #{po.createGmt,jdbcType=TIMESTAMP}, #{po.getnum,jdbcType=INTEGER}, 
+      #{po.uid,jdbcType=VARCHAR}, now(), #{po.getnum,jdbcType=INTEGER}, 
       #{po.desc,jdbcType=LONGVARCHAR}, #{po.name,jdbcType=LONGVARCHAR}, #{po.pre,jdbcType=LONGVARCHAR}
       )
     </foreach>
@@ -113,5 +147,37 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  
+  <insert id="addPhotoImgBatch" parameterType="list" >
+    insert into qphoto_img (id, batchId, browser, 
+      cameratype, cp_flag, cp_x, 
+      cp_y, forum, frameno, 
+      height, is_video, modifytime, 
+      name, owner, ownername, 
+      photocubage, phototype, picrefer, 
+      platformId, platformSubId, pre, 
+      rawshoottime, uploadtime, url, 
+      width, photo_id, uid, 
+      create_gmt, `desc`, origin_url, 
+      poiname)
+    values 
+    <foreach collection="list" item="po" separator="," >
+	    (#{po.id,jdbcType=BIGINT}, #{po.batchid,jdbcType=VARCHAR}, #{po.browser,jdbcType=VARCHAR}, 
+          #{po.cameratype,jdbcType=VARCHAR}, #{po.cpFlag,jdbcType=VARCHAR}, #{po.cpX,jdbcType=VARCHAR}, 
+          #{po.cpY,jdbcType=VARCHAR}, #{po.forum,jdbcType=VARCHAR}, #{po.frameno,jdbcType=VARCHAR}, 
+          #{po.height,jdbcType=VARCHAR}, #{po.isVideo,jdbcType=VARCHAR}, #{po.modifytime,jdbcType=VARCHAR}, 
+          #{po.name,jdbcType=VARCHAR}, #{po.owner,jdbcType=VARCHAR}, #{po.ownername,jdbcType=VARCHAR}, 
+          #{po.photocubage,jdbcType=VARCHAR}, #{po.phototype,jdbcType=VARCHAR}, #{po.picrefer,jdbcType=VARCHAR}, 
+          #{po.platformid,jdbcType=VARCHAR}, #{po.platformsubid,jdbcType=VARCHAR}, #{po.pre,jdbcType=VARCHAR}, 
+          #{po.rawshoottime,jdbcType=VARCHAR}, #{po.uploadtime,jdbcType=VARCHAR}, #{po.url,jdbcType=VARCHAR}, 
+          #{po.width,jdbcType=VARCHAR}, #{po.photoId,jdbcType=BIGINT}, #{po.uid,jdbcType=VARCHAR}, 
+          now(), #{po.desc,jdbcType=LONGVARCHAR}, #{po.originUrl,jdbcType=LONGVARCHAR}, 
+          #{po.poiname,jdbcType=LONGVARCHAR})
+    </foreach>
+    
+  </insert>
+  
+  
   
 </mapper>

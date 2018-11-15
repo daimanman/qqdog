@@ -46,8 +46,14 @@ public class QphotoInfoPo {
     public String pre;
     
     
+    
+    
+    
+    
+    
 
-    public String getDesc() {
+
+	public String getDesc() {
 		return desc;
 	}
 

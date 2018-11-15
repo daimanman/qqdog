@@ -32,7 +32,7 @@
       #{po.pasterid,jdbcType=VARCHAR}, #{po.bmp,jdbcType=VARCHAR}, #{po.pubtime,jdbcType=VARCHAR}, 
       #{po.modifytime,jdbcType=VARCHAR}, #{po.effect,jdbcType=VARCHAR}, #{po.type,jdbcType=VARCHAR}, 
       #{po.uin,jdbcType=VARCHAR}, #{po.nickname,jdbcType=VARCHAR}, #{po.capacity,jdbcType=VARCHAR}, 
-      #{po.uid,jdbcType=VARCHAR}, #{po.createGmt,jdbcType=TIMESTAMP}, #{po.htmlContent,jdbcType=LONGVARCHAR}
+      #{po.uid,jdbcType=VARCHAR}, now(), #{po.htmlContent,jdbcType=LONGVARCHAR}
       )
     </foreach>
     
@@ -45,7 +45,7 @@
     values 
     <foreach collection="list" separator="," item="po">
     (#{po.id,jdbcType=BIGINT}, #{po.time,jdbcType=VARCHAR}, #{po.nick,jdbcType=VARCHAR}, 
-      #{po.msgId,jdbcType=BIGINT}, #{po.createGmt,jdbcType=TIMESTAMP}, #{po.content,jdbcType=LONGVARCHAR},#{po.uin}
+      #{po.msgId,jdbcType=BIGINT}, now(), #{po.content,jdbcType=LONGVARCHAR},#{po.uin}
       )
     </foreach>
     

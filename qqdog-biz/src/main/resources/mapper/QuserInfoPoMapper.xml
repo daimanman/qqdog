@@ -54,7 +54,7 @@
       #{career,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, #{hc,jdbcType=VARCHAR}, 
       #{hp,jdbcType=VARCHAR}, #{hco,jdbcType=VARCHAR}, #{marriage,jdbcType=VARCHAR}, 
       #{msgNum,jdbcType=INTEGER}, #{emotNum,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, 
-      #{photoNum,jdbcType=INTEGER}, #{imgNum,jdbcType=INTEGER}, #{createGmt,jdbcType=TIMESTAMP}, 
+      #{photoNum,jdbcType=INTEGER}, #{imgNum,jdbcType=INTEGER}, now(), 
       #{spacename,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, #{cco,jdbcType=VARCHAR}, 
       #{cp,jdbcType=VARCHAR}, #{cc,jdbcType=VARCHAR}, #{cb,jdbcType=VARCHAR},#{signature})
   </insert>

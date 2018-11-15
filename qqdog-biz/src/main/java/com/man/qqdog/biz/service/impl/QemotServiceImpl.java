@@ -115,10 +115,30 @@ public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
 		}
 		
 		logger.info("uid={} emotSize={} commentSize={} replySize={} picSize={} ",uid,qemotDatas.size(),commentDatas.size(),replyDatas.size(),picDatas.size());
-		insertQemotInfoBatch(qemotDatas);
+		try {
+			insertQemotInfoBatch(qemotDatas);
+		}catch(Exception e ) {
+			logger.info("Exception uid={}",uid);
+			e.printStackTrace();
+		}
+		try {
 		insertQemotCommentBatch(commentDatas);
-		insertBatchPicsByList(picDatas);
+		}catch(Exception e ) {
+			logger.info("Exception uid={}",uid);
+			logger.error("Error {} ",e);
+		}
+		try {
+			insertBatchPicsByList(picDatas);
+		}catch(Exception e ) {
+			logger.info("Exception uid={}",uid);
+			logger.error("Error {} ",e);
+		}
+		try {
 		insertBatchCommentReplyByList(replyDatas);
+		}catch(Exception e ) {
+			logger.info("Exception uid={}",uid);
+			logger.error("Error {} ",e);
+		}
 	}
 
 }

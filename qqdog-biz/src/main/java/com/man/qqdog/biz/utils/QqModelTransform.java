@@ -8,6 +8,8 @@ import com.man.qqdog.client.po.QemotInfoPo;
 import com.man.qqdog.client.po.QemotPicPo;
 import com.man.qqdog.client.po.QmsgInfoPo;
 import com.man.qqdog.client.po.QmsgInfoReplyPo;
+import com.man.qqdog.client.po.QphotoImgPo;
+import com.man.qqdog.client.po.QphotoInfoPo;
 import com.man.qqdog.client.po.QuserInfoPo;
 import com.man.utils.ObjectUtil;
 
@@ -149,6 +151,61 @@ public class QqModelTransform {
 		po.nick = ObjectUtil.getStr(data, "nick");
 		po.time = ObjectUtil.getStr(data, "time");
 		po.uin = ObjectUtil.getStr(data,"uin");
+		return po;
+	}
+	
+	public static QphotoInfoPo converPhotoInfo(Map<String,Object> data) {
+		QphotoInfoPo po = new QphotoInfoPo();
+		po.allowAccess = ObjectUtil.getStr(data,"allowAccess");
+		po.anonymity = ObjectUtil.getStr(data,"anonymity");
+		po.bitmap = ObjectUtil.getStr(data,"bitmap");
+		po.classid = ObjectUtil.getStr(data,"classid");
+		po.comment = ObjectUtil.getStr(data,"comment");
+		po.createtime = ObjectUtil.getStr(data,"createtime");
+		po.desc = ObjectUtil.getStr(data,"desc");
+		po.handset = ObjectUtil.getStr(data,"handset");
+		po.lastuploadtime = ObjectUtil.getStr(data,"lastuploadtime");
+		po.modifytime = ObjectUtil.getStr(data,"modifytime");
+		po.name = ObjectUtil.getStr(data,"name");
+		po.order = ObjectUtil.getStr(data,"order");
+		po.pre = ObjectUtil.getStr(data,"pre");
+		po.priv = ObjectUtil.getStr(data,"priv");
+		po.topicid = ObjectUtil.getStr(data,"id");
+		po.viewtype = ObjectUtil.getStr(data,"viewtype");
+		po.totalnum = ObjectUtil.getInt(data,"total");
+		po.getnum = 0;
+		return po;
+	}
+	
+	public static QphotoImgPo converPhotoImgPo(Map<String,Object> data) {
+		QphotoImgPo po = new QphotoImgPo();
+		po.batchid = ObjectUtil.getStr(data,"batchId");
+		po.browser = ObjectUtil.getStr(data,"browser");
+		po.cameratype = ObjectUtil.getStr(data,"cameratype");
+		po.cpFlag = ObjectUtil.getStr(data,"cp_flag");
+		po.cpX = ObjectUtil.getStr(data,"cp_x");
+		po.cpY = ObjectUtil.getStr(data,"cp_y");
+		po.desc = ObjectUtil.getStr(data,"desc");
+		po.forum = ObjectUtil.getStr(data,"forum");
+		po.frameno = ObjectUtil.getStr(data,"frameno");
+		po.height = ObjectUtil.getStr(data,"height");
+		po.isVideo = ObjectUtil.getStr(data,"is_video");
+		po.modifytime = ObjectUtil.getStr(data,"modifytime");
+		po.name = ObjectUtil.getStr(data,"name");
+		po.originUrl = ObjectUtil.getStr(data,"origin_url");
+		po.owner = ObjectUtil.getStr(data,"owner");
+		po.ownername = ObjectUtil.getStr(data,"ownername");
+		po.photocubage = ObjectUtil.getStr(data,"photocubage");
+		po.phototype = ObjectUtil.getStr(data,"phototype");
+		po.picrefer = ObjectUtil.getStr(data,"picrefer");
+		po.platformid = ObjectUtil.getStr(data,"platformId");
+		po.platformsubid = ObjectUtil.getStr(data,"platformSubId");
+		po.poiname = ObjectUtil.getStr(data,"poiName");
+		po.pre = ObjectUtil.getStr(data,"pre");
+		po.rawshoottime = ObjectUtil.getStr(data,"rawshoottime");
+		po.uploadtime = ObjectUtil.getStr(data,"uploadtime");
+		po.url = ObjectUtil.getStr(data,"url");
+		po.width = ObjectUtil.getStr(data, "width");
 		return po;
 	}
 }

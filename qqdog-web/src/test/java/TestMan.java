@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -14,6 +15,7 @@ import org.junit.Test;
 
 import com.alibaba.fastjson.JSON;
 import com.man.qqdog.biz.manager.QqManager;
+import com.man.qqdog.biz.manager.StartCrawlThread;
 import com.man.utils.ObjectUtil;
 import com.man.utils.YhHttpUtil;
 
@@ -138,6 +140,22 @@ public class TestMan {
 		String json = IOUtils.toString(new FileInputStream(new File("D:\\1.json")),"utf-8");
 		Map<String,Object> m = JSON.parseObject(json,Map.class);
 		System.out.println(ObjectUtil.getSize(m.get("msglist")));
+	}
+	
+	@Test
+	public void testNextUidThread() {
+		QqManager qqManager = new QqManager();
+		qqManager.startUid = 10187965;
+		for(int i = 0;i<10;i++) {
+			Thread t = new Thread(new StartCrawlThread(qqManager));
+			t.start();
+		}
+		
+		try {
+			Thread.sleep(1000*3);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	

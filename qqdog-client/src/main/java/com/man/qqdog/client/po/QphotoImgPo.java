@@ -58,8 +58,40 @@ public class QphotoImgPo {
     public String uid;
 
     public Date createGmt;
+    
+    
+    public String desc;
 
-    public Long getId() {
+    public String originUrl;
+
+    public String poiname;
+    
+    
+    public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	public String getOriginUrl() {
+		return originUrl;
+	}
+
+	public void setOriginUrl(String originUrl) {
+		this.originUrl = originUrl;
+	}
+
+	public String getPoiname() {
+		return poiname;
+	}
+
+	public void setPoiname(String poiname) {
+		this.poiname = poiname;
+	}
+
+	public Long getId() {
         return id;
     }
 
