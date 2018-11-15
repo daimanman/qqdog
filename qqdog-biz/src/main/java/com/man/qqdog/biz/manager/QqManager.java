@@ -856,7 +856,7 @@ public class QqManager {
 		}
 		
 		if(emotUidsList.size()  == 0 || msgUidsList.size() == 0 || photoUidsList.size() == 0) {
-			logger.info(" uids is over sleep 15min emotUidSize={},msgUidSize={} photoUidSize={}",emotUidsList.size(),msgUidsList.size(),photoUidsList.size());
+			logger.info("******************uids is over sleep 15min emotUidSize={},msgUidSize={} photoUidSize={}",emotUidsList.size(),msgUidsList.size(),photoUidsList.size());
 			try {
 				Thread.sleep(1000*60*15);
 				//重置msg emot photo uids

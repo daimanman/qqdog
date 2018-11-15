@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>   
  
-	<property name="LOG_PATH" value="D:/admin"/>
+	<property name="LOG_PATH" value="/home/admin"/>
     <!-- %m输出的信息,%p日志级别,%t线程名,%d日期,%c类的全名,%i索引【从数字0开始递增】,,, -->    
     <!-- appender是configuration的子节点，是负责写日志的组件。 -->
     <!-- ConsoleAppender：把日志输出到控制台 -->
@@ -27,7 +27,7 @@
             <maxHistory>30</maxHistory>   
             <timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">    
                 <!-- maxFileSize:这是活动文件的大小，默认值是10MB，测试时可改成1KB看效果 -->  
-                <maxFileSize>10MB</maxFileSize>    
+                <maxFileSize>20MB</maxFileSize>    
             </timeBasedFileNamingAndTriggeringPolicy>    
         </rollingPolicy>    
         <encoder>    
@@ -94,7 +94,7 @@
     <!-- 控制台输出日志级别 -->
     <!--  -->
     <root level="info">    
-        <appender-ref ref="STDOUT" />   
+         <appender-ref ref="STDOUT" />  
          <appender-ref ref="access" />     
     </root>    
     
@@ -107,7 +107,7 @@
     </logger>
     <logger name="removeUidLogger" additivity="false" level="info">
         <appender-ref ref="removeUidAppender"/>
-        <appender-ref ref="STDOUT" />  
+         <appender-ref ref="STDOUT" />   
     </logger>
        
 </configuration>
