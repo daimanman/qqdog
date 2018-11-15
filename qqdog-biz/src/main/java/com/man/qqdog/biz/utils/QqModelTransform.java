@@ -8,6 +8,8 @@ import com.man.qqdog.client.po.QemotInfoPo;
 import com.man.qqdog.client.po.QemotPicPo;
 import com.man.qqdog.client.po.QmsgInfoPo;
 import com.man.qqdog.client.po.QmsgInfoReplyPo;
+import com.man.qqdog.client.po.QphotoImgPo;
+import com.man.qqdog.client.po.QphotoInfoPo;
 import com.man.qqdog.client.po.QuserInfoPo;
 import com.man.utils.ObjectUtil;
 
@@ -46,54 +48,7 @@ public class QqModelTransform {
 	}
 	public static QemotInfoPo converQemotInfo(Map qqmap){
 		QemotInfoPo info = new QemotInfoPo();
-//		 #{qemotInfo.qemotInfoId},
-//	      #{qemotInfo.cmtnum}, 
-//	      #{qemotInfo.createTime}, 
-//	      #{qemotInfo.created_time}, 
-//	      #{qemotInfo.editMask}, 
-//	      #{qemotInfo.fwdnum}, 
-//	      #{qemotInfo.name},
-//	      #{qemotInfo.pictotal},
-//	      #{qemotInfo.right}, 
-//	      #{qemotInfo.rt_sum},
-//	      #{qemotInfo.secret},
-//	      #{qemotInfo.tid},
-//	      #{qemotInfo.ugc_right},
-//	      #{qemotInfo.uin},
-//	      #{qemotInfo.wbid}, 
-//	      #{qemotInfo.lbs.id},
-//	      #{qemotInfo.lbs.idname},
-//	      #{qemotInfo.lbs.name}, 
-//	      #{qemotInfo.lbs.pos_x},
-//	      #{qemotInfo.lbs.pos_y},
-//	      #{qemotInfo.source_name}, 
-//	      #{qemotInfo.content},
 		
-		
-//		 id,
-//	      cmtnum, 
-//	      createTime, 
-//	      created_time, 
-//	      editMask, 
-//	      fwdnum, 
-//	      name, 
-//	      pictotal, 
-//	      `right`, 
-//	      rt_sum, 
-//	      secret, 
-//	      tid, 
-//	      ugc_right, 
-//	      uid, 
-//	      wbid, 
-//	      lbs_id, 
-//	      lbs_idname,
-//	      lbs_name, 
-//	      lbs_pos_x, 
-//	      lbs_pos_y, 
-//	      source_name, 
-//	      content,
-	      
-	      
 		info.id = ObjectUtil.parseLong(qqmap.get("qemotInfoId"));
 		info.cmtnum = ObjectUtil.parseInteger(qqmap.get("cmtnum"));
 		info.createtime = ObjectUtil.toString(qqmap.get("createTime"));
@@ -127,31 +82,6 @@ public class QqModelTransform {
 	}
 	
 	public static QemotPicPo converQemotPic(Map picMap){
-//		 insert into qemot_pic (
-//			    	tid, 
-//			    	emot_id, 
-//			      	uid, 
-//			      	height, 
-//			      	width, 
-//			      	url1, 
-//			      	url2, 
-//			      	url3,
-//			      	create_gmt
-//			      	)
-//			    values 
-//			    <foreach collection="picList" item="item" index="index" separator="," >
-//			    ( 
-//			      #{item.tid}, 
-//			      #{item.qemotInfoId}, 
-//			      #{item.uin}, 
-//			      #{item.height},
-//			      #{item.width}, 
-//			      #{item.url1}, 
-//			      #{item.url2},
-//			      #{item.url3},
-//			      now()
-//			     )
-		
 		QemotPicPo pic = new QemotPicPo();
 		pic.tid = ObjectUtil.toString(picMap.get("tid"));
 		pic.emotId = ObjectUtil.parseLong(picMap.get("qemotInfoId"));
@@ -166,37 +96,6 @@ public class QqModelTransform {
 	}
 	
 	public static QemotCommentPo converQemotComment(Map commentMap){
-//		 insert into qemot_comment (
-//			      id,
-//			      emot_id, 
-//			      tid, 
-//			      uid,
-//			      muid,
-//			      mname, 
-//			      content, 
-//			      create_time2, 
-//			      create_time,
-//			      create_time1, 
-//			      reply_num,
-//			      create_gmt
-//			      )
-//			    values 
-//			    <foreach collection="commentList" item="comment" separator=",">
-//			    		 ( 
-//			    		  #{comment.emotCommentId},
-//					      #{comment.qemotInfoId}, 
-//					      #{comment.tid}, 
-//					      #{comment.qemotInfoUin}, 
-//					      #{comment.uin}, 
-//					      #{comment.name}, 
-//					      #{comment.content}, 
-//					      #{comment.createtime2},
-//					      #{comment.createTime}, 
-//					      #{comment.create_time},
-//					      #{comment.reply_num},
-//					      now()
-//			     		 )
-		
 		QemotCommentPo comment =  new QemotCommentPo();
 		comment.id = ObjectUtil.parseLong(commentMap.get("emotCommentId"));
 		comment.emotId = ObjectUtil.parseLong(commentMap.get("qemotInfoId"));
@@ -214,33 +113,7 @@ public class QqModelTransform {
 	}
 	
 	public static QemotCommentReplyPo converQemotCommentReply(Map replyMap){
-//		 insert into qemot_comment_reply (
-//			    	comment_id,
-//			    	uid, 
-//			      	content, 
-//			      	create_time0, 
-//			      	create_time2, 
-//			      	create_time3, 
-//			      	name, 
-//			      	source_name, 
-//			      	tid,
-//			      	create_gmt
-//			      	)
-//			    values 
-//			    <foreach collection="replyList" item="reply" index="index" separator=",">
-//			      (
-//			      #{reply.qemotCommentId},
-//			      #{reply.uin}, 
-//			      #{reply.content},
-//			      #{reply.create_time},
-//			      #{reply.createTime2}, 
-//			      #{reply.createTime},
-//			      #{reply.name},
-//			      #{reply.source_name}, 
-//			      #{reply.tid},
-//			      now()
-//			      )
-//			      </foreach>
+
 		QemotCommentReplyPo reply = new QemotCommentReplyPo();
 		reply.commentId = ObjectUtil.parseLong(replyMap.get("qemotCommentId"));
 		reply.uid = ObjectUtil.toString(replyMap.get("uin"));
@@ -279,6 +152,60 @@ public class QqModelTransform {
 		po.time = ObjectUtil.getStr(data, "time");
 		po.uin = ObjectUtil.getStr(data,"uin");
 		return po;
-		
+	}
+	
+	public static QphotoInfoPo converPhotoInfo(Map<String,Object> data) {
+		QphotoInfoPo po = new QphotoInfoPo();
+		po.allowAccess = ObjectUtil.getStr(data,"allowAccess");
+		po.anonymity = ObjectUtil.getStr(data,"anonymity");
+		po.bitmap = ObjectUtil.getStr(data,"bitmap");
+		po.classid = ObjectUtil.getStr(data,"classid");
+		po.comment = ObjectUtil.getStr(data,"comment");
+		po.createtime = ObjectUtil.getStr(data,"createtime");
+		po.desc = ObjectUtil.getStr(data,"desc");
+		po.handset = ObjectUtil.getStr(data,"handset");
+		po.lastuploadtime = ObjectUtil.getStr(data,"lastuploadtime");
+		po.modifytime = ObjectUtil.getStr(data,"modifytime");
+		po.name = ObjectUtil.getStr(data,"name");
+		po.order = ObjectUtil.getStr(data,"order");
+		po.pre = ObjectUtil.getStr(data,"pre");
+		po.priv = ObjectUtil.getStr(data,"priv");
+		po.topicid = ObjectUtil.getStr(data,"id");
+		po.viewtype = ObjectUtil.getStr(data,"viewtype");
+		po.totalnum = ObjectUtil.getInt(data,"total");
+		po.getnum = 0;
+		return po;
+	}
+	
+	public static QphotoImgPo converPhotoImgPo(Map<String,Object> data) {
+		QphotoImgPo po = new QphotoImgPo();
+		po.batchid = ObjectUtil.getStr(data,"batchId");
+		po.browser = ObjectUtil.getStr(data,"browser");
+		po.cameratype = ObjectUtil.getStr(data,"cameratype");
+		po.cpFlag = ObjectUtil.getStr(data,"cp_flag");
+		po.cpX = ObjectUtil.getStr(data,"cp_x");
+		po.cpY = ObjectUtil.getStr(data,"cp_y");
+		po.desc = ObjectUtil.getStr(data,"desc");
+		po.forum = ObjectUtil.getStr(data,"forum");
+		po.frameno = ObjectUtil.getStr(data,"frameno");
+		po.height = ObjectUtil.getStr(data,"height");
+		po.isVideo = ObjectUtil.getStr(data,"is_video");
+		po.modifytime = ObjectUtil.getStr(data,"modifytime");
+		po.name = ObjectUtil.getStr(data,"name");
+		po.originUrl = ObjectUtil.getStr(data,"origin_url");
+		po.owner = ObjectUtil.getStr(data,"owner");
+		po.ownername = ObjectUtil.getStr(data,"ownername");
+		po.photocubage = ObjectUtil.getStr(data,"photocubage");
+		po.phototype = ObjectUtil.getStr(data,"phototype");
+		po.picrefer = ObjectUtil.getStr(data,"picrefer");
+		po.platformid = ObjectUtil.getStr(data,"platformId");
+		po.platformsubid = ObjectUtil.getStr(data,"platformSubId");
+		po.poiname = ObjectUtil.getStr(data,"poiName");
+		po.pre = ObjectUtil.getStr(data,"pre");
+		po.rawshoottime = ObjectUtil.getStr(data,"rawshoottime");
+		po.uploadtime = ObjectUtil.getStr(data,"uploadtime");
+		po.url = ObjectUtil.getStr(data,"url");
+		po.width = ObjectUtil.getStr(data, "width");
+		return po;
 	}
 }

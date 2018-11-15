@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
 import com.man.qqdog.biz.manager.QqManager;
+import com.man.qqdog.biz.manager.StartCrawlThread;
 import com.man.qqdog.biz.mapper.QemotInfoPoMapper;
 import com.man.qqdog.biz.mapper.QuserInfoPoMapper;
 import com.man.qqdog.client.po.QemotInfoPo;
@@ -60,6 +61,7 @@ public class TestController extends BaseController {
 	@Autowired
 	private QuserInfoPoMapper userInfoMapper;
 
+	public int startFlag = 0;
 	@RequestMapping("/id")
 	public void id(HttpServletResponse response) throws IOException {
 		logger.info("info---DXMMM");
@@ -249,4 +251,96 @@ public class TestController extends BaseController {
 	public void getMaxUid(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		sendDefaultJson(response, userInfoMapper.getMaxUid());
 	}
+	
+	
+	@RequestMapping("/downEmot")
+	public void downEmot(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		long uid = params.getLong("uid");
+		if(uid > 0) {
+			qqManager.downAllEmot(uid);
+		}
+		sendDefaultJson(response, "ok");
+	}
+	@RequestMapping("/downMsg")
+	public void downMsg(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		long uid = params.getLong("uid");
+		if(uid > 0) {
+			qqManager.downAllMsg(uid);
+		}
+		sendDefaultJson(response, "ok");
+	}
+	
+	@RequestMapping("/downPhoto")
+	public void downPhoto(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		long uid = params.getLong("uid");
+		if(uid > 0) {
+			qqManager.downAllPhoto(uid);
+		}
+		sendDefaultJson(response, "ok");
+	}
+	
+	@RequestMapping("/downImg")
+	public void downImg(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		long uid = params.getLong("uid");
+		String topicId = params.getStr("topicId");
+		if(uid > 0) {
+			qqManager.downAllPhotoImg(topicId, uid,100);
+		}
+		sendDefaultJson(response, "ok");
+	}
+	
+	
+	@RequestMapping("/downQQ")
+	public void downQQ(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		long uid = params.getLong("uid");
+		long start = System.currentTimeMillis();
+		if(uid > 0) {
+			qqManager.downAllQqInfo(uid);
+		}
+		long end = System.currentTimeMillis();
+		ResultJson<String> result = new ResultJson<>();
+		result.data=(end-start)/1000 +"s";
+		sendDefaultJson(response,result);
+	}
+	
+	@RequestMapping("/startWork")
+	public void startWork(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		long maxUid = quserService.getMaxUid();
+		if(startFlag == 0) {
+			qqManager.initStartUid(maxUid);
+			startFlag  = 1;
+			int uidSize = qqManager.userInfoUidsList.size();
+			for(int i = 0;i<5;i++) {
+				Thread t = new Thread(new StartCrawlThread(qqManager));
+				t.start();
+			}
+		}
+		sendDefaultJson(response, "begin work maxUid="+maxUid);
+	}
+	
+	@RequestMapping("/")
+	public void showUid(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		Map<String,Object> map = new HashMap<>();
+		map.put("userSize",qqManager.userInfoUidsList.size());
+		map.put("msgSize",qqManager.msgUidsList.size());
+		map.put("emotSize",qqManager.emotUidsList.size());
+		map.put("photoSize",qqManager.photoUidsList.size());
+		
+		map.put("user",qqManager.userInfoUidsList);
+		map.put("msg",qqManager.msgUidsList);
+		map.put("emot",qqManager.emotUidsList);
+		map.put("photo",qqManager.photoUidsList);
+		
+		sendDefaultJson(response, map);
+		
+	}
+	
+	
+	
+	
 }

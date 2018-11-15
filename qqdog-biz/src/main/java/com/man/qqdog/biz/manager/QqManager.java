@@ -1,5 +1,6 @@
 package com.man.qqdog.biz.manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -17,11 +18,15 @@ import com.alibaba.fastjson.JSON;
 import com.man.constant.QcodeEnum;
 import com.man.qq.QqConfig;
 import com.man.qqdog.biz.utils.QqModelTransform;
+import com.man.qqdog.client.po.QphotoImgPo;
+import com.man.qqdog.client.po.QphotoInfoPo;
 import com.man.qqdog.client.po.QsessionInfoPo;
 import com.man.qqdog.client.po.QtaskInfoPo;
 import com.man.qqdog.client.po.QuserInfoPo;
 import com.man.qqdog.client.service.QUserService;
+import com.man.qqdog.client.service.QemotService;
 import com.man.qqdog.client.service.QmsgService;
+import com.man.qqdog.client.service.QphotoInfoService;
 import com.man.qqdog.client.service.QsessionService;
 import com.man.qqdog.client.service.QtaskInfoService;
 import com.man.utils.ObjectUtil;
@@ -41,6 +46,12 @@ public class QqManager {
 
 	@Autowired
 	private QmsgService qmsgService;
+
+	@Autowired
+	private QemotService qemotService;
+	
+	@Autowired
+	private QphotoInfoService qphotoInfoService;
 
 	public Map<String, QsessionInfoPo> sessionMap = new HashMap<>();
 
@@ -84,7 +95,7 @@ public class QqManager {
 	public Logger logger = LoggerFactory.getLogger(QqManager.class);
 
 	// uid 起始位置
-	private long startUid;
+	public long startUid;
 
 	private Set<Long> noVisitSet = new HashSet<>(100);
 
@@ -93,9 +104,9 @@ public class QqManager {
 	public void addNoVisit(long uid) {
 		synchronized (noVisitSetLock) {
 			noVisitSet.add(uid);
-			if (noVisitSet.size() >= 100) {
+			if (noVisitSet.size() >= 5) {
 				quserService.batchInsertUidsN(noVisitSet);
-				noVisitSet = new HashSet<>(100);
+				noVisitSet = new HashSet<>(5);
 			}
 		}
 	}
@@ -252,10 +263,30 @@ public class QqManager {
 		}
 	}
 
+	private void initList() {
+		userInfoUidsList = new LinkedList<>();
+		resetUids();
+	}
 	// 初始化
 	public void initSession() {
 		List<QsessionInfoPo> datas = qsessionService.getAllSession();
 		if (null != datas && datas.size() > 0) {
+			initList();
+			for (QsessionInfoPo data : datas) {
+				sessionMap.put(data.uid, data);
+				addUids(data.uid);
+			}
+		}
+	}
+	private void resetUids() {
+		emotUidsList = new LinkedList<>();
+		photoUidsList = new LinkedList<>();
+		msgUidsList = new LinkedList<>();
+	}
+	public void resetSession() {
+		List<QsessionInfoPo> datas = qsessionService.getAllSession();
+		if (null != datas && datas.size() > 0) {
+			resetUids();
 			for (QsessionInfoPo data : datas) {
 				sessionMap.put(data.uid, data);
 				addUids(data.uid);
@@ -337,11 +368,11 @@ public class QqManager {
 
 		String effectUid = getMsgUid();
 		QsessionInfoPo session = sessionMap.get(effectUid);
-		//logger.info("current uid is {}", effectUid);
+		// logger.info("current uid is {}", effectUid);
 		// 获取参数
 		Map<String, Object> originMap = session.paramsMap;
 		Map<String, Object> newParamMap = new HashMap<String, Object>();
-		//logger.info("parmas = {}", JSON.toJSONString(originMap));
+		// logger.info("parmas = {}", JSON.toJSONString(originMap));
 		newParamMap.put("g_tk", originMap.get("g_tk"));
 		newParamMap.put("qzonetoken", originMap.get("qzonetoken"));
 		newParamMap.put("format", "json");
@@ -463,16 +494,22 @@ public class QqManager {
 		Map<String, String> cookieMap = session.cookieMap;
 
 		String content = YhHttpUtil.sendHttpGetWithRetry(QqConfig.QQ_IMGINFO_URL, newParamMap, cookieMap);
-		Map<String, Object> contentMap = JSON.parseObject(content, Map.class);
-		Object code = contentMap.get("code");
-		Object subcode = contentMap.get("subcode");
-		String codeStr = code != null ? code.toString() : "";
-		String subcodeStr = subcode != null ? subcode.toString() : "";
-		String message = ObjectUtil.toString(contentMap.get("message"));
-		while (checkOffen(codeStr, subcodeStr, message) && (photoUidsList.size()) > 0) {
-			removePhotoUid(effectUid);
-			logger.info("【imgInfo " + effectUid + "】=" + content);
-			return crawlQzoneImgInfo(uid, pos, topicId);
+		Map<String, Object> contentMap = null;
+		try {
+			contentMap = JSON.parseObject(content, Map.class);
+			Object code = contentMap.get("code");
+			Object subcode = contentMap.get("subcode");
+			String codeStr = code != null ? code.toString() : "";
+			String subcodeStr = subcode != null ? subcode.toString() : "";
+			String message = ObjectUtil.toString(contentMap.get("message"));
+			while (checkOffen(codeStr, subcodeStr, message) && (photoUidsList.size()) > 0) {
+				removePhotoUid(effectUid);
+				logger.info("【imgInfo " + effectUid + "】=" + content);
+				return crawlQzoneImgInfo(uid, pos, topicId);
+			}
+		}catch(Exception e) {
+			logger.error(" crawl  img err {} ",e);
+			return null;
 		}
 		return contentMap;
 	}
@@ -494,7 +531,7 @@ public class QqManager {
 		newParamMap.put("qzonetoken", originMap.get("qzonetoken"));
 		newParamMap.put("format", "json");
 		newParamMap.put("pos", pos);
-		newParamMap.put("num", QqConfig.DEFAULT_NUM);
+		newParamMap.put("num", QqConfig.DEFAULT_EMOT_NUM);
 		newParamMap.put("code_version", QqConfig.CODE_VERSION);
 		newParamMap.put("replynum", QqConfig.REPLYNUM);
 		newParamMap.put("ftype", 0);
@@ -603,6 +640,186 @@ public class QqManager {
 		return resp;
 	}
 
+	public int downAllMsg(long uid) {
+		QtaskInfoPo taskInfo = new QtaskInfoPo();
+		taskInfo.uid = uid;
+		taskInfo.msgStart = 0;
+		int msgTotalNum = 0;
+		qtaskService.insertQtaskInfo(taskInfo);
+		// msg start
+		Map<String, Object> firstMsgMap = crawlQzoneMsgInfoContent(uid + "", 0);
+		if (firstMsgMap != null) {
+			Map<String, Object> dataMap = ObjectUtil.castMapObj(firstMsgMap.get("data"));
+			// 总记录数
+			msgTotalNum = ObjectUtil.getInt(dataMap, "total");
+			// 计算页数
+			int msgPageNum = (msgTotalNum + QqConfig.DEFAULT_MSG_NUM - 1) / QqConfig.DEFAULT_MSG_NUM;
+			logger.info("msg uid={} total={} totalPage={} pos={} msgUidSize={}", uid, msgTotalNum, msgPageNum, 0,
+					msgUidsList.size());
+			// 存储第一页
+			qmsgService.saveMsgList(dataMap, uid);
+			taskInfo.msgStart = 1;
+			taskInfo.msgTotal = msgTotalNum;
+			taskInfo.msgGet = 1;
+			taskInfo.msgPage = msgPageNum;
+			if (msgPageNum > 1) {
+				int startPos = QqConfig.DEFAULT_MSG_NUM;
+				for (int startPage = 2; startPage <= msgPageNum; startPage++) {
+					startPos = (startPage - 1) * QqConfig.DEFAULT_MSG_NUM;
+					firstMsgMap = crawlQzoneMsgInfoContent(uid + "", startPos);
+					if (firstMsgMap != null) {
+						dataMap = ObjectUtil.castMapObj(firstMsgMap.get("data"));
+						qmsgService.saveMsgList(dataMap, uid);
+						taskInfo.msgGet = startPage;
+						logger.info("msg uid={} total={} totalPage={} pos={} msgUidSize={}", uid, msgTotalNum,
+								msgPageNum, startPos, msgUidsList.size());
+					}
+				}
+			}
+		}
+		qtaskService.updateByPrimaryKeySelective(taskInfo);
+		// msg end
+		return msgTotalNum;
+
+	}
+
+	public void downAllEmot(long uid) {
+		QtaskInfoPo taskInfo = new QtaskInfoPo();
+		taskInfo.uid = uid;
+		taskInfo.emotStart = 0;
+		qtaskService.insertQtaskInfo(taskInfo);
+		// emot start
+		Map<String, Object> firstEmotMap = crwalQzoneEmotInfoContent(uid + "", 0);
+		if (firstEmotMap != null) {
+			qemotService.saveEmotInfoMap(firstEmotMap, uid);
+			int emotTotalNum = ObjectUtil.getInt(firstEmotMap, "total");
+			int emotPageNum = (emotTotalNum + QqConfig.DEFAULT_EMOT_REAL_NUM - 1) / QqConfig.DEFAULT_EMOT_REAL_NUM;
+			int emotStartPos = QqConfig.DEFAULT_EMOT_REAL_NUM;
+			logger.info("emot uid={} total={} totalPage={} pos={} emotUidSize={}", uid, emotTotalNum, emotPageNum, 0,
+					emotUidsList.size());
+			taskInfo.emotStart = 1;
+			taskInfo.emotTotal = emotTotalNum;
+			taskInfo.emotGet = 1;
+			taskInfo.emotPage = emotPageNum;
+			for (int startPage = 2; startPage <= emotPageNum; startPage++) {
+				emotStartPos = (startPage - 1) * QqConfig.DEFAULT_EMOT_REAL_NUM;
+				firstEmotMap = crwalQzoneEmotInfoContent(uid + "", emotStartPos);
+				if (null != firstEmotMap) {
+					logger.info("emot uid={} total={} totalPage={} pos={} emotUidSize={}", uid, emotTotalNum,
+							emotPageNum, emotStartPos, emotUidsList.size());
+					qemotService.saveEmotInfoMap(firstEmotMap, uid);
+					taskInfo.emotGet = startPage;
+				}
+			}
+		}
+		qtaskService.updateByPrimaryKeySelective(taskInfo);
+		// emot end
+	}
+	public List<Map<String,Object>> parsePhotos(Map<String,Object> photoDataMap,long uid){
+		List<Map<String,Object>> photoList = new ArrayList<>();
+		List<Map<String,Object>> albumListModeSortList = ObjectUtil.castListObj(photoDataMap.get("albumListModeSort"));
+		if (ObjectUtil.getSize(albumListModeSortList) > 0) {
+			photoList.addAll(albumListModeSortList);
+		}
+		List<Map<String,Object>> albumListModeClassList = ObjectUtil.castListObj(photoDataMap.get("albumListModeClass"));
+		if (ObjectUtil.getSize(albumListModeClassList) > 0) {
+			for (Object obj : albumListModeClassList) {
+				Map photoMap = ObjectUtil.castMapObj(obj);
+				List pList = ObjectUtil.castListObj(photoMap.get("albumList"));
+				logger.info("uid={} albumListModeClass===>albumList size {} ",uid,ObjectUtil.getSize(pList));
+				if (ObjectUtil.getSize(pList) > 0) {
+					photoList.addAll(pList);
+				}
+			}
+		}
+		return photoList;
+	}
+	public void downAllPhoto(long uid) {
+		QtaskInfoPo taskInfo = new QtaskInfoPo();
+		taskInfo.uid = uid;
+		taskInfo.photoStart = 0;
+		qtaskService.insertQtaskInfo(taskInfo);
+		Map<String,Object> photoFirstMap = crawlQzonePhotoInfo(uid+"");
+		if(null == photoFirstMap) {
+			logger.error("photoUidsSize={} get photo is null maybe photoUids is null option too offen {} ",photoUidsList.size(),uid);
+			return;
+		}
+		Map<String,Object> photoDataMap = ObjectUtil.castMapObj(photoFirstMap.get("data"));
+		List<Map<String,Object>> photoList = parsePhotos(photoDataMap, uid);
+		int photoSize = ObjectUtil.getSize(photoList);
+		logger.info("uid={} photoSize={} photoUidSize={} ",uid,photoSize,photoUidsList.size());
+		
+		List<QphotoInfoPo> photoPoList = new ArrayList<>(photoSize);
+		for(Map<String,Object> photoMap:photoList) {
+			QphotoInfoPo po = QqModelTransform.converPhotoInfo(photoMap);
+			po.uid = uid+"";
+			po.id = qphotoInfoService.getId();
+			photoPoList.add(po);
+		}
+		//insert batch
+		qphotoInfoService.addPhotoBatch(photoPoList);
+		
+		QphotoInfoPo updatePo = new QphotoInfoPo();
+		
+		//down all img
+		for(QphotoInfoPo photo:photoPoList) {
+			if(QqConfig.ALLOW_ACCESS.equals(photo.allowAccess)) {
+				int getNum = downAllPhotoImg(photo.topicid, uid,photo.id);
+				updatePo.id = photo.id;
+				updatePo.getnum = getNum;
+				qphotoInfoService.updatePhotoSelective(updatePo);
+			}
+		}
+	}
+	
+	//down all img of photo
+	public int downAllPhotoImg(String topicId,long uid,long photoId) {
+		Map<String,Object> imgFirstResultMap = crawlQzoneImgInfo(uid+"",0, topicId);
+		if(null == imgFirstResultMap) {
+			return 0;
+		}
+		Map<String,Object> dataMap  = ObjectUtil.castMapObj(imgFirstResultMap.get("data"));
+		int imgTotalNum = ObjectUtil.getInt(dataMap, "totalInAlbum");
+		if(imgTotalNum == 0) {
+			return 0;
+		}
+		int getNumTotal = 0;
+		List<Map<String,Object>> photoMapList = ObjectUtil.castListObj(dataMap.get("photoList"));
+		int imgSize =  ObjectUtil.getSize(photoMapList);
+		getNumTotal += imgSize;
+		List<QphotoImgPo> imgPoList = new ArrayList<>(imgSize);
+		for(Map<String,Object> imgMap:photoMapList) {
+			QphotoImgPo imgPo = QqModelTransform.converPhotoImgPo(imgMap);
+			imgPo.id = qphotoInfoService.getId();
+			imgPo.photoId = photoId;
+			imgPo.uid=uid+"";
+			imgPoList.add(imgPo);
+		}
+		logger.info("uid={} totalNum={} getNum={} photoUidSize={}",uid,imgTotalNum,getNumTotal,photoUidsList.size());
+		int totalPage = (imgTotalNum+QqConfig.DEFAULT_IMG_NUM-1)/QqConfig.DEFAULT_IMG_NUM;
+		int pos = 0;
+		for(int startPage=2;startPage <= totalPage;startPage++) {
+			pos = (startPage-1)*QqConfig.DEFAULT_IMG_NUM;
+			imgFirstResultMap = crawlQzoneImgInfo(uid+"",pos, topicId);
+			if(imgFirstResultMap == null) {
+				break;
+			}
+			photoMapList = ObjectUtil.castListObj(dataMap.get("photoList"));
+			imgSize =  ObjectUtil.getSize(photoMapList);
+			getNumTotal += imgSize;
+			for(Map<String,Object> imgMap:photoMapList) {
+				QphotoImgPo imgPo = QqModelTransform.converPhotoImgPo(imgMap);
+				imgPo.id = qphotoInfoService.getId();
+				imgPo.photoId = photoId;
+				imgPo.uid=uid+"";
+				imgPoList.add(imgPo);
+			}
+			logger.info("uid={} totalNum={} getNum={} photoUidSize={}",uid,imgTotalNum,getNumTotal,photoUidsList.size());
+		}
+		qphotoInfoService.addPhotoImgBatch(imgPoList);
+		return  getNumTotal;
+	}
+
 	// get all info of uid include msg,baseinfo ,emot,photo
 	public void downAllQqInfo(long uid) {
 
@@ -620,6 +837,7 @@ public class QqManager {
 		if (!"0".equals(codeStr) && ncode.equals(codeStr)) {
 			// get baseinfo is error
 			addNoVisit(uid);
+			logger.info("uid={} is not visit ",uid);
 			return;
 		}
 
@@ -635,46 +853,26 @@ public class QqManager {
 			quserInfoPo.uid = uid;
 			quserService.addQuserInfo(quserInfoPo);
 			qtaskService.insertQtaskInfo(taskInfo);
-
 		}
-
-		// msg start
-		Map<String, Object> firstMsgMap = crawlQzoneMsgInfoContent(uid + "", 0);
-		if (firstMsgMap != null) {
-			Map<String, Object> dataMap = ObjectUtil.castMapObj(firstMsgMap.get("data"));
-			// 总记录数
-			int totalNum = ObjectUtil.getInt(dataMap, "total");
-			// 计算页数
-			int pageNum = (totalNum + QqConfig.DEFAULT_MSG_NUM - 1) / QqConfig.DEFAULT_MSG_NUM;
-			logger.info("uid={} total={} totalPage={} pos={} msgUidSize={}",uid,totalNum,pageNum,0,msgUidsList.size());
-			// 存储第一页
-			qmsgService.saveMsgList(dataMap,uid);
-			taskInfo.msgStart = 1;
-			taskInfo.msgTotal = totalNum;
-			taskInfo.msgGet = 1;
-			taskInfo.msgPage = pageNum;
-			if (pageNum > 1) {
-				int startPos = QqConfig.DEFAULT_MSG_NUM;
-				for (int startPage = 2; startPage <= pageNum; startPage++) {
-					startPos = (startPage - 1) * QqConfig.DEFAULT_MSG_NUM;
-					firstMsgMap = crawlQzoneMsgInfoContent(uid + "", startPos);
-					if (firstMsgMap != null) {
-						dataMap = ObjectUtil.castMapObj(firstMsgMap.get("data"));
-						qmsgService.saveMsgList(dataMap,uid);
-						taskInfo.msgGet = startPage;
-						logger.info("uid={} total={} totalPage={} pos={} msgUidSize={}",uid,totalNum,pageNum,startPos,msgUidsList.size());
-					}
-				}
+		
+		if(emotUidsList.size()  == 0 || msgUidsList.size() == 0 || photoUidsList.size() == 0) {
+			logger.info(" uids is over sleep 15min emotUidSize={},msgUidSize={} photoUidSize={}",emotUidsList.size(),msgUidsList.size(),photoUidsList.size());
+			try {
+				Thread.sleep(1000*60*15);
+				//重置msg emot photo uids
+				resetSession();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
-		qtaskService.updateByPrimaryKeySelective(taskInfo);
-		//msg end
-		
-		
-		//emot start
-		Map<String,Object> firstEmotMap = crwalQzoneEmotInfoContent(uid+"",0);
-		if(firstEmotMap != null) {
-			
+		if(msgUidsList.size() > 0) {
+			downAllMsg(uid);
+		}
+		if(emotUidsList.size() > 0) {
+			downAllEmot(uid);
+		}
+		if(photoUidsList.size() > 0) {
+			downAllPhoto(uid);
 		}
 		
 	}

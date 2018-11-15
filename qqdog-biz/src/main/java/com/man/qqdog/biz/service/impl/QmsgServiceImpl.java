@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class QmsgServiceImpl extends BaseServiceImpl implements QmsgService {
 
 	@Autowired
 	private QmsgInfoPoMapper msgInfoMapper;
+	Logger logger = LoggerFactory.getLogger(QmsgServiceImpl.class);
 	
 	@Override
 	public int insertQmsgBatch(List<QmsgInfoPo> list) {
@@ -67,8 +70,16 @@ public class QmsgServiceImpl extends BaseServiceImpl implements QmsgService {
 					replyDatas.add(replyPo);
 				}
 			}
+			try {
 			insertQmsgBatch(msgDatas);
+			}catch(Exception e) {
+				logger.error("insertQmsgBatch Error {} {} ",uid,e);
+			}
+			try {
 			insertMsgReplyBatch(replyDatas);
+			}catch(Exception e) {
+				logger.error("insertQmsgBatch Error {} {} ",uid,e);
+			}
 		}
 		return 0;
 	}

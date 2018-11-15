@@ -64,6 +64,15 @@
 		
 		<table tableName="qtask_info" domainObjectName="QtaskInfoPo">
 		</table>
+		
+		<table tableName="qtask_info" domainObjectName="QtaskInfoPo">
+		</table>
+		
+		<table tableName="qphoto_info" domainObjectName="QphotoInfoPo">
+		</table>
+		
+		<table tableName="qphoto_img" domainObjectName="QphotoImgPo">
+		</table>
 
 
 
