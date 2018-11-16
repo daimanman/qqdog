@@ -8,13 +8,14 @@
     <result column="cookie" property="cookie" jdbcType="LONGVARCHAR" />
     <result column="params" property="params" jdbcType="LONGVARCHAR" />
     <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="msg" property="msg" jdbcType="VARCHAR" />
   </resultMap>
   
   <insert id="addQsessionInfo" parameterType="com.man.qqdog.client.po.QsessionInfoPo" >
     insert into qsession_info (uid, create_date, cookie, 
-      params,flag,update_date)
+      params,flag,update_date,msg)
     values (#{uid,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{cookie,jdbcType=LONGVARCHAR}, 
-      #{params,jdbcType=LONGVARCHAR},#{flag},#{updateDate})
+      #{params,jdbcType=LONGVARCHAR},#{flag},#{updateDate},#{msg})
   </insert>
   
   <delete id="deleteByUid" parameterType="string">
@@ -22,19 +23,19 @@
   </delete>  
   
   <select id="getSessions" resultMap="BaseResultMap" parameterType="string">
-  		select a.* from qsession_info a where a.flag = 0
+  		select a.* from qsession_info a where a.flag <![CDATA[ >= ]]> 0
   			<if test="uid != null and uid != '' ">
   				and a.uid = #{uid}
   			</if>
   </select>
-  <update id="updateSessionInfo" parameterType="com.man.qqdog.client.po.QsessionInfoPo" >
+  <update id="updateSessionInfoSelective" parameterType="com.man.qqdog.client.po.QsessionInfoPo" >
     update qsession_info
     <set >
       <if test="createDate != null" >
         create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="upateDate != null" >
-        upate_date = #{upateDate,jdbcType=TIMESTAMP},
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
       <if test="flag != null" >
         flag = #{flag,jdbcType=INTEGER},
@@ -44,6 +45,9 @@
       </if>
       <if test="params != null" >
         params = #{params,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="msg != null ">
+      	msg = #{msg},
       </if>
     </set>
     where uid = #{uid,jdbcType=VARCHAR}

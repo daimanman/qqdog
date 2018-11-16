@@ -1,6 +1,7 @@
 package com.man.qqdog.biz.manager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -95,6 +96,9 @@ public class QqManager {
 	public Logger logger = LoggerFactory.getLogger(QqManager.class);
 	
 	public Logger okLogger = LoggerFactory.getLogger("okUidLogger");
+	
+	//标记 effectUid 访问 QQ 时获取内容为空时的计数
+	public ConcurrentHashMap<String,Integer> resultBlankMap = new ConcurrentHashMap<>();
 
 	// uid 起始位置
 	public long startUid;
@@ -102,6 +106,8 @@ public class QqManager {
 	private Set<Long> noVisitSet = new HashSet<>(100);
 
 	private ConcurrentHashMap<String, Object> noVisitSetLock = new ConcurrentHashMap<>();
+	
+	private int MAX_BLANK_TRY = 3;
 
 	public void addNoVisit(long uid) {
 		synchronized (noVisitSetLock) {
@@ -171,7 +177,8 @@ public class QqManager {
 		}
 	}
 
-	public void removeEmotUid(String uid) {
+	public void removeEmotUid(String uid,String content) {
+		dealEffectUid(uid, content);
 		synchronized (emotLock) {
 			if (emotUidsList.size() > 0) {
 				emotUidsList.remove(uid);
@@ -212,7 +219,8 @@ public class QqManager {
 		}
 	}
 
-	public void removeMsgUid(String uid) {
+	public void removeMsgUid(String uid,String content) {
+		dealEffectUid(uid, content);
 		synchronized (msgLock) {
 			if (msgUidsList.size() > 0) {
 				msgUidsList.remove(uid);
@@ -235,7 +243,39 @@ public class QqManager {
 		}
 	}
 
-	public void removePhotoUid(String uid) {
+	public void removeAllUids(String uid) {
+		if(userInfoUidsList.size() > 0) {
+			userInfoUidsList.remove(uid);
+		}
+		if(emotUidsList.size() > 0) {
+			emotUidsList.remove(uid);
+		}
+		if(photoUidsList.size() > 0) {
+			photoUidsList.remove(uid);
+		}
+		if(msgUidsList.size() > 0) {
+			msgUidsList.remove(uid);
+		}
+		
+	}
+	private void dealEffectUid(String effectUid,String content) {
+		if(content == null || "".equals(content.trim())) {
+			return;
+		}
+		
+		if(content.indexOf("登录") > 0) {
+			removeAllUids(effectUid);
+			logger.error("effectUid = {} content = {}",effectUid,content);
+			QsessionInfoPo po = new QsessionInfoPo();
+			po.flag = -1;
+			po.updateDate = new Date();
+			po.msg = content;
+			po.uid = effectUid;
+			qsessionService.updateQsessionInfo(po);
+		}
+	}
+	public void removePhotoUid(String uid,String content) {
+		dealEffectUid(uid, content);
 		synchronized (photoLock) {
 			if (photoUidsList.size() > 0) {
 				photoUidsList.remove(uid);
@@ -295,6 +335,17 @@ public class QqManager {
 			}
 		}
 	}
+	
+	public int checkRemove(String effectUid) {
+		Integer num = resultBlankMap.get(effectUid);
+		int blankNum = num == null ? 1 : num+1;
+		resultBlankMap.put(effectUid,blankNum);
+		return blankNum;
+	}
+	public void clearRemove(String effectUid) {
+		resultBlankMap.put(effectUid,0);
+	}
+	
 
 	public boolean checkOffen(String codeStr, String subcodeStr, String message) {
 		return ((QcodeEnum.QOFEN_P.code + "").equals(codeStr) && subcodeStr.equals(QcodeEnum.QOFEN_P.subcode + ""))
@@ -304,16 +355,12 @@ public class QqManager {
 				);
 	}
 
-	public void removeUids(String uid) {
-		// this.uids.remove(uid);
-		// this.photoUids.remove(uid);
-		// this.emotUids.remove(uid);
-		// this.msgUids.remove(uid);
-
+	public void removeUids(String uid,String content) {
+		dealEffectUid(uid, content);
 		removeUserInfoUid(uid);
-		removeEmotUid(uid);
-		removePhotoUid(uid);
-		removeMsgUid(uid);
+		removeEmotUid(uid,"");
+		removePhotoUid(uid,"");
+		removeMsgUid(uid,"");
 	}
 
 	public Map<String, Object> crawlQzoneBaseInfoContent(String uid) {
@@ -349,16 +396,20 @@ public class QqManager {
 			contentMap.put("checkFlag", checkFlag);
 			while (checkFlag && (userInfoUidsList.size()) > 0) {
 				logger.info("【basinfo " + effectUid + "】=" + content);
-				removeUids(effectUid);
+				removeUids(effectUid,content);
 				return crawlQzoneBaseInfoContent(uid);
 			}
-			return contentMap;
 		} catch (Exception e) {
 			//removeUids(effectUid);
-			logger.error("effectUid={} targetUid={} content= {} ",effectUid,uid,content);
+			int num = checkRemove(effectUid);
+			if(num >= MAX_BLANK_TRY) {
+				removeUids(effectUid,"");
+			}
+			logger.error("effectUid={} targetUid={} content= 【{}】 blankNum={} ",effectUid,uid,content,num);
 			logger.error("err exception ",e);
-			//return crawlQzoneBaseInfoContent(uid);
+			return crawlQzoneBaseInfoContent(uid);
 		}
+		clearRemove(effectUid);
 		return contentMap;
 	}
 
@@ -401,16 +452,20 @@ public class QqManager {
 			String subcodeStr = subcode != null ? subcode.toString() : "";
 			String message = ObjectUtil.toString(contentMap.get("message"));
 			while (checkOffen(codeStr, subcodeStr, message) && (msgUidsList.size()) > 0) {
-				removeMsgUid(effectUid);
+				removeMsgUid(effectUid,content);
 				logger.info("【msgInfo " + effectUid + "】=" + content);
 				return crawlQzoneMsgInfoContent(uid, pos);
 			}
 		}catch(Exception e) {
-			removeMsgUid(effectUid);
-			logger.error("effectUid={} targetUid={} msg content {} ",effectUid,uid,content);
+			int num = checkRemove(effectUid);
+			if(num >= MAX_BLANK_TRY) {
+				removeMsgUid(effectUid,"");
+			}
+			logger.error("effectUid={} targetUid={} msg content 【{}】 blankNum={}",effectUid,uid,content,num);
 			logger.error("msg exception ",e);
 			return crawlQzoneMsgInfoContent(uid, pos);
 		}
+		clearRemove(effectUid);
 		return contentMap;
 	}
 
@@ -460,15 +515,19 @@ public class QqManager {
 			contentMap.put("checkFlag", checkFlag);
 			while (checkFlag && (photoUidsList.size()) > 0) {
 				logger.info("【photoInfo " + effectUid + "】=" + content);
-				removePhotoUid(effectUid);
+				removePhotoUid(effectUid,content);
 				return crawlQzonePhotoInfo(uid);
 			}
 		}catch(Exception e) {
-			removePhotoUid(effectUid);
-			logger.error("effectUid={} targetUid={} photo content {}",effectUid,uid,content);
+			int num = checkRemove(effectUid);
+			if(num >= MAX_BLANK_TRY) {
+				removePhotoUid(effectUid,"");
+			}
+			logger.error("effectUid={} targetUid={} photo content 【{}】 blanNum={} ",effectUid,uid,content,num);
 			logger.error("photo error ",e);
 			return crawlQzonePhotoInfo(uid);
 		}
+		clearRemove(effectUid);
 		return contentMap;
 	}
 
@@ -521,16 +580,20 @@ public class QqManager {
 			String subcodeStr = subcode != null ? subcode.toString() : "";
 			String message = ObjectUtil.toString(contentMap.get("message"));
 			while (checkOffen(codeStr, subcodeStr, message) && (photoUidsList.size()) > 0) {
-				removePhotoUid(effectUid);
+				removePhotoUid(effectUid,content);
 				logger.info("【imgInfo " + effectUid + "】=" + content);
 				return crawlQzoneImgInfo(uid, pos, topicId);
 			}
 		}catch(Exception e) {
-			removePhotoUid(effectUid);
-			logger.error("effectUid={} targetUid={} topicId={} img error content {}",effectUid,uid,topicId,content);
+			int num = checkRemove(effectUid);
+			if(num >= MAX_BLANK_TRY) {
+				removePhotoUid(effectUid,"");
+			}
+			logger.error("effectUid={} targetUid={} topicId={} img error content 【{}】 blankNum={}",effectUid,uid,topicId,content,num);
 			logger.error(" img error ",e);
 			return crawlQzoneImgInfo(uid, pos, topicId);
 		}
+		clearRemove(effectUid);
 		return contentMap;
 	}
 
@@ -573,15 +636,19 @@ public class QqManager {
 			String message = ObjectUtil.toString(contentMap.get("message"));
 			while (checkOffen(codeStr, subcodeStr, message) && (emotUidsList.size()) > 0) {
 				logger.info("【emotInfo " + effectUid + "】=" + content);
-				removeEmotUid(effectUid);
+				removeEmotUid(effectUid,content);
 				return crwalQzoneEmotInfoContent(uid, pos);
 			}
 		}catch(Exception e) {
-			removeEmotUid(effectUid);
-			logger.error("effectUid={} targetUid={} emot content {} ",effectUid,uid,content);
+			int num = checkRemove(effectUid);
+			if(num >= MAX_BLANK_TRY) {
+				removeEmotUid(effectUid,"");
+			}
+			logger.error("effectUid={} targetUid={} emot content 【{}】 blankNum={} ",effectUid,uid,content,num);
 			logger.error("emot error ",e);
 			return crwalQzoneEmotInfoContent(uid, pos);
 		}
+		clearRemove(effectUid);
 		return contentMap;
 	}
 

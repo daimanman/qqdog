@@ -17,7 +17,17 @@ public class QsessionInfoPo implements java.io.Serializable {
     
     public int flag;
     
-    public Date updateDate;
+    public String msg;
+    
+    public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+	public Date updateDate;
     
     
     public int getFlag() {
