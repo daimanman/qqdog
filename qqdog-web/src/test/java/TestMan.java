@@ -157,6 +157,19 @@ public class TestMan {
 			e.printStackTrace();
 		}
 	}
-	
+	@Test
+	public void testGroups() throws IOException {
+		String url = "https://qun.qq.com/cgi-bin/qun_mgr/search_group_members";
+		Map<String,String> headers = getHeader();
+		Map<String,Object> map = new HashMap<>();
+		//map.put("gc","648995561");
+		map.put("gc","2635913");
+		map.put("bkn", "1785406182");
+		map.put("st","21");
+		map.put("end","41");
+		map.put("sort","0");
+		String content = YhHttpUtil.sendHttpPost(url, map, headers);
+		System.out.println(content);
+	}
 	
 }

@@ -63,6 +63,8 @@ public class TestController extends BaseController {
 	@Autowired
 	private QuserInfoPoMapper userInfoMapper;
 
+	public Logger okLogger = LoggerFactory.getLogger("okUidLogger");
+	
 	public int startFlag = 0;
 	@RequestMapping("/id")
 	public void id(HttpServletResponse response) throws IOException {
@@ -73,6 +75,8 @@ public class TestController extends BaseController {
 		long id = quserService.getId();
 		qqLogger.info("id====={}", id);
 		removeUidLogger.info("remove uid {} ", id);
+		okLogger.info("ok uid {} ",id);
+		qqManager.testException();
 		System.out.println(qqLogger.getName());
 		sendJson(response, id);
 	}
@@ -347,6 +351,12 @@ public class TestController extends BaseController {
 	public void setSession(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		qqManager.initSession();
 		sendDefaultJson(response,"ok");
+	}
+	
+	@RequestMapping("/zt")
+	public void zanTing(HttpServletResponse response) throws IOException {
+		StartCrawlThread.zanTing = 1;
+		sendDefaultJson(response, "ok");
 	}
 	
 	

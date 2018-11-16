@@ -9,16 +9,21 @@ public class StartCrawlThread implements Runnable {
 	
 	Logger logger = LoggerFactory.getLogger(StartCrawlThread.class);
 	
+	public static int zanTing = 0;
+	
 	public StartCrawlThread(QqManager qqManager) {
 		this.qqManager = qqManager;
 	}
 	@Override
 	public void run() {
 		if(qqManager != null && qqManager.startUid > 0) {
-			while( qqManager.userInfoUidsList.size() > 0 ) {
+			while( qqManager.userInfoUidsList.size() > 0  && (zanTing==0)) {
 				long nextUid = qqManager.getNextUid();
 				logger.info("Thread-Name {} #start down uid={} #",Thread.currentThread().getName(),nextUid);
 				qqManager.downAllQqInfo(nextUid);
+				if(zanTing == 1) {
+					logger.error("{} ************** zanTing ****************",Thread.currentThread().getName());
+				}
 			}
 		}
 	}

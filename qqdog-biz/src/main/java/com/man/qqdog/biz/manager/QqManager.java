@@ -93,6 +93,8 @@ public class QqManager {
 	public Logger removeLogger = LoggerFactory.getLogger("removeUidLogger");
 
 	public Logger logger = LoggerFactory.getLogger(QqManager.class);
+	
+	public Logger okLogger = LoggerFactory.getLogger("okUidLogger");
 
 	// uid 起始位置
 	public long startUid;
@@ -334,8 +336,9 @@ public class QqManager {
 		Map<String, String> cookieMap = sessionInfo.cookieMap;
 
 		String content = YhHttpUtil.sendHttpGetWithRetry(QqConfig.QQ_BASEINFO_URL, newParamMap, cookieMap);
+		Map contentMap = null;
 		try {
-			Map contentMap = JSON.parseObject(content, Map.class);
+			 contentMap = JSON.parseObject(content, Map.class);
 			Object code = contentMap.get("code");
 			Object subcode = contentMap.get("subcode");
 			String codeStr = code != null ? code.toString() : "";
@@ -351,12 +354,12 @@ public class QqManager {
 			}
 			return contentMap;
 		} catch (Exception e) {
-			Map eMap = new HashMap();
-			eMap.put("gateWay", true);
-			e.printStackTrace();
-			logger.info("basinfo------{}", content);
-			return eMap;
+			//removeUids(effectUid);
+			logger.error("effectUid={} targetUid={} content= {} ",effectUid,uid,content);
+			logger.error("err exception ",e);
+			//return crawlQzoneBaseInfoContent(uid);
 		}
+		return contentMap;
 	}
 
 	// get msg
@@ -388,17 +391,24 @@ public class QqManager {
 
 		// 获取会话信息
 		Map<String, String> cookieMap = session.cookieMap;
-
+		Map<String, Object> contentMap = null;
 		String content = YhHttpUtil.sendHttpGetWithRetry(QqConfig.QQ_MSGINFO_URL, newParamMap, cookieMap);
-		Map<String, Object> contentMap = JSON.parseObject(content, Map.class);
-		Object code = contentMap.get("code");
-		Object subcode = contentMap.get("subcode");
-		String codeStr = code != null ? code.toString() : "";
-		String subcodeStr = subcode != null ? subcode.toString() : "";
-		String message = ObjectUtil.toString(contentMap.get("message"));
-		while (checkOffen(codeStr, subcodeStr, message) && (msgUidsList.size()) > 0) {
+		try {
+			contentMap = JSON.parseObject(content, Map.class);
+			Object code = contentMap.get("code");
+			Object subcode = contentMap.get("subcode");
+			String codeStr = code != null ? code.toString() : "";
+			String subcodeStr = subcode != null ? subcode.toString() : "";
+			String message = ObjectUtil.toString(contentMap.get("message"));
+			while (checkOffen(codeStr, subcodeStr, message) && (msgUidsList.size()) > 0) {
+				removeMsgUid(effectUid);
+				logger.info("【msgInfo " + effectUid + "】=" + content);
+				return crawlQzoneMsgInfoContent(uid, pos);
+			}
+		}catch(Exception e) {
 			removeMsgUid(effectUid);
-			logger.info("【msgInfo " + effectUid + "】=" + content);
+			logger.error("effectUid={} targetUid={} msg content {} ",effectUid,uid,content);
+			logger.error("msg exception ",e);
 			return crawlQzoneMsgInfoContent(uid, pos);
 		}
 		return contentMap;
@@ -438,17 +448,25 @@ public class QqManager {
 		Map<String, String> cookieMap = session.cookieMap;
 
 		String content = YhHttpUtil.sendHttpGetWithRetry(QqConfig.QQ_PHOTOINFO_URL, newParamMap, cookieMap);
-		Map<String, Object> contentMap = JSON.parseObject(content, Map.class);
-		Object code = contentMap.get("code");
-		Object subcode = contentMap.get("subcode");
-		String codeStr = code != null ? code.toString() : "";
-		String subcodeStr = subcode != null ? subcode.toString() : "";
-		String message = ObjectUtil.toString(contentMap.get("message"));
-		boolean checkFlag = checkOffen(codeStr, subcodeStr, message);
-		contentMap.put("checkFlag", checkFlag);
-		while (checkFlag && (photoUidsList.size()) > 0) {
-			logger.info("【photoInfo " + effectUid + "】=" + content);
+		Map<String, Object> contentMap = null;
+		try {
+			contentMap = JSON.parseObject(content, Map.class);
+			Object code = contentMap.get("code");
+			Object subcode = contentMap.get("subcode");
+			String codeStr = code != null ? code.toString() : "";
+			String subcodeStr = subcode != null ? subcode.toString() : "";
+			String message = ObjectUtil.toString(contentMap.get("message"));
+			boolean checkFlag = checkOffen(codeStr, subcodeStr, message);
+			contentMap.put("checkFlag", checkFlag);
+			while (checkFlag && (photoUidsList.size()) > 0) {
+				logger.info("【photoInfo " + effectUid + "】=" + content);
+				removePhotoUid(effectUid);
+				return crawlQzonePhotoInfo(uid);
+			}
+		}catch(Exception e) {
 			removePhotoUid(effectUid);
+			logger.error("effectUid={} targetUid={} photo content {}",effectUid,uid,content);
+			logger.error("photo error ",e);
 			return crawlQzonePhotoInfo(uid);
 		}
 		return contentMap;
@@ -508,8 +526,10 @@ public class QqManager {
 				return crawlQzoneImgInfo(uid, pos, topicId);
 			}
 		}catch(Exception e) {
-			logger.error(" crawl  img err {} ",e);
-			return null;
+			removePhotoUid(effectUid);
+			logger.error("effectUid={} targetUid={} topicId={} img error content {}",effectUid,uid,topicId,content);
+			logger.error(" img error ",e);
+			return crawlQzoneImgInfo(uid, pos, topicId);
 		}
 		return contentMap;
 	}
@@ -543,15 +563,23 @@ public class QqManager {
 		Map<String, String> cookieMap = session.cookieMap;
 
 		String content = YhHttpUtil.sendHttpGetWithRetry(QqConfig.QQ_EMOTINFO_URL, newParamMap, cookieMap);
-		Map<String, Object> contentMap = JSON.parseObject(content, Map.class);
-		Object code = contentMap.get("code");
-		Object subcode = contentMap.get("subcode");
-		String codeStr = code != null ? code.toString() : "";
-		String subcodeStr = subcode != null ? subcode.toString() : "";
-		String message = ObjectUtil.toString(contentMap.get("message"));
-		while (checkOffen(codeStr, subcodeStr, message) && (emotUidsList.size()) > 0) {
-			logger.info("【emotInfo " + effectUid + "】=" + content);
+		Map<String, Object> contentMap = null;
+		try {
+			 contentMap = JSON.parseObject(content, Map.class);
+			Object code = contentMap.get("code");
+			Object subcode = contentMap.get("subcode");
+			String codeStr = code != null ? code.toString() : "";
+			String subcodeStr = subcode != null ? subcode.toString() : "";
+			String message = ObjectUtil.toString(contentMap.get("message"));
+			while (checkOffen(codeStr, subcodeStr, message) && (emotUidsList.size()) > 0) {
+				logger.info("【emotInfo " + effectUid + "】=" + content);
+				removeEmotUid(effectUid);
+				return crwalQzoneEmotInfoContent(uid, pos);
+			}
+		}catch(Exception e) {
 			removeEmotUid(effectUid);
+			logger.error("effectUid={} targetUid={} emot content {} ",effectUid,uid,content);
+			logger.error("emot error ",e);
 			return crwalQzoneEmotInfoContent(uid, pos);
 		}
 		return contentMap;
@@ -830,6 +858,7 @@ public class QqManager {
 		// 无访问权限
 		String ncode = "-4009";
 		if (contentMap.get("gateWay") != null) {
+			logger.error("err ******* 4009 ");
 			return;
 		}
 		Object code = contentMap.get("code");
@@ -840,6 +869,8 @@ public class QqManager {
 			logger.info("uid={} is not visit ",uid);
 			return;
 		}
+		
+		okLogger.info("get qq {} ",uid);
 
 		QtaskInfoPo taskInfo = new QtaskInfoPo();
 		taskInfo.uid = uid;
@@ -875,6 +906,16 @@ public class QqManager {
 			downAllPhoto(uid);
 		}
 		
+	}
+	
+	public void testException() {
+		String ssk = "{dsdsdks";
+		try {
+		Map<String,Object> map = JSON.parseObject(ssk,Map.class);
+		}catch(Exception e) {
+			logger.error("content=== {} ",ssk);
+			logger.error("testException error ",e);
+		}
 	}
 
 }
