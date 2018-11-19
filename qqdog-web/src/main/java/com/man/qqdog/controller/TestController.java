@@ -321,7 +321,12 @@ public class TestController extends BaseController {
 			qqManager.initStartUid(maxUid);
 			startFlag  = 1;
 			int uidSize = qqManager.userInfoUidsList.size();
-			for(int i = 0;i<5;i++) {
+			int size = uidSize / 2;
+			if(uidSize == 0){
+				sendDefaultJson(response, "uid size 0 err");
+				return;
+			}
+			for(int i = 0;i<8;i++) {
 				Thread t = new Thread(new StartCrawlThread(qqManager));
 				t.start();
 			}
@@ -357,6 +362,22 @@ public class TestController extends BaseController {
 	public void zanTing(HttpServletResponse response) throws IOException {
 		StartCrawlThread.zanTing = 1;
 		sendDefaultJson(response, "ok");
+	}
+	
+	
+	@RequestMapping("/upSe")
+	public void upSe(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		QsessionInfoPo session = new QsessionInfoPo();
+		session.uid = "12121";
+		session.flag = 0;
+		session.msg="dxm";
+		qsessionService.addQsessionInfo(session);
+		
+		session.updateDate = new Date();
+		session.flag = -1;
+		session.msg="msg";
+		qsessionService.updateQsessionInfo(session);
+		sendDefaultJson(response, session);
 	}
 	
 	
