@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
+import com.man.qq.QqConfig;
 import com.man.qqdog.biz.manager.QqManager;
 import com.man.qqdog.biz.manager.StartCrawlThread;
 import com.man.qqdog.biz.mapper.QemotInfoPoMapper;
@@ -378,6 +379,11 @@ public class TestController extends BaseController {
 		session.msg="msg";
 		qsessionService.updateQsessionInfo(session);
 		sendDefaultJson(response, session);
+	}
+	
+	@RequestMapping("getEn")
+	public void testEmotNum(HttpServletResponse response) throws IOException{
+		sendDefaultJson(response, QqConfig.DEFAULT_EMOT_NUM);
 	}
 	
 	

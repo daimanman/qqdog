@@ -890,7 +890,7 @@ public class QqManager {
 			imgPo.uid=uid+"";
 			imgPoList.add(imgPo);
 		}
-		logger.info("uid={} totalNum={} getNum={} photoUidSize={}",uid,imgTotalNum,getNumTotal,photoUidsList.size());
+		logger.info("photo uid={} totalNum={} getNum={} photoUidSize={}",uid,imgTotalNum,getNumTotal,photoUidsList.size());
 		int totalPage = (imgTotalNum+QqConfig.DEFAULT_IMG_NUM-1)/QqConfig.DEFAULT_IMG_NUM;
 		int pos = 0;
 		for(int startPage=2;startPage <= totalPage;startPage++) {
@@ -909,7 +909,7 @@ public class QqManager {
 				imgPo.uid=uid+"";
 				imgPoList.add(imgPo);
 			}
-			logger.info("uid={} totalNum={} getNum={} photoUidSize={}",uid,imgTotalNum,getNumTotal,photoUidsList.size());
+			logger.info("photo uid={} totalNum={} getNum={} photoUidSize={}",uid,imgTotalNum,getNumTotal,photoUidsList.size());
 		}
 		qphotoInfoService.addPhotoImgBatch(imgPoList);
 		return  getNumTotal;
