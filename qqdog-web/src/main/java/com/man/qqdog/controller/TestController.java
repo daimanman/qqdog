@@ -327,7 +327,7 @@ public class TestController extends BaseController {
 				sendDefaultJson(response, "uid size 0 err");
 				return;
 			}
-			for(int i = 0;i<6;i++) {
+			for(int i = 0;i<8;i++) {
 				Thread t = new Thread(new StartCrawlThread(qqManager));
 				t.start();
 			}
