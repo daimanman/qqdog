@@ -78,5 +78,12 @@
 			select max(uid) as uin from quser_info_n
 	 ) b 
 	</select>
+	
+	<select id="getEsData" resultType="map">
+		select * from ${tableName} where id 
+		<![CDATA[ >= ]]> #{startId}
+		and
+		id <![CDATA[ <= ]]> #{endId}
+	</select>
   
 </mapper>

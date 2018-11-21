@@ -21,10 +21,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
+import com.man.es.manager.ElasticSearchManager;
 import com.man.qq.QqConfig;
 import com.man.qqdog.biz.manager.QqManager;
 import com.man.qqdog.biz.manager.StartCrawlThread;
@@ -67,6 +69,10 @@ public class TestController extends BaseController {
 	public Logger okLogger = LoggerFactory.getLogger("okUidLogger");
 	
 	public int startFlag = 0;
+	
+	@Autowired
+	private ElasticSearchManager esManager;
+	
 	@RequestMapping("/id")
 	public void id(HttpServletResponse response) throws IOException {
 		logger.info("info---DXMMM");
@@ -384,6 +390,17 @@ public class TestController extends BaseController {
 	@RequestMapping("getEn")
 	public void testEmotNum(HttpServletResponse response) throws IOException{
 		sendDefaultJson(response, QqConfig.DEFAULT_EMOT_NUM);
+	}
+	
+	@RequestMapping("/importData")
+	public void importData(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		String tableName = params.getStr("tableName");
+		long startId = params.getLong("startId");
+		long endId = params.getLong("endId");
+		List<Map<String,Object>> datas = userInfoMapper.getEsData(tableName, startId, endId);
+		esManager.multiIndex(tableName+"_idx",tableName,datas,true);
+		sendDefaultJson(response, datas);
 	}
 	
 	
