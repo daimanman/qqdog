@@ -340,6 +340,12 @@ public class TestController extends BaseController {
 		}
 		sendDefaultJson(response, "begin work maxUid="+maxUid);
 	}
+	@RequestMapping("/start")
+	public void start(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		long maxUid = quserService.getMaxUid();
+		startFlag = 0;
+		sendDefaultJson(response, "begin work maxUid="+maxUid);
+	}
 	
 	@RequestMapping("/showUid")
 	public void showUid(HttpServletRequest request,HttpServletResponse response) throws IOException{

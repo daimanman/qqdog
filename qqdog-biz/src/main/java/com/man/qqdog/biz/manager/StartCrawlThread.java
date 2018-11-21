@@ -17,12 +17,17 @@ public class StartCrawlThread implements Runnable {
 	@Override
 	public void run() {
 		if(qqManager != null && qqManager.startUid > 0) {
+			String threadName = Thread.currentThread().getName();
 			while( qqManager.userInfoUidsList.size() > 0  && (zanTing==0)) {
 				long nextUid = qqManager.getNextUid();
-				logger.info("Thread-Name {} #start down uid={} #",Thread.currentThread().getName(),nextUid);
-				qqManager.downAllQqInfo(nextUid);
+				logger.info("Thread-Name {} #start down uid={} #",threadName,nextUid);
+				try {
+					qqManager.downAllQqInfo(nextUid);
+				}catch(Exception e ) {
+					logger.error("##### Thread={}  Error nextUid={} ",threadName,nextUid,e);
+				}
 				if(zanTing == 1) {
-					logger.error("{} ************** zanTing ****************",Thread.currentThread().getName());
+					logger.error("{} ************** zanTing ****************",threadName);
 				}
 			}
 		}

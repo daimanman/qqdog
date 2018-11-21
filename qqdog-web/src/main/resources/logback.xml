@@ -153,9 +153,9 @@
     
          
     <!-- 控制台输出日志级别 -->
-    <!--  -->
+     <!----> s
     <root level="info">    
-          <appender-ref ref="STDOUT" />  
+           <appender-ref ref="STDOUT" /> 
          <appender-ref ref="info" /> 
          <appender-ref ref="error" />     
     </root>    
