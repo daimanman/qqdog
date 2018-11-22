@@ -6,4 +6,11 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>qqdog-client</artifactId>
+  <dependencies>
+  	<dependency>
+			<groupId>com</groupId>
+			<artifactId>dcommon</artifactId>
+			<scope>provideds</scope>
+		</dependency>
+  </dependencies>
 </project>

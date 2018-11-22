@@ -45,6 +45,8 @@ import com.man.utils.ResultJson;
 @CrossOrigin(origins = "*", maxAge = 36000)
 public class TestController extends BaseController {
 
+	Map<String,Boolean> map = new HashMap<>();
+	
 	@Autowired
 	private QUserService quserService;
 
@@ -408,6 +410,19 @@ public class TestController extends BaseController {
 		esManager.multiIndex(tableName+"_idx",tableName,datas,true);
 		sendDefaultJson(response, datas);
 	}
+	
+	@RequestMapping("/importEsData")
+	public void importEsData(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		String tableName = params.getStr("tableName");
+		if(map.get(tableName) == null ) {
+			map.put(tableName,true);
+			quserService.importEsData(params);
+		}
+		
+	}
+	
+	
 	
 	
 	

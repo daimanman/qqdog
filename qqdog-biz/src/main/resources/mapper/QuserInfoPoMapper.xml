@@ -85,5 +85,15 @@
 		and
 		id <![CDATA[ <= ]]> #{endId}
 	</select>
+	
+	<select id="getTableNum" resultType="long">
+		select count(1) num   from ${tableName} 
+	</select>
+	
+	<select id="getNumPage" resultType="map">
+		select min(id) startId,max(id) endId from (
+			select id from ${tableName} limit #{offset},#{pageSize}
+		) a
+	</select>
   
 </mapper>

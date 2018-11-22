@@ -17,4 +17,8 @@ public interface QuserInfoPoMapper {
 	public long getMaxUid();
 	
 	public List<Map<String,Object>> getEsData(@Param("tableName")String tableName,@Param("startId")long startId,@Param("endId")long endId);
+	
+	public long getTableNum(@Param("tableName") String tableName);
+	
+	public Map<String,Object> getNumPage(@Param("tableName")String tableName,@Param("offset")long offset,@Param("pageSize")long pageSize);
 }
