@@ -262,7 +262,7 @@ public class QqManager {
 		if(content == null || "".equals(content.trim())) {
 			return;
 		}
-		
+		removeLogger.info("dealEffectUid effectUid={} content={}",effectUid,content);
 		if(content.indexOf("登录") > 0) {
 			removeAllUids(effectUid);
 			logger.error("effectUid = {} content = {}",effectUid,content);
@@ -354,9 +354,18 @@ public class QqManager {
 
 				);
 	}
-
+	public boolean checkLogin(String codeStr, String subcodeStr, String message) {
+		return ((QcodeEnum.QOFEN_P.code + "").equals(codeStr) && subcodeStr.equals(QcodeEnum.QOFEN_P.subcode + ""))
+				|| (codeStr.equals(QcodeEnum.QLOGIN_P.code + "") && subcodeStr.equals(QcodeEnum.QLOGIN_P.subcode + "")
+				);
+	}
+	public boolean checkOptOffen(String content){
+		return (content.indexOf("频")) >= 0;
+	}
+	
 	public void removeUids(String uid,String content) {
 		dealEffectUid(uid, content);
+	    removeLogger.info("uid={} content={} ",uid,content);
 		removeUserInfoUid(uid);
 		removeEmotUid(uid,"");
 		removePhotoUid(uid,"");
@@ -392,11 +401,18 @@ public class QqManager {
 			String subcodeStr = subcode != null ? subcode.toString() : "";
 			String message = ObjectUtil.toString(contentMap.get("message"));
 			// 检查是否调用频繁
-			boolean checkFlag = checkOffen(codeStr, subcodeStr, message);
-			contentMap.put("checkFlag", checkFlag);
-			while (checkFlag && (userInfoUidsList.size()) > 0) {
+			boolean loginChek = checkLogin(codeStr, subcodeStr, message);
+			contentMap.put("checkFlag", loginChek);
+			
+			while (loginChek && (userInfoUidsList.size()) > 0) {
 				logger.info("【basinfo " + effectUid + "】=" + content);
 				removeUids(effectUid,content);
+				return crawlQzoneBaseInfoContent(uid);
+			}
+			if(checkOptOffen(message)){
+				//操作频繁
+				logger.error("userinfo 操作频繁 effectUid={}  sleep 15min scontent={} ",effectUid,content);
+				Thread.sleep(1000*15*60);
 				return crawlQzoneBaseInfoContent(uid);
 			}
 		} catch (Exception e) {

@@ -19,6 +19,15 @@ public class StartCrawlThread implements Runnable {
 		if(qqManager != null && qqManager.startUid > 0) {
 			String threadName = Thread.currentThread().getName();
 			while( qqManager.userInfoUidsList.size() > 0  && (zanTing==0)) {
+				if(qqManager.msgUidsList.size() == 0 || qqManager.emotUidsList.size() == 0 || qqManager.photoUidsList.size() == 0){
+					logger.error(" 操作频繁 sleep 15min ");
+					try {
+						Thread.sleep(1000*60*15);
+						qqManager.initSession();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 				long nextUid = qqManager.getNextUid();
 				logger.info("Thread-Name {} #start down uid={} #",threadName,nextUid);
 				try {
