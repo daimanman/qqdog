@@ -27,7 +27,7 @@ public class EsConfig {
 		ElasticSearchManager esManager = new ElasticSearchManager();
 		esManager.setClusterName(clusterName);
 		esManager.setHosts(hosts);
-		//esManager.initClient();
+		esManager.initClient();
 		logger.info("ES HOSTS={} clusterName={} ",hosts,clusterName);
 		return esManager;
 	}

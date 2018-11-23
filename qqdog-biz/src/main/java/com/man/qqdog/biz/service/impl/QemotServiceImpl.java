@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.man.es.manager.ElasticSearchManager;
+import com.man.pageinfo.PageResult;
 import com.man.qq.QqConfig;
 import com.man.qqdog.biz.mapper.QemotInfoPoMapper;
 import com.man.qqdog.biz.utils.QqModelTransform;
@@ -18,6 +20,7 @@ import com.man.qqdog.client.po.QemotInfoPo;
 import com.man.qqdog.client.po.QemotPicPo;
 import com.man.qqdog.client.service.QemotService;
 import com.man.utils.ObjectUtil;
+import com.man.utils.ReqParam;
 
 @Service
 public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
@@ -26,6 +29,10 @@ public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
 	
 	@Autowired
 	private QemotInfoPoMapper qemotMapper;
+	
+	@Autowired
+	private ElasticSearchManager esManager;
+	
 	@Override
 	public int insertQemotInfoBatch(List<QemotInfoPo> datas) {
 		if(null == datas || datas.size() == 0) {
@@ -139,6 +146,12 @@ public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
 			logger.info("Exception uid={}",uid);
 			logger.error("Error {} ",e);
 		}
+	}
+
+	@Override
+	public PageResult<Map<String, Object>> queryEsEmotPage(ReqParam params) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
