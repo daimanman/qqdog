@@ -10,3 +10,16 @@ select count(1) qmsg_info from qmsg_info;
 select count(1) qmsg_info_reply from qmsg_info_reply;
 select count(1) qphoto_info from qphoto_info;
 select count(1) qphoto_img from qphoto_img;
+
+
+select max(uin) maxuid from (
+		select max(uid) uin from (
+		select * from quser_info order by id desc
+		limit 10
+		) a
+		union
+		select max(uid) uin from (
+		select * from quser_info_n
+		order by uid desc limit 10
+		) b
+		) c
