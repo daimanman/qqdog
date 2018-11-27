@@ -11,9 +11,13 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.cluster.metadata.MappingMetaData;
+import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSON;
+import com.man.es.manager.ElasticSearchManager;
 import com.man.qqdog.biz.manager.QqManager;
 import com.man.qqdog.biz.manager.StartCrawlThread;
 import com.man.utils.ObjectUtil;
@@ -170,6 +174,38 @@ public class TestMan {
 		map.put("sort","0");
 		String content = YhHttpUtil.sendHttpPost(url, map, headers);
 		System.out.println(content);
+	}
+	
+	@Test
+	public void testJoin() {
+		String k = String.join("&",Arrays.asList("name=dxm","age=13"));
+		System.out.println(k);
+	}
+	
+	@Test
+	public void testGetMappping() {
+		ElasticSearchManager es = new ElasticSearchManager();
+		es.setClusterName("elasticsearch");
+		es.setHosts("127.0.0.1:9300");
+		TransportClient client = es.initClient();
+		ImmutableOpenMap<String, MappingMetaData> mappings = client.admin().cluster().prepareState().execute()
+                .actionGet().getState().getMetaData().getIndices().get("qemot_info_idx").getMappings();
+        String maps  = mappings.get("qemot_info").source().toString();
+        System.out.println(maps);
+
+		
+	}
+	
+	@Test
+	public void testsignature() {
+		String url = "https://www.cwbaoguowang.com/PACKAGEK/api_user_store/SEARCHGETCOMMODITY?shopId=066a07f4-ee97-4def-87c6-98d8de1548ea&keyword=%E5%8F%AF%E4%B9%90";
+		Map<String,String> headers = new HashMap<>();
+		try {
+			String resp = YhHttpUtil.sendHttpGet(url, null,null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

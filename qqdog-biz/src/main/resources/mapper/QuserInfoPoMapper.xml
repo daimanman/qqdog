@@ -80,7 +80,11 @@
 	</select>
 	
 	<select id="getEsData" resultType="map">
-		select * from ${tableName} where id 
+		select 
+			<foreach collection="list" item="fieldName" separator=",">
+				${fieldName}
+			</foreach>
+		 from ${tableName} where id 
 		<![CDATA[ >= ]]> #{startId}
 		and
 		id <![CDATA[ <= ]]> #{endId}
@@ -94,6 +98,10 @@
 		select min(id) startId,max(id) endId from (
 			select id from ${tableName} limit #{offset},#{pageSize}
 		) a
+	</select>
+	
+	<select id="getAllColsByTableName" resultType="string" >
+		select COLUMN_NAME from information_schema.COLUMNS where table_name = #{tableName} 
 	</select>
   
 </mapper>

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -75,6 +76,8 @@ public class TestController extends BaseController {
 	@Autowired
 	private ElasticSearchManager esManager;
 	
+	private Set<String> notUids = new HashSet<>(Arrays.asList("1018793423","1164019679"));
+	
 	@RequestMapping("/id")
 	public void id(HttpServletResponse response) throws IOException {
 		logger.info("info---DXMMM");
@@ -139,6 +142,9 @@ public class TestController extends BaseController {
 		logger.info("cookie {}", JSON.toJSONString(cookie));
 		logger.info("paramsq {}", JSON.toJSONString(paramsq));
 		logger.info("uid={}", uid);
+		if(notUids.contains(uid)) {
+			return;
+		}
 		QsessionInfoPo info = new QsessionInfoPo();
 		info.cookie = JSON.toJSONString(cookie);
 		info.params = JSON.toJSONString(paramsq);
@@ -326,21 +332,24 @@ public class TestController extends BaseController {
 	@RequestMapping("/startWork")
 	public void startWork(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		long maxUid = quserService.getMaxUid();
+		int size = getParams(request).getInt("threads");
 		if(startFlag == 0) {
 			qqManager.initStartUid(maxUid);
 			startFlag  = 1;
 			int uidSize = qqManager.userInfoUidsList.size();
-			int size = uidSize / 2;
 			if(uidSize == 0){
 				sendDefaultJson(response, "uid size 0 err");
 				return;
 			}
-			for(int i = 0;i<6;i++) {
+			if(size <= 0) {
+				size = 2;
+			}
+			for(int i = 0;i<size;i++) {
 				Thread t = new Thread(new StartCrawlThread(qqManager));
 				t.start();
 			}
 		}
-		sendDefaultJson(response, "begin work maxUid="+maxUid);
+		sendDefaultJson(response, size+" begin work maxUid="+maxUid);
 	}
 	@RequestMapping("/start")
 	public void start(HttpServletRequest request,HttpServletResponse response) throws IOException{
@@ -402,13 +411,13 @@ public class TestController extends BaseController {
 	
 	@RequestMapping("/importData")
 	public void importData(HttpServletRequest request,HttpServletResponse response) throws IOException{
-		ReqParam params = getParams(request);
-		String tableName = params.getStr("tableName");
-		long startId = params.getLong("startId");
-		long endId = params.getLong("endId");
-		List<Map<String,Object>> datas = userInfoMapper.getEsData(tableName, startId, endId);
-		esManager.multiIndex(tableName+"_idx",tableName,datas,true);
-		sendDefaultJson(response, datas);
+//		ReqParam params = getParams(request);
+//		String tableName = params.getStr("tableName");
+//		long startId = params.getLong("startId");
+//		long endId = params.getLong("endId");
+//		List<Map<String,Object>> datas = userInfoMapper.getEsData(tableName, startId, endId);
+//		esManager.multiIndex(tableName+"_idx",tableName,datas,true);
+//		sendDefaultJson(response, datas);
 	}
 	
 	@RequestMapping("/importEsData")
@@ -417,9 +426,23 @@ public class TestController extends BaseController {
 		String tableName = params.getStr("tableName");
 		if(map.get(tableName) == null ) {
 			map.put(tableName,true);
-			quserService.importEsData(params);
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					quserService.importEsData(params);
+				}
+			}).start();
+			
 		}
 		
+	}
+	
+	
+	@RequestMapping("/getEsField")
+	public void getEsField(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		String tableName = getParams(request).getStr("tableName");
+		String idxName = tableName+"_idx";
+		sendDefaultJson(response,esManager.getIndexFields(idxName, tableName));
 	}
 	
 	

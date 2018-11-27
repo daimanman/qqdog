@@ -16,9 +16,12 @@ public interface QuserInfoPoMapper {
 	
 	public long getMaxUid();
 	
-	public List<Map<String,Object>> getEsData(@Param("tableName")String tableName,@Param("startId")long startId,@Param("endId")long endId);
+	public List<Map<String,Object>> getEsData(@Param("tableName")String tableName,@Param("startId")long startId,@Param("endId")long endId,@Param("list") List<String> fields);
 	
 	public long getTableNum(@Param("tableName") String tableName);
 	
 	public Map<String,Object> getNumPage(@Param("tableName")String tableName,@Param("offset")long offset,@Param("pageSize")long pageSize);
+	
+	//获取表所有的字段名
+	public List<String> getAllColsByTableName(@Param("tableName") String tableName);
 }
