@@ -202,7 +202,7 @@ public class TestMan {
 		Map<String,String> headers = new HashMap<>();
 		headers.put("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36");
 		Map<String,Object> params = new HashMap<>();
-		String ss = IOUtils.toString(new FileInputStream(new File("D:\\5.txt")),"utf-8");
+		String ss = IOUtils.toString(new FileInputStream(new File("D:\\4.txt")),"utf-8");
 		params.put("signature", ss);
 		try {
 			String resp = YhHttpUtil.sendHttpPost(url, params,headers);

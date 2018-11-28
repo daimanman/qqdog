@@ -1,5 +1,8 @@
 package com.man.qqdog.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,6 +19,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.slf4j.Logger;
@@ -41,6 +45,7 @@ import com.man.qqdog.client.service.QsessionService;
 import com.man.utils.ObjectUtil;
 import com.man.utils.ReqParam;
 import com.man.utils.ResultJson;
+import com.man.utils.YhHttpUtil;
 
 @Controller
 @CrossOrigin(origins = "*", maxAge = 36000)
@@ -444,6 +449,52 @@ public class TestController extends BaseController {
 		String idxName = tableName+"_idx";
 		sendDefaultJson(response,esManager.getIndexFields(idxName, tableName));
 	}
+	
+	private Map<String,String> mp = new HashMap<>(); 
+	@RequestMapping("/cd")
+	public void testRsa(HttpServletRequest request,HttpServletResponse response) throws IOException, InterruptedException{
+		ReqParam paras = getParams(request);
+		String file = paras.getStr("file");
+		int size = paras.getInt("num");
+		Set<String> keys = mp.keySet();
+		if(!keys.contains(file)) {
+				String ss = IOUtils.toString(new FileInputStream(file),"utf-8");
+				mp.put(file,ss);
+		}
+		//if(keys.contains(file)) {
+		for(int i = 0;i<= size;i++) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					cd(mp.get(file));
+				}
+			}).start();
+			Thread.sleep(3000*10);
+		}
+			
+		//}
+		
+	}
+	
+	private void cd(String ss) {
+		String url = "https://www.cwbaoguowang.com/PACKAGEK/api_user_store/SEARCHGETCOMMODITY?shopId=066a07f4-ee97-4def-87c6-98d8de1548ea&keyword=%E5%8F%AF%E4%B9%90";
+		Map<String,String> headers = new HashMap<>();
+		headers.put("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36");
+		Map<String,Object> params = new HashMap<>();
+			params.put("signature",ss);
+				String resp;
+				try {
+					resp = YhHttpUtil.sendHttpPost(url, params,headers);
+					System.out.println(resp);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			
+		
+	}
+	
 	
 	
 	
