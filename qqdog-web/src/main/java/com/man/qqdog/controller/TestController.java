@@ -466,7 +466,10 @@ public class TestController extends BaseController {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
+					long start = System.currentTimeMillis();
 					cd(mp.get(file));
+					long end = System.currentTimeMillis();
+					System.out.println("total time = "+(end-start)/1000);
 				}
 			}).start();
 			Thread.sleep(3000*10);
@@ -490,9 +493,15 @@ public class TestController extends BaseController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-			
-		
+	}
+	
+	
+	@RequestMapping("/maxid")
+	public void getMaxId(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		String index = params.getStr("index");
+		String type = params.getStr("type");
+		sendDefaultJson(response, esManager.getMaxId(index, type));
 	}
 	
 	

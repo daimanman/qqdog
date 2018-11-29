@@ -11,9 +11,19 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.max.Max;
+import org.elasticsearch.search.aggregations.metrics.max.MaxAggregationBuilder;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSON;
@@ -192,8 +202,6 @@ public class TestMan {
                 .actionGet().getState().getMetaData().getIndices().get("qemot_info_idx").getMappings();
         String maps  = mappings.get("qemot_info").source().toString();
         System.out.println(maps);
-
-		
 	}
 	
 	@Test
@@ -211,6 +219,50 @@ public class TestMan {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void testAggs() {
+		ElasticSearchManager es = new ElasticSearchManager();
+		es.setClusterName("elasticsearch");
+		es.setHosts("192.168.1.53:9300");
+		TransportClient client = es.initClient();
+		MaxAggregationBuilder  aggsBuilder = AggregationBuilders.max("maxid").field("id");
+		SearchRequestBuilder searchRequestBuilder = client.prepareSearch("quser_info_idx").setTypes("quser_info")   
+                .addAggregation(aggsBuilder)    
+                .setSize(0); 
+		 SearchResponse sr = searchRequestBuilder.execute().actionGet();
+		 
+		 Max max = sr.getAggregations().get("maxid");
+		 
+		 double  maxVal = max.getValue();
+		 System.out.println((long)maxVal);
+	}
+	
+	@Test
+	public void testEmotMax() {
+		ElasticSearchManager es = new ElasticSearchManager();
+		es.setClusterName("elasticsearch");
+		es.setHosts("192.168.1.53:9300");
+		TransportClient client = es.initClient();
+		TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders.terms("group_uid").field("uid");
+		TermsAggregationBuilder muidAggsBuilder = AggregationBuilders.terms("count_muid").field("muid");
+		
+		termsAggregationBuilder.subAggregation(muidAggsBuilder);
+		
+		SearchRequestBuilder searchRequestBuilder = client.prepareSearch("qemot_comment_idx").setTypes("qemot_comment")   
+                .addAggregation(termsAggregationBuilder)
+                .setSize(0);
+		 SearchResponse sr = searchRequestBuilder.execute().actionGet();
+		 
+		 Terms aggregation = sr.getAggregations().get("group_uid");
+		 for (Terms.Bucket bucket : aggregation.getBuckets()) {
+	            System.out.println("uid="+bucket.getKey()+"--count="+bucket.getDocCount());
+//	            Terms muidAggs = bucket.getAggregations().get("count_muid");
+//	            for(Terms.Bucket muidBucket:muidAggs.getBuckets()) {
+//	            	System.out.println("\t muid="+muidBucket.getKey()+"----count="+muidBucket.getDocCount());
+//	            }
+	     }
 	}
 	
 }

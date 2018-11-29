@@ -83,19 +83,20 @@ public class QUserServiceImpl extends BaseServiceImpl implements QUserService  {
 		long indexTotal = params.getLong("indexTotal");
 		long pageSize = params.getLong("pageSize");
 		if(pageSize == 0 ) {
-			pageSize = 5000;
+			pageSize = 1000;
 		}
+		long maxid = esManager.getMaxId(idxName, tableName);
 		long totalNum = 0 ;
 		if(indexTotal > 0) {
 			totalNum = indexTotal;
 		}else {
-			totalNum = quserInfoPoMapper.getTableNum(tableName);
+			totalNum = quserInfoPoMapper.getTableNum(tableName,maxid);
 		}
 		long totalPage = (totalNum+pageSize-1)/pageSize;
 		List<String> fields = getMysqlCols(idxName, tableName);
 		for(int i = 1;i<=totalPage;i++) {
 			long offset = (i-1)*pageSize;
-			Map<String,Object> numMap = quserInfoPoMapper.getNumPage(tableName, offset, pageSize);
+			Map<String,Object> numMap = quserInfoPoMapper.getNumPage(tableName, offset, pageSize,maxid);
 			long startId = ObjectUtil.parseLong(numMap.get("startId"));
 			long endId = ObjectUtil.parseLong(numMap.get("endId"));
 			

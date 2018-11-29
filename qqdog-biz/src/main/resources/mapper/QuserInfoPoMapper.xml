@@ -82,7 +82,7 @@
 	<select id="getEsData" resultType="map">
 		select 
 			<foreach collection="list" item="fieldName" separator=",">
-				${fieldName}
+				`${fieldName}`
 			</foreach>
 		 from ${tableName} where id 
 		<![CDATA[ >= ]]> #{startId}
@@ -91,12 +91,20 @@
 	</select>
 	
 	<select id="getTableNum" resultType="long">
-		select count(1) num   from ${tableName} 
+		select count(1) num 
+		  from ${tableName} 
+		  <if test="maxid > 0 ">
+				where id > #{maxid}
+			</if>
 	</select>
 	
 	<select id="getNumPage" resultType="map">
 		select min(id) startId,max(id) endId from (
-			select id from ${tableName} limit #{offset},#{pageSize}
+			select id from ${tableName}
+			<if test="maxid > 0">
+				where id > #{maxid}
+			</if>
+			 limit #{offset},#{pageSize}
 		) a
 	</select>
 	
