@@ -247,17 +247,18 @@ public class TestMan {
 		TransportClient client = es.initClient();
 		TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders.terms("group_uid").field("uid");
 		termsAggregationBuilder.size(15);
-		TermsAggregationBuilder muidAggsBuilder = AggregationBuilders.terms("count_muid").field("muid");
 		
+		TermsAggregationBuilder muidAggsBuilder = AggregationBuilders.terms("count_muid").field("muid");
 		termsAggregationBuilder.subAggregation(muidAggsBuilder);
 		
 		SearchRequestBuilder searchRequestBuilder = client.prepareSearch("qemot_comment_idx").setTypes("qemot_comment")   
                 .addAggregation(termsAggregationBuilder)
-                .setSize(0);
+                .setSize(10)
+                .setFrom(0);
 		 SearchResponse sr = searchRequestBuilder.execute().actionGet();
 		 
 		 Terms aggregation = sr.getAggregations().get("group_uid");
-		 System.out.println(aggregation.getSumOfOtherDocCounts());
+		 System.out.println("group_uid aggs size "+aggregation.getBuckets().size());
 		 for (Terms.Bucket bucket : aggregation.getBuckets()) {
 	            System.out.println("uid="+bucket.getKey()+"--count="+bucket.getDocCount());
 //	            Terms muidAggs = bucket.getAggregations().get("count_muid");

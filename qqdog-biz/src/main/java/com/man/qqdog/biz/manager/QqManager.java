@@ -107,7 +107,7 @@ public class QqManager {
 
 	private ConcurrentHashMap<String, Object> noVisitSetLock = new ConcurrentHashMap<>();
 	
-	private int MAX_BLANK_TRY = 3;
+	private int MAX_BLANK_TRY = 100;
 
 	public void addNoVisit(long uid) {
 		synchronized (noVisitSetLock) {
@@ -419,7 +419,7 @@ public class QqManager {
 			//removeUids(effectUid);
 			int num = checkRemove(effectUid);
 			if(num >= MAX_BLANK_TRY) {
-				removeUids(effectUid,"");
+				removeUids(effectUid,"MAX_BLANK_TRY");
 			}
 			logger.error("effectUid={} targetUid={} content= 【{}】 blankNum={} ",effectUid,uid,content,num);
 			logger.error("err exception ",e);
@@ -475,7 +475,7 @@ public class QqManager {
 		}catch(Exception e) {
 			int num = checkRemove(effectUid);
 			if(num >= MAX_BLANK_TRY) {
-				removeMsgUid(effectUid,"");
+				removeMsgUid(effectUid,"MAX_BLANK_TRY");
 			}
 			logger.error("effectUid={} targetUid={} msg content 【{}】 blankNum={}",effectUid,uid,content,num);
 			logger.error("msg exception ",e);
@@ -537,7 +537,7 @@ public class QqManager {
 		}catch(Exception e) {
 			int num = checkRemove(effectUid);
 			if(num >= MAX_BLANK_TRY) {
-				removePhotoUid(effectUid,"");
+				removePhotoUid(effectUid,"MAX_BLANK_TRY");
 			}
 			logger.error("effectUid={} targetUid={} photo content 【{}】 blanNum={} ",effectUid,uid,content,num);
 			logger.error("photo error ",e);
@@ -603,7 +603,7 @@ public class QqManager {
 		}catch(Exception e) {
 			int num = checkRemove(effectUid);
 			if(num >= MAX_BLANK_TRY) {
-				removePhotoUid(effectUid,"");
+				removePhotoUid(effectUid,"MAX_BLANK_TRY");
 			}
 			logger.error("effectUid={} targetUid={} topicId={} img error content 【{}】 blankNum={}",effectUid,uid,topicId,content,num);
 			logger.error(" img error ",e);
@@ -658,7 +658,7 @@ public class QqManager {
 		}catch(Exception e) {
 			int num = checkRemove(effectUid);
 			if(num >= MAX_BLANK_TRY) {
-				removeEmotUid(effectUid,"");
+				removeEmotUid(effectUid,"MAX_BLANK_TRY");
 			}
 			logger.error("effectUid={} targetUid={} emot content 【{}】 blankNum={} ",effectUid,uid,content,num);
 			logger.error("emot error ",e);
