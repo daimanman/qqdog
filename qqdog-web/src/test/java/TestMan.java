@@ -246,6 +246,7 @@ public class TestMan {
 		es.setHosts("192.168.1.53:9300");
 		TransportClient client = es.initClient();
 		TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders.terms("group_uid").field("uid");
+		termsAggregationBuilder.size(15);
 		TermsAggregationBuilder muidAggsBuilder = AggregationBuilders.terms("count_muid").field("muid");
 		
 		termsAggregationBuilder.subAggregation(muidAggsBuilder);
@@ -256,6 +257,7 @@ public class TestMan {
 		 SearchResponse sr = searchRequestBuilder.execute().actionGet();
 		 
 		 Terms aggregation = sr.getAggregations().get("group_uid");
+		 System.out.println(aggregation.getSumOfOtherDocCounts());
 		 for (Terms.Bucket bucket : aggregation.getBuckets()) {
 	            System.out.println("uid="+bucket.getKey()+"--count="+bucket.getDocCount());
 //	            Terms muidAggs = bucket.getAggregations().get("count_muid");

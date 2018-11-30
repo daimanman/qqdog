@@ -480,7 +480,7 @@ public class TestController extends BaseController {
 	}
 	
 	private void cd(String ss) {
-		String url = "https://www.cwbaoguowang.com/PACKAGEK/api_user_store/SEARCHGETCOMMODITY?shopId=066a07f4-ee97-4def-87c6-98d8de1548ea&keyword=%E5%8F%AF%E4%B9%90";
+		String url = "www.baidu.com";
 		Map<String,String> headers = new HashMap<>();
 		headers.put("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36");
 		Map<String,Object> params = new HashMap<>();
