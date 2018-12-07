@@ -27,10 +27,15 @@ import org.elasticsearch.search.aggregations.metrics.max.MaxAggregationBuilder;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSON;
+import com.man.basequery.QueryBuilderParser;
 import com.man.es.manager.ElasticSearchManager;
+import com.man.pageinfo.PageResult;
+import com.man.pageinfo.QueryParams;
+import com.man.qqdog.biz.es.MsgInfoQueryDsl;
 import com.man.qqdog.biz.manager.QqManager;
 import com.man.qqdog.biz.manager.StartCrawlThread;
 import com.man.utils.ObjectUtil;
+import com.man.utils.ReqParam;
 import com.man.utils.YhHttpUtil;
 
 
@@ -266,6 +271,76 @@ public class TestMan {
 //	            	System.out.println("\t muid="+muidBucket.getKey()+"----count="+muidBucket.getDocCount());
 //	            }
 	     }
+	}
+	
+	@Test
+	public void testDsl() {
+		ReqParam reqParams = new ReqParam();
+		reqParams.put("uids",Arrays.asList("1003772882","1003672309"));
+		QueryParams queryParams = MsgInfoQueryDsl.parseListDsl(reqParams);
+		System.out.println(queryParams.getQueryItems().size());
+	}
+	
+	@Test
+	public void testPage() {
+		ElasticSearchManager es = new ElasticSearchManager();
+		es.setClusterName("elasticsearch");
+		es.setHosts("192.168.1.53:9300");
+		TransportClient client = es.initClient();
+		String index = "qmsg_info_idx";
+		String type= "qmsg_info";
+		ReqParam reqParams = new ReqParam();
+		reqParams.put("uids",Arrays.asList("1003772882","1003672309"));
+		QueryParams queryParams = MsgInfoQueryDsl.parseListDsl(reqParams);
+		queryParams.setPage(1);
+		queryParams.setPageSize(10);
+		PageResult<Map<String,Object>> pageInfo = es.filterPage(index, type, queryParams);
+		System.out.println(pageInfo.getDatas().size());
+	}
+	@Test
+	public void testMsgMax() {
+		ElasticSearchManager es = new ElasticSearchManager();
+		es.setClusterName("elasticsearch");
+		es.setHosts("192.168.1.53:9300");
+		TransportClient client = es.initClient();
+		String index = "qmsg_info_idx";
+		String type= "qmsg_info";
+		
+		ReqParam reqParams = new ReqParam();
+		reqParams.put("uids",Arrays.asList("1003772882","1003672309","1003674614"));
+		QueryParams queryParams = MsgInfoQueryDsl.parseListDsl(reqParams);
+		
+		SearchRequestBuilder searchRequest = client.prepareSearch(index).setTypes(type)
+				.setQuery(new QueryBuilderParser().parseQueryItems(queryParams.getQueryItems()));
+				//.setPostFilter(new QueryBuilderParser().parseQueryItems(queryParams.getQueryItems()));
+		//searchRequest.setFrom(0).setSize(10);
+		
+		TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders.terms("group_uid").field("uid");
+		termsAggregationBuilder.size(15);
+		
+		TermsAggregationBuilder muidAggsBuilder = AggregationBuilders.terms("count_muid").field("uin").size(100);
+		termsAggregationBuilder.subAggregation(muidAggsBuilder);
+		
+		searchRequest.addAggregation(termsAggregationBuilder);
+		
+		
+		SearchResponse sr = searchRequest.execute().actionGet();
+		 
+		 Terms aggregation = sr.getAggregations().get("group_uid");
+		 System.out.println("group_uid aggs size "+aggregation.getBuckets().size());
+		 for (Terms.Bucket bucket : aggregation.getBuckets()) {
+	            System.out.println("uid="+bucket.getKey()+"--count="+bucket.getDocCount());
+	            Terms muidAggs = bucket.getAggregations().get("count_muid");
+	            for(Terms.Bucket muidBucket:muidAggs.getBuckets()) {
+	            	System.out.println("\t muid="+muidBucket.getKey()+"----count="+muidBucket.getDocCount());
+	            }
+	     }
+		
+	}
+	
+	
+	@Test
+	public void testMail() {
 	}
 	
 }

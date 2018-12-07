@@ -66,8 +66,28 @@ public class QphotoImgPo {
 
     public String poiname;
     
+    public String lloc;
     
-    public String getDesc() {
+    public String sloc;
+    
+    
+    public String getLloc() {
+		return lloc;
+	}
+
+	public void setLloc(String lloc) {
+		this.lloc = lloc;
+	}
+
+	public String getSloc() {
+		return sloc;
+	}
+
+	public void setSloc(String sloc) {
+		this.sloc = sloc;
+	}
+
+	public String getDesc() {
 		return desc;
 	}
 

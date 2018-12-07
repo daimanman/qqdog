@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.man.qqdog.client.service.QUserService;
+import com.man.qqdog.client.service.QemotService;
 import com.man.qqdog.client.service.QphotoInfoService;
 import com.man.utils.ReqParam;
 
@@ -23,6 +24,9 @@ public class QqController extends BaseController {
 	
 	@Autowired
 	private QphotoInfoService qphotoInfoService;
+	
+	@Autowired
+	private QemotService qemotService;
 	
 	@RequestMapping("/queryUserPage")
 	public void queryUserPage(HttpServletRequest request,HttpServletResponse response) throws IOException{
@@ -40,6 +44,12 @@ public class QqController extends BaseController {
 	public void queryPhotoImgPage(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		ReqParam params = getParams(request);
 		sendDefaultJson(response,qphotoInfoService.queryEsImgPage(params));
+	}
+	
+	@RequestMapping("/queryEmotInfoPage")
+	public void queryEmotInfoPage(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		sendDefaultJson(response, qemotService.queryEsEmotPage(params));
 	}
 	
 	

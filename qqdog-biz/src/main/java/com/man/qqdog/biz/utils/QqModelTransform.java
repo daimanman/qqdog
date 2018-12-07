@@ -206,6 +206,8 @@ public class QqModelTransform {
 		po.uploadtime = ObjectUtil.getStr(data,"uploadtime");
 		po.url = ObjectUtil.getStr(data,"url");
 		po.width = ObjectUtil.getStr(data, "width");
+		po.sloc = ObjectUtil.getStr(data,"sloc");
+		po.lloc = ObjectUtil.getStr(data,"lloc");
 		return po;
 	}
 }

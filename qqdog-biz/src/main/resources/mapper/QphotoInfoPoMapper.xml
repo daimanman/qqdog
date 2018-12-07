@@ -23,6 +23,7 @@
     <result column="desc" property="desc" jdbcType="LONGVARCHAR" />
     <result column="name" property="name" jdbcType="LONGVARCHAR" />
     <result column="pre" property="pre" jdbcType="LONGVARCHAR" />
+    
   </resultMap>
   
   <resultMap id="QphotoImgPoResultMap" type="com.man.qqdog.client.po.QphotoImgPo" >
@@ -57,6 +58,8 @@
     <result column="desc" property="desc" jdbcType="LONGVARCHAR" />
     <result column="origin_url" property="originUrl" jdbcType="LONGVARCHAR" />
     <result column="poiname" property="poiname" jdbcType="LONGVARCHAR" />
+    <result column="sloc" property="sloc" jdbcType="VARCHAR" />
+    <result column="lloc" property="lloc" jdbcType="VARCHAR" />
   </resultMap>
   
   <insert id="addPhotoBatch" parameterType="list" >
@@ -160,7 +163,7 @@
       rawshoottime, uploadtime, url, 
       width, photo_id, uid, 
       create_gmt, `desc`, origin_url, 
-      poiname)
+      poiname,lloc,sloc)
     values 
     <foreach collection="list" item="po" separator="," >
 	    (#{po.id,jdbcType=BIGINT}, #{po.batchid,jdbcType=VARCHAR}, #{po.browser,jdbcType=VARCHAR}, 
@@ -173,11 +176,9 @@
           #{po.rawshoottime,jdbcType=VARCHAR}, #{po.uploadtime,jdbcType=VARCHAR}, #{po.url,jdbcType=VARCHAR}, 
           #{po.width,jdbcType=VARCHAR}, #{po.photoId,jdbcType=BIGINT}, #{po.uid,jdbcType=VARCHAR}, 
           now(), #{po.desc,jdbcType=LONGVARCHAR}, #{po.originUrl,jdbcType=LONGVARCHAR}, 
-          #{po.poiname,jdbcType=LONGVARCHAR})
+          #{po.poiname,jdbcType=LONGVARCHAR},#{lloc},#{sloc})
     </foreach>
     
   </insert>
-  
-  
   
 </mapper>

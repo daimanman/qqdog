@@ -9,9 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.man.constants.IdxConstant;
 import com.man.es.manager.ElasticSearchManager;
 import com.man.pageinfo.PageResult;
+import com.man.pageinfo.QueryParams;
 import com.man.qq.QqConfig;
+import com.man.qqdog.biz.es.EmotInfoQueryDsl;
 import com.man.qqdog.biz.mapper.QemotInfoPoMapper;
 import com.man.qqdog.biz.utils.QqModelTransform;
 import com.man.qqdog.client.po.QemotCommentPo;
@@ -150,8 +153,8 @@ public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
 
 	@Override
 	public PageResult<Map<String, Object>> queryEsEmotPage(ReqParam params) {
-		// TODO Auto-generated method stub
-		return null;
+		QueryParams queryParams = EmotInfoQueryDsl.parseListDsl(params);
+		return esManager.filterPage(IdxConstant.QEMOT_INFO_IDX,IdxConstant.QEMOT_INFO_TYPE, queryParams);
 	}
 
 }
