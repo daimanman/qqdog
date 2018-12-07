@@ -60,6 +60,8 @@
     <result column="poiname" property="poiname" jdbcType="LONGVARCHAR" />
     <result column="sloc" property="sloc" jdbcType="VARCHAR" />
     <result column="lloc" property="lloc" jdbcType="VARCHAR" />
+    <result column="raw" property="raw" jdbcType="VARCHAR" />
+    <result column="raw_upload" property="rawUpload" jdbcType="INTEGERs" />
   </resultMap>
   
   <insert id="addPhotoBatch" parameterType="list" >
@@ -176,7 +178,7 @@
           #{po.rawshoottime,jdbcType=VARCHAR}, #{po.uploadtime,jdbcType=VARCHAR}, #{po.url,jdbcType=VARCHAR}, 
           #{po.width,jdbcType=VARCHAR}, #{po.photoId,jdbcType=BIGINT}, #{po.uid,jdbcType=VARCHAR}, 
           now(), #{po.desc,jdbcType=LONGVARCHAR}, #{po.originUrl,jdbcType=LONGVARCHAR}, 
-          #{po.poiname,jdbcType=LONGVARCHAR},#{po.lloc},#{po.sloc})
+          #{po.poiname,jdbcType=LONGVARCHAR},#{po.lloc},#{po.sloc},#{po.raw},#{po.rawUpload})
     </foreach>
     
   </insert>

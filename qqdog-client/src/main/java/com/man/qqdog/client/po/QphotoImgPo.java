@@ -70,8 +70,30 @@ public class QphotoImgPo {
     
     public String sloc;
     
+    public String raw;
     
-    public String getLloc() {
+    public int rawUpload;
+    
+    
+    
+    
+    public String getRaw() {
+		return raw;
+	}
+
+	public void setRaw(String raw) {
+		this.raw = raw;
+	}
+
+	public int getRawUpload() {
+		return rawUpload;
+	}
+
+	public void setRawUpload(int rawUpload) {
+		this.rawUpload = rawUpload;
+	}
+
+	public String getLloc() {
 		return lloc;
 	}
 

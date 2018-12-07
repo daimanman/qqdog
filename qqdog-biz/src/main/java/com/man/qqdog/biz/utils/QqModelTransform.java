@@ -208,6 +208,8 @@ public class QqModelTransform {
 		po.width = ObjectUtil.getStr(data, "width");
 		po.sloc = ObjectUtil.getStr(data,"sloc");
 		po.lloc = ObjectUtil.getStr(data,"lloc");
+		po.raw = ObjectUtil.getStr(data,"raw");
+		po.rawUpload = ObjectUtil.getInt(data, "raw_upload");
 		return po;
 	}
 }
