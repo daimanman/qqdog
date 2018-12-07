@@ -367,7 +367,7 @@ public class TestMan {
 		params.put("callback","viewer_Callback");
 		//params.put("t","972306368");
 		params.put("topicId","V13YkSk201Wgg1");
-		//params.put("picKey","NDR0fhXYO81Xi1vp*JYQIQEAAAAAAAA!");
+		params.put("picKey","NDR0fhXYO81Xi1vp*JYQIQEAAAAAAAA!");
 		params.put("shootTime","");
 		params.put("cmtOrder","1");
 		params.put("fupdate","1");
@@ -379,7 +379,7 @@ public class TestMan {
 		params.put("outCharset","utf-8");
 		params.put("callbackFun","viewer");
 		params.put("offset","0");
-		params.put("number","100");
+		params.put("number","15");
 		params.put("uin","1143886181");
 		params.put("appid","4");
 		params.put("isFirst","1");
@@ -392,7 +392,8 @@ public class TestMan {
 		params.put("format","json");
 		
 		String res = YhHttpUtil.sendHttpGet(QQ_IMG_VEDIO_URL, params, header);
-		IOUtils.write(res,new FileOutputStream(new File("D:\\q.json")));
+		System.out.println(res);
+		//IOUtils.write(res,new FileOutputStream(new File("D:\\q.json")));
 
 		
 	}

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50723
 File Encoding         : 65001
 
-Date: 2018-12-07 16:15:53
+Date: 2018-12-07 16:33:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -120,10 +120,10 @@ CREATE TABLE `qemot_pic` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for qimg_vedio
+-- Table structure for qimg_video
 -- ----------------------------
-DROP TABLE IF EXISTS `qimg_vedio`;
-CREATE TABLE `qimg_vedio` (
+DROP TABLE IF EXISTS `qimg_video`;
+CREATE TABLE `qimg_video` (
   `id` bigint(20) NOT NULL,
   `uid` bigint(15) DEFAULT NULL,
   `pickey` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
@@ -142,7 +142,7 @@ CREATE TABLE `qimg_vedio` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Records of qimg_vedio
+-- Records of qimg_video
 -- ----------------------------
 
 -- ----------------------------

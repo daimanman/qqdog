@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.man.pageinfo.PageResult;
+import com.man.qqdog.client.po.QimgVideoPo;
 import com.man.qqdog.client.po.QphotoImgPo;
 import com.man.qqdog.client.po.QphotoInfoPo;
 import com.man.utils.ReqParam;
@@ -18,6 +19,8 @@ public int addPhotoImgBatch(List<QphotoImgPo> datas);
 	public PageResult<Map<String,Object>> queryEsPhotoPage(ReqParam params);
 	
 	public PageResult<Map<String,Object>> queryEsImgPage(ReqParam params);
+	
+	public int addImgVideoBatch(List<QimgVideoPo> datas);
 	
 	
 	

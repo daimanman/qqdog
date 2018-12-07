@@ -1,11 +1,13 @@
 package com.man.qqdog.biz.utils;
 
+import java.util.List;
 import java.util.Map;
 
 import com.man.qqdog.client.po.QemotCommentPo;
 import com.man.qqdog.client.po.QemotCommentReplyPo;
 import com.man.qqdog.client.po.QemotInfoPo;
 import com.man.qqdog.client.po.QemotPicPo;
+import com.man.qqdog.client.po.QimgVideoPo;
 import com.man.qqdog.client.po.QmsgInfoPo;
 import com.man.qqdog.client.po.QmsgInfoReplyPo;
 import com.man.qqdog.client.po.QphotoImgPo;
@@ -211,5 +213,33 @@ public class QqModelTransform {
 		po.raw = ObjectUtil.getStr(data,"raw");
 		po.rawUpload = ObjectUtil.getInt(data, "raw_upload");
 		return po;
+	}
+	
+	
+	public static QimgVideoPo converQimgVideo(Map<String,Object> contentMap) {
+		QimgVideoPo po = new QimgVideoPo();
+		Map<String,Object> dataMap = ObjectUtil.castMapObj(contentMap.get("data"));
+		List<Map<String,Object>> photos = ObjectUtil.castListObj(dataMap.get("photos"));
+		if(photos != null && photos.size() > 0) {
+			for(Map<String,Object> map:photos) {
+				Map<String,Object> videoMap = ObjectUtil.castMapObj(map.get("video_info"));
+				String video_url = ObjectUtil.getStr(videoMap,"video_url");
+				if(ObjectUtil.isNull(video_url)) {
+					continue;
+				}
+				po.coverHeight = ObjectUtil.getDouble(videoMap,"cover_height");
+				po.coverWidth = ObjectUtil.getDouble(videoMap,"cover_width");
+				po.duration = ObjectUtil.getInt(videoMap,"duration");
+				po.format = ObjectUtil.getStr(videoMap,"format");
+				po.size = ObjectUtil.getLong(videoMap,"size");
+				po.status = ObjectUtil.getInt(videoMap,"status");
+				po.vid = ObjectUtil.getStr(videoMap,"vid");
+				po.videoShareH5 = ObjectUtil.getStr(videoMap,"video_share_h5");
+				po.videoType = ObjectUtil.getInt(videoMap,"video_type");
+				po.videoUrl = ObjectUtil.getStr(videoMap,"video_url");
+				return po;
+			}
+		}
+		return null;
 	}
 }

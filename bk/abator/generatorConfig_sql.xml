@@ -15,7 +15,7 @@
 		</commentGenerator>
 
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://127.0.0.1:3306/erp_sale_a?useUnicode=true&amp;characterEncoding=UTF-8"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/cdata_1?useUnicode=true&amp;characterEncoding=UTF-8"
 			userId="root" password="zmmdxm">
 		</jdbcConnection>
 
@@ -72,6 +72,9 @@
 		</table>
 		
 		<table tableName="qphoto_img" domainObjectName="QphotoImgPo">
+		</table>
+		
+		<table tableName="qimg_video" domainObjectName="QimgVideoPo">
 		</table>
 
 
