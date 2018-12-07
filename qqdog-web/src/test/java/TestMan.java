@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -47,6 +48,7 @@ public class TestMan {
 	public static String QQ_IMGINFO_URL = "https://h5.qzone.qq.com/proxy/domain/plist.photo.qzone.qq.com/fcgi-bin/cgi_list_photo";
 	public static String QQ_VISITINFO_URL = "https://h5.qzone.qq.com/proxy/domain/g.qzone.qq.com/cgi-bin/friendshow/cgi_get_visitor_simple";
 	public static String QQ_SENT_EMOT = "https://user.qzone.qq.com/proxy/domain/taotao.qzone.qq.com/cgi-bin/emotion_cgi_publish_v6";
+	public static String QQ_IMG_VEDIO_URL = "https://h5.qzone.qq.com/proxy/domain/photo.qzone.qq.com/fcgi-bin/cgi_floatview_photo_list_v2";
 	public Map<String,String> getHeader()  {
 		Properties prop = new Properties();
 		try {
@@ -338,9 +340,61 @@ public class TestMan {
 		
 	}
 	
-	
+	private Map<String,String> getH(String filePath){
+		String json="{}";
+		try {
+			json = IOUtils.toString(new FileInputStream(new File(filePath)),"utf-8");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return JSON.parseObject(json,Map.class);
+	}
+	private Map<String,Object> getP(String filePath){
+		String json="{}";
+		try {
+			json = IOUtils.toString(new FileInputStream(new File(filePath)),"utf-8");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return JSON.parseObject(json,Map.class);
+	}
 	@Test
-	public void testMail() {
+	public void testImgVedio() throws IOException {
+		Map<String,String> header = getH("D:\\1.json");
+		Map<String,Object> ps = getP("D:\\2.json");
+		Map<String,Object> params = new HashMap<>();
+		params.put("g_tk",ps.get("g_tk"));
+		params.put("callback","viewer_Callback");
+		//params.put("t","972306368");
+		params.put("topicId","V13YkSk201Wgg1");
+		//params.put("picKey","NDR0fhXYO81Xi1vp*JYQIQEAAAAAAAA!");
+		params.put("shootTime","");
+		params.put("cmtOrder","1");
+		params.put("fupdate","1");
+		params.put("plat","qzone");
+		params.put("source","qzone");
+		params.put("cmtNum","10");
+		params.put("likeNum","5");
+		params.put("inCharset","utf-8");
+		params.put("outCharset","utf-8");
+		params.put("callbackFun","viewer");
+		params.put("offset","0");
+		params.put("number","100");
+		params.put("uin","1143886181");
+		params.put("appid","4");
+		params.put("isFirst","1");
+		params.put("hostUin","1004017022");
+		params.put("sortOrder","1");
+		params.put("showMode","1");
+		params.put("need_private_comment","1");
+		params.put("prevNum","0");
+		params.put("postNum","0");
+		params.put("format","json");
+		
+		String res = YhHttpUtil.sendHttpGet(QQ_IMG_VEDIO_URL, params, header);
+		IOUtils.write(res,new FileOutputStream(new File("D:\\q.json")));
+
+		
 	}
 	
 }

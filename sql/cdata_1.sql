@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : 127.0.0.1
 Source Server Version : 50723
 Source Host           : 127.0.0.1:3306
-Source Database       : bdata_3
+Source Database       : cdata_1
 
 Target Server Type    : MYSQL
 Target Server Version : 50723
 File Encoding         : 65001
 
-Date: 2018-12-07 13:44:01
+Date: 2018-12-07 16:15:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -117,6 +117,32 @@ CREATE TABLE `qemot_pic` (
 
 -- ----------------------------
 -- Records of qemot_pic
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qimg_vedio
+-- ----------------------------
+DROP TABLE IF EXISTS `qimg_vedio`;
+CREATE TABLE `qimg_vedio` (
+  `id` bigint(20) NOT NULL,
+  `uid` bigint(15) DEFAULT NULL,
+  `pickey` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
+  `img_id` bigint(20) DEFAULT NULL,
+  `cover_height` double(5,0) DEFAULT NULL,
+  `cover_width` double(5,0) DEFAULT NULL,
+  `duration` int(10) DEFAULT NULL,
+  `format` varchar(20) DEFAULT NULL,
+  `size` bigint(15) DEFAULT NULL,
+  `status` int(2) DEFAULT NULL,
+  `vid` varchar(100) DEFAULT NULL,
+  `video_share_h5` varchar(200) DEFAULT NULL,
+  `video_type` int(2) DEFAULT NULL,
+  `video_url` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of qimg_vedio
 -- ----------------------------
 
 -- ----------------------------
