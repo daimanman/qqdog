@@ -176,7 +176,7 @@
           #{po.rawshoottime,jdbcType=VARCHAR}, #{po.uploadtime,jdbcType=VARCHAR}, #{po.url,jdbcType=VARCHAR}, 
           #{po.width,jdbcType=VARCHAR}, #{po.photoId,jdbcType=BIGINT}, #{po.uid,jdbcType=VARCHAR}, 
           now(), #{po.desc,jdbcType=LONGVARCHAR}, #{po.originUrl,jdbcType=LONGVARCHAR}, 
-          #{po.poiname,jdbcType=LONGVARCHAR},#{lloc},#{sloc})
+          #{po.poiname,jdbcType=LONGVARCHAR},#{po.lloc},#{po.sloc})
     </foreach>
     
   </insert>
