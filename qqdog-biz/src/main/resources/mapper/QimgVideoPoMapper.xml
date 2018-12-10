@@ -16,6 +16,8 @@
     <result column="video_share_h5" property="videoShareH5" jdbcType="VARCHAR" />
     <result column="video_type" property="videoType" jdbcType="INTEGER" />
     <result column="video_url" property="videoUrl" jdbcType="VARCHAR" />
+     <result column="photo_id" property="photoId" jdbcType="BIGINT" />
+     <result column="topicid" property="topicid" jdbcType="VARCHAR" />
   </resultMap>
   
   <insert id="addQimgVideoBatch" parameterType="com.man.qqdog.client.po.QimgVideoPo" >
@@ -23,7 +25,7 @@
       img_id, cover_height, cover_width, 
       duration, format, size, 
       status, vid, video_share_h5, 
-      video_type, video_url)
+      video_type, video_url,topicid,photo_id)
     values 
     <foreach collection="list" item="po" separator=",">
     (
@@ -31,7 +33,7 @@
       #{po.imgId,jdbcType=BIGINT}, #{po.coverHeight,jdbcType=DOUBLE}, #{po.coverWidth,jdbcType=DOUBLE}, 
       #{po.duration,jdbcType=INTEGER}, #{po.format,jdbcType=VARCHAR}, #{po.size,jdbcType=BIGINT}, 
       #{po.status,jdbcType=INTEGER}, #{po.vid,jdbcType=VARCHAR}, #{po.videoShareH5,jdbcType=VARCHAR}, 
-      #{po.videoType,jdbcType=INTEGER}, #{po.videoUrl,jdbcType=VARCHAR
+      #{po.videoType,jdbcType=INTEGER}, #{po.videoUrl,jdbcType=VARCHAR},#{po.topicid},#{po.photoId}
     )
     </foreach>
     </insert>

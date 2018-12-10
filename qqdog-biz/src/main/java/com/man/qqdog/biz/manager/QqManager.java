@@ -1012,19 +1012,31 @@ public class QqManager {
 				imgPo.uid = uid + "";
 				imgPoList.add(imgPo);
 				
-				if("true".equals(imgPo.isVideo)) {
-					videoContentMap = crawlImgVedio(imgPo.uid,topicId,imgPo.sloc);
-					QimgVideoPo video = QqModelTransform.converQimgVideo(videoContentMap);
-					if(null != video) {
-						imgVideos.add(video);
-					}
-					
-				}
+				
 			}
 			logger.info("photo uid={} totalNum={} getNum={} photoUidSize={}", uid, imgTotalNum, getNumTotal,
 					photoUidsList.size());
 		}
 		qphotoInfoService.addPhotoImgBatch(imgPoList);
+		
+		for(QphotoImgPo imgPo:imgPoList){
+			if("true".equals(imgPo.isVideo)) {
+				videoContentMap = crawlImgVedio(imgPo.uid,topicId,imgPo.sloc);
+				QimgVideoPo video = QqModelTransform.converQimgVideo(videoContentMap);
+				//logger.info("video oks {}  ",JSON.toJSONString(video));
+				if(null != video) {
+					video.id = qphotoInfoService.getId();
+					video.imgId = imgPo.id;
+					video.pickey = imgPo.sloc;
+					video.uid = uid;
+					video.photoId=imgPo.photoId;
+					video.topicid = topicId;
+					imgVideos.add(video);
+				}
+			}
+		}
+		
+		qphotoInfoService.addImgVideoBatch(imgVideos);
 		return getNumTotal;
 	}
 

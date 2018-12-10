@@ -28,8 +28,29 @@ public class QimgVideoPo {
     public Integer videoType;
 
     public String videoUrl;
+    
+    public String topicid;
+    
+    public long photoId;
+    
+    
+    public String getTopicid() {
+		return topicid;
+	}
 
-    public Long getId() {
+	public void setTopicid(String topicid) {
+		this.topicid = topicid;
+	}
+
+	public long getPhotoId() {
+		return photoId;
+	}
+
+	public void setPhotoId(long photoId) {
+		this.photoId = photoId;
+	}
+
+	public Long getId() {
         return id;
     }
 

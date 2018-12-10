@@ -81,7 +81,7 @@ public class TestController extends BaseController {
 	@Autowired
 	private ElasticSearchManager esManager;
 	
-	private Set<String> notUids = new HashSet<>(Arrays.asList("1018793423","1164019679"));
+	private Set<String> notUids = new HashSet<>(Arrays.asList("10187934231","1164019679"));
 	
 	@RequestMapping("/id")
 	public void id(HttpServletResponse response) throws IOException {
@@ -108,6 +108,7 @@ public class TestController extends BaseController {
 		map.put("userInfo", qqManager.userInfoUidsList);
 		sendJson(response, map);
 	}
+	
 
 	@RequestMapping("/addU")
 	public void addU(HttpServletResponse response,HttpServletRequest request) throws IOException {
