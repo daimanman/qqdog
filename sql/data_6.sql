@@ -3,14 +3,14 @@ Navicat MySQL Data Transfer
 
 Source Server         : thinkpad
 Source Server Version : 50637
-Source Host           : 192.168.1.109:3306
+Source Host           : 192.168.1.104:3306
 Source Database       : data_6
 
 Target Server Type    : MYSQL
 Target Server Version : 50637
 File Encoding         : 65001
 
-Date: 2018-12-07 21:39:11
+Date: 2018-12-10 22:17:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,10 +36,6 @@ CREATE TABLE `qemot_comment` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of qemot_comment
--- ----------------------------
-
--- ----------------------------
 -- Table structure for qemot_comment_reply
 -- ----------------------------
 DROP TABLE IF EXISTS `qemot_comment_reply`;
@@ -57,10 +53,6 @@ CREATE TABLE `qemot_comment_reply` (
   `create_gmt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qemot_comment_reply
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for qemot_info
@@ -84,18 +76,14 @@ CREATE TABLE `qemot_info` (
   `uid` varchar(30) DEFAULT NULL,
   `wbid` varchar(100) DEFAULT NULL,
   `lbs_id` varchar(50) DEFAULT NULL,
-  `lbs_idname` varchar(255) DEFAULT NULL,
-  `lbs_name` varchar(255) DEFAULT NULL,
+  `lbs_idname` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `lbs_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `lbs_pos_x` varchar(30) DEFAULT NULL,
   `lbs_pos_y` varchar(30) DEFAULT NULL,
   `source_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `create_gmt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qemot_info
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for qemot_pic
@@ -116,15 +104,11 @@ CREATE TABLE `qemot_pic` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of qemot_pic
--- ----------------------------
-
--- ----------------------------
 -- Table structure for qimg_video
 -- ----------------------------
 DROP TABLE IF EXISTS `qimg_video`;
 CREATE TABLE `qimg_video` (
-  `id` bigint(20) DEFAULT NULL,
+  `id` bigint(20) NOT NULL,
   `uid` bigint(20) DEFAULT NULL,
   `img_id` bigint(20) DEFAULT NULL,
   `pickey` varchar(100) DEFAULT NULL,
@@ -137,12 +121,11 @@ CREATE TABLE `qimg_video` (
   `vid` varchar(100) DEFAULT NULL,
   `video_share_h5` varchar(300) DEFAULT NULL,
   `video_type` int(2) DEFAULT NULL,
-  `video_url` varchar(500) DEFAULT NULL
+  `video_url` varchar(500) DEFAULT NULL,
+  `photo_id` bigint(20) DEFAULT NULL,
+  `topicid` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of qimg_video
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for qmsg_info
@@ -168,10 +151,6 @@ CREATE TABLE `qmsg_info` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of qmsg_info
--- ----------------------------
-
--- ----------------------------
 -- Table structure for qmsg_info_reply
 -- ----------------------------
 DROP TABLE IF EXISTS `qmsg_info_reply`;
@@ -185,10 +164,6 @@ CREATE TABLE `qmsg_info_reply` (
   `uin` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qmsg_info_reply
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for qphoto_img
@@ -234,10 +209,6 @@ CREATE TABLE `qphoto_img` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of qphoto_img
--- ----------------------------
-
--- ----------------------------
 -- Table structure for qphoto_info
 -- ----------------------------
 DROP TABLE IF EXISTS `qphoto_info`;
@@ -267,10 +238,6 @@ CREATE TABLE `qphoto_info` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of qphoto_info
--- ----------------------------
-
--- ----------------------------
 -- Table structure for qq
 -- ----------------------------
 DROP TABLE IF EXISTS `qq`;
@@ -278,34 +245,6 @@ CREATE TABLE `qq` (
   `uid` varchar(255) DEFAULT NULL,
   `pwd` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qq
--- ----------------------------
-INSERT INTO `qq` VALUES ('168033989', '411');
-INSERT INTO `qq` VALUES ('1143886181', '411');
-INSERT INTO `qq` VALUES ('1748723478', '411');
-INSERT INTO `qq` VALUES ('1843594995', '26');
-INSERT INTO `qq` VALUES ('1934843846', '411');
-INSERT INTO `qq` VALUES ('2083499983', '411');
-INSERT INTO `qq` VALUES ('2109529257', '26');
-INSERT INTO `qq` VALUES ('2684839141', '2635');
-INSERT INTO `qq` VALUES ('2875593464', '411');
-INSERT INTO `qq` VALUES ('2972638700', '411');
-INSERT INTO `qq` VALUES ('3079693469', '411');
-INSERT INTO `qq` VALUES ('3120418574', '411');
-INSERT INTO `qq` VALUES ('3235875136', '411');
-INSERT INTO `qq` VALUES ('3356337217', '411');
-INSERT INTO `qq` VALUES ('3565759691', '411s');
-INSERT INTO `qq` VALUES ('1276742580', '987654321manxiao');
-INSERT INTO `qq` VALUES ('1332466059 ', '411');
-INSERT INTO `qq` VALUES ('2433276560 ', '411');
-INSERT INTO `qq` VALUES ('848443394 ', '411');
-INSERT INTO `qq` VALUES ('506518319 ', '411');
-INSERT INTO `qq` VALUES ('259574694', '411');
-INSERT INTO `qq` VALUES ('2246566657 ', '411');
-INSERT INTO `qq` VALUES ('1700057380', '411');
-INSERT INTO `qq` VALUES ('480801170', '411');
 
 -- ----------------------------
 -- Table structure for qsession_info
@@ -321,10 +260,6 @@ CREATE TABLE `qsession_info` (
   `msg` varchar(500) COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`uid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qsession_info
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for qtask_info
@@ -346,10 +281,6 @@ CREATE TABLE `qtask_info` (
   `photo_start` int(10) DEFAULT NULL,
   PRIMARY KEY (`uid`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qtask_info
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for quser_info
@@ -391,10 +322,6 @@ CREATE TABLE `quser_info` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='空间name';
 
 -- ----------------------------
--- Records of quser_info
--- ----------------------------
-
--- ----------------------------
 -- Table structure for quser_info_n
 -- ----------------------------
 DROP TABLE IF EXISTS `quser_info_n`;
@@ -402,7 +329,3 @@ CREATE TABLE `quser_info_n` (
   `uid` bigint(20) NOT NULL,
   PRIMARY KEY (`uid`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of quser_info_n
--- ----------------------------
