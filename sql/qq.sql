@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : thinkpad
-Source Server Version : 50637
-Source Host           : 192.168.1.103:3306
-Source Database       : data_4
+Source Server         : 127.0.0.1
+Source Server Version : 50723
+Source Host           : 127.0.0.1:3306
+Source Database       : bdata_6
 
 Target Server Type    : MYSQL
-Target Server Version : 50637
+Target Server Version : 50723
 File Encoding         : 65001
 
-Date: 2018-11-26 21:46:18
+Date: 2018-12-20 08:51:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `qq`;
 CREATE TABLE `qq` (
   `uid` varchar(255) DEFAULT NULL,
   `pwd` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of qq
@@ -46,4 +46,11 @@ INSERT INTO `qq` VALUES ('1276742580', '987654321manxiao');
 INSERT INTO `qq` VALUES ('1332466059 ', '411');
 INSERT INTO `qq` VALUES ('2433276560 ', '411');
 INSERT INTO `qq` VALUES ('848443394 ', '411');
-INSERT INTO `qq` VALUES ('3422469468', '411');
+INSERT INTO `qq` VALUES ('506518319 ', '411');
+INSERT INTO `qq` VALUES ('259574694', '411');
+INSERT INTO `qq` VALUES ('2246566657 ', '411');
+INSERT INTO `qq` VALUES ('1700057380', '411');
+INSERT INTO `qq` VALUES ('480801170', '411');
+INSERT INTO `qq` VALUES ('1102309156 ', '411');
+INSERT INTO `qq` VALUES ('2817875636 ', '2635');
+INSERT INTO `qq` VALUES ('3407922994 ', '2635913man123');
