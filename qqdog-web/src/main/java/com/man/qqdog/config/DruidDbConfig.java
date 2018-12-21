@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.man.utils.ObjectUtil;
 
-//@Configuration
+@Configuration
 public class DruidDbConfig {
 	Logger logger = LoggerFactory.getLogger(DruidDbConfig.class);
 	@Value("${spring.datasource.druid.url}")  
@@ -65,15 +66,28 @@ public class DruidDbConfig {
     @Value("${spring.datasource.druid.filters}")  
     private String filters;  
       
-    @Value("{spring.datasource.druid.connectionProperties}")  
+    @Value("${spring.datasource.druid.connectionProperties}")  
     private String connectionProperties;  
+    
+    @Value("${spring.datasource.druid.dbname}") 
+    private String dbname;
+    
+    @Value("${spring.datasource.druid.dbip}") 
+    private String dbip;
+    
+    @Value("${spring.datasource.druid.dbport}") 
+    private String dbport;
       
     @Bean     //声明其为Bean实例  
     @Primary  //在同样的DataSource中，首先使用被标注的DataSource  
     public DataSource dataSource(){  
-        DruidDataSource datasource = new DruidDataSource();  
-          
-        datasource.setUrl(this.dbUrl);  
+        DruidDataSource datasource = new DruidDataSource();
+        dbname = ObjectUtil.toString(System.getenv("dbname"),dbname);
+        dbip = ObjectUtil.toString(System.getenv("dbip"),dbip);
+        logger.info("System.getenv(\"dbname\")={}",System.getenv("dbname"));
+        String mysqlurl = String.format("jdbc:mysql://%s:%s/%s",dbip,dbport,dbname);
+        logger.info("dbip={},dbname={},dbport={} url={}",dbip,dbname,dbport,mysqlurl);
+        datasource.setUrl(mysqlurl);  
         datasource.setUsername(username);  
         datasource.setPassword(password);  
         datasource.setDriverClassName(driverClassName);  

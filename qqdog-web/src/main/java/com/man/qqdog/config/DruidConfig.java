@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import com.alibaba.druid.pool.DruidDataSource;
 
 
-@Configuration  //标识该类被纳入spring容器中实例化并管理
-@ServletComponentScan //用于扫描所有的Servlet、filter、listener
+//@Configuration  //标识该类被纳入spring容器中实例化并管理
+//@ServletComponentScan //用于扫描所有的Servlet、filter、listener
 public class DruidConfig {
 	@Bean
 	@ConfigurationProperties(prefix="spring.datasource.druid") //加载时读取指定的配置信息,前缀为spring.datasource.druid
