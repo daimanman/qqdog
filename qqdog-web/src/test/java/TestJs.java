@@ -1,9 +1,16 @@
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -11,6 +18,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.man.utils.ObjectUtil;
+import com.man.utils.YhHttpUtil;
 
 public class TestJs {
 
@@ -108,6 +120,149 @@ public class TestJs {
         url = browser.getCurrentUrl();
         System.out.println(url);
 	}
+	
+	public Map<String,String> getQMap() throws FileNotFoundException, IOException{
+		String cm = IOUtils.toString(new FileInputStream(new File("D:\\dxmtools\\myxm\\1.json")),"utf-8");
+		return JSON.parseObject(cm,new TypeReference<Map<String,String>>(){});
+	}
+	
+	public List<String> getQList() throws FileNotFoundException, IOException{
+		String cm = IOUtils.toString(new FileInputStream(new File("D:\\dxmtools\\myxm\\3.json")),"utf-8");
+		return JSON.parseObject(cm,new TypeReference<List<String>>(){});
+	}
+	
+	
+	
+	@Test
+	public void saveQList() throws Exception {
+		Set<String> keys = getQMap().keySet();
+		System.out.println(keys.size());
+		IOUtils.write(JSON.toJSONString(keys),new FileOutputStream(new File("D:\\\\dxmtools\\\\myxm\\\\3.json")));
+		
+	}
+	
+	@Test
+	public void testSize() throws FileNotFoundException, IOException {
+		System.out.println(getQList().size());
+	}
+	
+	public void loginq( WebDriver browser,String u,String p) throws Exception {
+			//browser.get("https://i.qq.com");
+	        browser.switchTo().frame("login_frame");
+	        Thread.sleep(500);  
+
+	        WebElement button = browser.findElement(By.id("switcher_plogin"));
+	        button.click();
+	        
+	        Thread.sleep(500);
+	        browser.findElement(By.id("u")).sendKeys(u);
+	        
+	        Thread.sleep(500);
+	        browser.findElement(By.id("p")).sendKeys(p);
+	        
+	       // Thread.sleep(500);
+	        //browser.findElement(By.id("login_button")).click();
+	}
+	
+	@Test
+	public void testDemo192_0_10() throws Exception {
+		Map<String,String> qmap = getQMap();
+		List<String> qList = getQList();
+		ChromeOptions options = new ChromeOptions();
+		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-192.crx"));
+		System.setProperty("webdriver.chrome.driver","D:\\dxmtools\\myxm\\js\\chromedriver.exe");//chromedriver服务地址
+        WebDriver browser =new ChromeDriver(options);
+        int size = qList.size();
+        int end = size/2;
+        for(int i = 0 ;i<end;i++) {
+        	String url = String.format("https://i.qq.com/?key=%s",qList.get(i));
+        	if(i == 0) {
+        		browser.get(url);
+        	}else {
+        		 ((JavascriptExecutor) browser).executeScript("window.open(\""+url+"\");");
+        	}
+        }
+        Set<String> winHandels = browser.getWindowHandles();
+        List<String> itList = new ArrayList<String>(winHandels);
+        for(String it:itList) {
+        	 browser.switchTo().window(it);
+             String[] urlArr = browser.getCurrentUrl().split("=");
+             String kq = "";
+             if(urlArr.length >= 2) {
+             	kq = urlArr[1];
+             	String p = qmap.get(kq);
+             	 System.out.println(kq+"--"+p);
+                 loginq(browser, kq, p);
+                 Thread.sleep(5000);
+             }
+        }
+	}
+	@Test
+	public void testDemo193() throws Exception {
+		Map<String,String> qmap = getQMap();
+		List<String> qList = getQList();
+		ChromeOptions options = new ChromeOptions();
+		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-193.crx"));
+		System.setProperty("webdriver.chrome.driver","D:\\dxmtools\\myxm\\js\\chromedriver.exe");//chromedriver服务地址
+        WebDriver browser =new ChromeDriver(options);
+        int size = qList.size();
+        int end = size/2;
+        for(int i = end ;i<size;i++) {
+        	String url = String.format("https://i.qq.com/?key=%s",qList.get(i));
+        	if(i == 0) {
+        		browser.get(url);
+        	}else {
+        		 ((JavascriptExecutor) browser).executeScript("window.open(\""+url+"\");");
+        	}
+        }
+        Set<String> winHandels = browser.getWindowHandles();
+        List<String> itList = new ArrayList<String>(winHandels);
+        for(String it:itList) {
+        	 browser.switchTo().window(it);
+             String[] urlArr = browser.getCurrentUrl().split("=");
+             String kq = "";
+             if(urlArr.length >= 2) {
+             	kq = urlArr[1];
+             	String p = qmap.get(kq);
+             	 System.out.println(kq+"--"+p);
+                 loginq(browser, kq, p);
+                 Thread.sleep(5000);
+             }
+        }
+	}
+	
+	
+	@Test
+	public void testSql() throws Exception {
+		List<String> qList1 = getQList();
+		List<String> qList = new ArrayList<>();
+		int size = qList1.size();
+        int end = size/2;
+        for(int i = end ;i<size;i++) {
+        	qList.add(qList1.get(i));
+        }
+		Map<String,String> qM = new HashMap<String,String>();
+		for(String q:qList) {
+			qM.put(q,q);
+		}
+        String content = YhHttpUtil.sendHttpGet("http://192.168.1.193:54321/showUid",null,null);
+        Map<String,Object> cm = ObjectUtil.castMapObj(JSON.parseObject(content,Map.class));
+        List cmList = ObjectUtil.castListObj(cm.get("msg"));
+        Map<String,Object> cmMap = new HashMap<>();
+        for(Object cmk:cmList) {
+        	cmMap.put(ObjectUtil.toString(cmk,""),cm);
+        }
+        System.out.println(cmMap.keySet());
+        for(String q:qList) {
+        	if(cmMap.get(q)==null) {
+        		System.out.println(q);
+        	}
+        }
+        
+        
+	}
+	
+	
 	
 	
 }
