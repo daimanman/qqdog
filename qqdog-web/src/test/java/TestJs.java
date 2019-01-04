@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -146,26 +147,33 @@ public class TestJs {
 		System.out.println(getQList().size());
 	}
 	
-	public void loginq( WebDriver browser,String u,String p) throws Exception {
-			//browser.get("https://i.qq.com");
-	        browser.switchTo().frame("login_frame");
-	        Thread.sleep(500);  
-
-	        WebElement button = browser.findElement(By.id("switcher_plogin"));
-	        button.click();
-	        
-	        Thread.sleep(500);
-	        browser.findElement(By.id("u")).sendKeys(u);
-	        
-	        Thread.sleep(500);
-	        browser.findElement(By.id("p")).sendKeys(p);
-	        
-	       // Thread.sleep(500);
-	        //browser.findElement(By.id("login_button")).click();
-	}
 	
 	@Test
-	public void testDemo192_0_10() throws Exception {
+	public void testDemo192Open() throws Exception {
+		Map<String,String> qmap = getQMap();
+		List<String> qList = getQList();
+		ChromeOptions options = new ChromeOptions();
+		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-192.crx"));
+		System.setProperty("webdriver.chrome.driver","D:\\dxmtools\\myxm\\js\\chromedriver.exe");//chromedriver服务地址
+        WebDriver browser =new ChromeDriver(options);
+        if(true) {
+        	return;
+        }
+	}  
+	@Test
+	public void testDemo193Open() throws Exception {
+		Map<String,String> qmap = getQMap();
+		List<String> qList = getQList();
+		ChromeOptions options = new ChromeOptions();
+		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-193.crx"));
+		System.setProperty("webdriver.chrome.driver","D:\\dxmtools\\myxm\\js\\chromedriver.exe");//chromedriver服务地址
+        WebDriver browser =new ChromeDriver(options);
+        if(true) {
+        	return;
+        }
+	}
+	@Test
+	public void testDemo192() throws Exception {
 		Map<String,String> qmap = getQMap();
 		List<String> qList = getQList();
 		ChromeOptions options = new ChromeOptions();
@@ -257,6 +265,76 @@ public class TestJs {
         	if(cmMap.get(q)==null) {
         		System.out.println(q);
         	}
+        }
+        
+        
+	}
+	public void loginq( WebDriver browser,String u,String p) throws Exception {
+		//browser.get("https://i.qq.com");
+        browser.switchTo().frame("login_frame");
+        Thread.sleep(500);  
+
+        WebElement button = browser.findElement(By.id("switcher_plogin"));
+        button.click();
+        
+        Thread.sleep(500);
+        browser.findElement(By.id("u")).sendKeys(u);
+        
+        Thread.sleep(500);
+        browser.findElement(By.id("p")).sendKeys(p);
+        
+       // Thread.sleep(500);
+        //browser.findElement(By.id("login_button")).click();
+}
+	@Test
+	public void testDemoLoginQzone() throws Exception {
+		System.setProperty("webdriver.chrome.driver","D:\\dxmtools\\myxm\\js\\chromedriver.exe");//chromedriver服务地址
+        WebDriver browser =new ChromeDriver();
+        browser.get("https://i.qq.com");
+        browser.switchTo().frame("login_frame");
+        Thread.sleep(1000);
+        //img_out_3246615477 custom_menu_swf('4') 点击相册
+        List<WebElement> es =  browser.findElements(By.cssSelector("span[class ^='img_out']"));
+        for(WebElement e:es) {
+        	String uin = e.getAttribute("uin");
+        	String className = e.getAttribute("class");
+        	System.out.println("uin---"+uin+"---class--"+className);
+        	if("3246615477".equals(uin)) {
+        		e.click();
+        		Thread.sleep(2000);
+        		break;
+        	}
+        }
+        ((JavascriptExecutor) browser).executeScript("custom_menu_swf('4');");
+        Thread.sleep(1000);
+        //tphoto
+        browser.switchTo().frame("tphoto");
+        //data-uploadfrom="albumlist"
+        List<WebElement> esUp = browser.findElements(By.cssSelector("div#js-album-opbar-container a[data-uploadfrom='albumlist']"));
+        for(WebElement up:esUp) {
+        	up.click();
+        	break;
+        }
+        
+        Thread.sleep(2000);
+        browser.switchTo().window(browser.getWindowHandle()); 
+        //photoUploadDialog  photoUploadDialog
+        browser.switchTo().frame("photoUploadDialog");
+        // class="j-input-add" type="file"
+        String[] names= new String[]{"D:\\imgs\\01.png","D:\\imgs\\g1.png"};
+        for(String name:names) {
+        	List<WebElement> files = browser.findElements(By.cssSelector(" div.j-view-nophoto input[type='file'][class='j-input-add']"));
+            for(WebElement file:files) {
+            	System.out.println("---"+file.getAttribute("accept"));
+            	file.sendKeys(name);
+            	break;
+            }
+        }
+        
+        List<WebElement> uploadBtn = browser.findElements(By.cssSelector(".upload-op .btn-upload"));
+        for(WebElement upload:uploadBtn) {
+        	upload.click();
+        	break;
         }
         
         
