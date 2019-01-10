@@ -35,6 +35,9 @@ import com.man.pageinfo.QueryParams;
 import com.man.qqdog.biz.es.MsgInfoQueryDsl;
 import com.man.qqdog.biz.manager.QqManager;
 import com.man.qqdog.biz.manager.StartCrawlThread;
+import com.man.qqdog.biz.service.impl.QUserServiceImpl;
+import com.man.qqdog.biz.service.impl.QemotServiceImpl;
+import com.man.qqdog.biz.service.impl.QmsgServiceImpl;
 import com.man.utils.ObjectUtil;
 import com.man.utils.ReqParam;
 import com.man.utils.YhHttpUtil;
@@ -298,6 +301,38 @@ public class TestMan {
 		queryParams.setPageSize(10);
 		PageResult<Map<String,Object>> pageInfo = es.filterPage(index, type, queryParams);
 		System.out.println(pageInfo.getDatas().size());
+	}
+	
+	@Test
+	public void testMsgGetNum() {
+		ElasticSearchManager es = new ElasticSearchManager();
+		es.setClusterName("elasticsearch");
+		es.setHosts("192.168.1.53:9300");
+		TransportClient client = es.initClient();
+		
+		QmsgServiceImpl qmsgService = new QmsgServiceImpl();
+		qmsgService.esManager = es;
+		System.out.println(qmsgService.getMsgNum("1003705722"));
+	}
+	@Test
+	public void testEmotGetNum() {
+		ElasticSearchManager es = new ElasticSearchManager();
+		es.setClusterName("elasticsearch");
+		es.setHosts("192.168.1.53:9300");
+		TransportClient client = es.initClient();
+		QemotServiceImpl qmsgService = new QemotServiceImpl();
+		qmsgService.esManager = es;
+		System.out.println(qmsgService.getEmotNum("1003705722"));
+	}
+	@Test
+	public void testGetUserInfo() {
+		ElasticSearchManager es = new ElasticSearchManager();
+		es.setClusterName("elasticsearch");
+		es.setHosts("192.168.1.53:9300");
+		TransportClient client = es.initClient();
+		QUserServiceImpl qmsgService = new QUserServiceImpl();
+		qmsgService.esManager = es;
+		System.out.println(qmsgService.getEsUserInfo("1003705722"));
 	}
 	@Test
 	public void testMsgMax() {

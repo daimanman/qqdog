@@ -22,6 +22,8 @@ public int addPhotoImgBatch(List<QphotoImgPo> datas);
 	
 	public int addImgVideoBatch(List<QimgVideoPo> datas);
 	
+	public long getPhotoNum(String uid);
+	
 	
 	
 }

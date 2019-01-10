@@ -34,7 +34,7 @@ public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
 	private QemotInfoPoMapper qemotMapper;
 	
 	@Autowired
-	private ElasticSearchManager esManager;
+	public ElasticSearchManager esManager;
 	
 	@Override
 	public int insertQemotInfoBatch(List<QemotInfoPo> datas) {
@@ -155,6 +155,16 @@ public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
 	public PageResult<Map<String, Object>> queryEsEmotPage(ReqParam params) {
 		QueryParams queryParams = EmotInfoQueryDsl.parseListDsl(params);
 		return esManager.filterPage(IdxConstant.QEMOT_INFO_IDX,IdxConstant.QEMOT_INFO_TYPE, queryParams);
+	}
+
+	@Override
+	public long getEmotNum(String uid) {
+		ReqParam params = new ReqParam();
+		params.put("page","1");
+		params.put("pageSize","1");
+		params.put("uid",uid);
+		PageResult<Map<String, Object>>  pageResult = queryEsEmotPage(params);
+		return pageResult.total;
 	}
 
 }

@@ -23,4 +23,6 @@ public  int  insertQemotInfoBatch(List<QemotInfoPo> qemotInfoList);
 	public void saveEmotInfoMap(Map<String,Object> dataMap,long uid);
 	
 	public PageResult<Map<String,Object>> queryEsEmotPage(ReqParam params);
+	
+	public long getEmotNum(String uid);
 }

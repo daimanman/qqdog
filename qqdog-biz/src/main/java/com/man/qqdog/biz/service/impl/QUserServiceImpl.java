@@ -1,6 +1,7 @@
 package com.man.qqdog.biz.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +31,7 @@ public class QUserServiceImpl extends BaseServiceImpl implements QUserService  {
 	private QuserInfoPoMapper quserInfoPoMapper;
 	
 	@Autowired
-	private ElasticSearchManager esManager;
+	public ElasticSearchManager esManager;
 	
 	Logger logger = LoggerFactory.getLogger(QUserServiceImpl.class);
 	
@@ -115,6 +116,21 @@ public class QUserServiceImpl extends BaseServiceImpl implements QUserService  {
 				//esManager.multiIndex(idxName, tableName, datas,false);
 			}
 		}
+	}
+
+	@Override
+	public Map<String, Object> getEsUserInfo(String uid) {
+		ReqParam params = new ReqParam();
+		params.put("uid",uid);
+		params.put("page","1");
+		params.put("pageSize","1");
+		PageResult<Map<String,Object>> pageResult = queryEsUserPage(params);
+		List<Map<String,Object>> datas = pageResult.datas;
+		if(null != datas && datas.size() > 0) {
+			return datas.get(0);
+		}
+		return new HashMap<String,Object>();
+		
 	}
 
 //	public void importMySqlData02(String tableName){

@@ -19,4 +19,6 @@ public int addQuserInfo(QuserInfoPo userInfo);
 	
 	public void importEsData(ReqParam params);
 	
+	public Map<String,Object> getEsUserInfo(String uid);
+	
 }

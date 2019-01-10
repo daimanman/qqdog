@@ -66,12 +66,22 @@ public class QphotoInfoServiceImpl extends BaseServiceImpl implements QphotoInfo
 		QueryParams queryParams = QphotoInfoQueryDsl.parsePhotoImgListDsl(params);
 		return esManager.filterPage(IdxConstant.QPHOTO_IMG_IDX,IdxConstant.QPHOTO_IMG_TYPE, queryParams);
 	}
-
+	
 	@Override
 	public int addImgVideoBatch(List<QimgVideoPo> datas) {
 		if(null == datas || datas.size() == 0) {
 			return -1;
 		}
 		return qimgVideoPoMapper.addQimgVideoBatch(datas);
+	}
+
+	@Override
+	public long getPhotoNum(String uid) {
+		ReqParam params = new ReqParam();
+		params.put("page","1");
+		params.put("pageSize","1");
+		params.put("uid",uid);
+		PageResult<Map<String, Object>> pageResult = queryEsPhotoPage(params);
+		return pageResult.total;
 	}
 }

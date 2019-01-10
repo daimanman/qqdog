@@ -205,12 +205,13 @@ public class TestJs {
              }
         }
 	}
+	
 	@Test
 	public void testDemo193() throws Exception {
 		Map<String,String> qmap = getQMap();
 		List<String> qList = getQList();
 		ChromeOptions options = new ChromeOptions();
-		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-193.crx"));
+		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-192.crx"));
 		System.setProperty("webdriver.chrome.driver","D:\\dxmtools\\myxm\\js\\chromedriver.exe");//chromedriver服务地址
         WebDriver browser =new ChromeDriver(options);
         int size = qList.size();
@@ -253,7 +254,7 @@ public class TestJs {
 		for(String q:qList) {
 			qM.put(q,q);
 		}
-        String content = YhHttpUtil.sendHttpGet("http://192.168.1.193:54321/showUid",null,null);
+        String content = YhHttpUtil.sendHttpGet("http://192.168.1.192:54321/showUid",null,null);
         Map<String,Object> cm = ObjectUtil.castMapObj(JSON.parseObject(content,Map.class));
         List cmList = ObjectUtil.castListObj(cm.get("msg"));
         Map<String,Object> cmMap = new HashMap<>();

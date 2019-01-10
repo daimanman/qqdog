@@ -9,12 +9,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.man.constants.IdxConstant;
+import com.man.es.manager.ElasticSearchManager;
+import com.man.pageinfo.PageResult;
+import com.man.pageinfo.QueryParams;
+import com.man.qqdog.biz.es.EmotInfoQueryDsl;
+import com.man.qqdog.biz.es.MsgInfoQueryDsl;
 import com.man.qqdog.biz.mapper.QmsgInfoPoMapper;
 import com.man.qqdog.biz.utils.QqModelTransform;
 import com.man.qqdog.client.po.QmsgInfoPo;
 import com.man.qqdog.client.po.QmsgInfoReplyPo;
 import com.man.qqdog.client.service.QmsgService;
 import com.man.utils.ObjectUtil;
+import com.man.utils.ReqParam;
 
 @Service
 @SuppressWarnings("rawtypes")
@@ -23,6 +30,9 @@ public class QmsgServiceImpl extends BaseServiceImpl implements QmsgService {
 	@Autowired
 	private QmsgInfoPoMapper msgInfoMapper;
 	Logger logger = LoggerFactory.getLogger(QmsgServiceImpl.class);
+	
+	@Autowired
+	public ElasticSearchManager esManager;
 	
 	@Override
 	public int insertQmsgBatch(List<QmsgInfoPo> list) {
@@ -82,6 +92,22 @@ public class QmsgServiceImpl extends BaseServiceImpl implements QmsgService {
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public PageResult<Map<String, Object>> queryEsMsgPage(ReqParam params) {
+		QueryParams queryParams = MsgInfoQueryDsl.parseListDsl(params);
+		return esManager.filterPage(IdxConstant.QMSG_INFO_IDX,IdxConstant.QMSG_INFO_TYPE, queryParams);
+	}
+
+	@Override
+	public long getMsgNum(String uid) {
+		ReqParam params = new ReqParam();
+		params.put("uid",uid);
+		params.put("page","1");
+		params.put("pageSize","1");
+		PageResult<Map<String,Object>> pageResult = queryEsMsgPage(params);
+		return pageResult.getTotal();
 	}
 
 }
