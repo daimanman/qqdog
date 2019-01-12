@@ -24,4 +24,6 @@ public interface QuserInfoPoMapper {
 	
 	//获取表所有的字段名
 	public List<String> getAllColsByTableName(@Param("tableName") String tableName);
+	
+	public List<String> getNeedLoginSessionUids();
 }

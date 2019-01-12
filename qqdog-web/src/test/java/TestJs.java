@@ -240,6 +240,49 @@ public class TestJs {
         }
 	}
 	
+	@Test
+	public void testDemoAgain() throws Exception {
+		String content = YhHttpUtil.sendHttpGet("http://192.168.1.192:54321/getNeedUid", null, null);
+		System.out.println(content);
+		if("".equals(content)) {
+			return;
+		}
+		Map<String,String> qmap = getQMap();
+		List<String> qList = new ArrayList();
+		try {
+			qList = JSON.parseArray(content,String.class);
+		}catch(Exception e) {
+			return;
+		}
+		ChromeOptions options = new ChromeOptions();
+		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-192.crx"));
+		System.setProperty("webdriver.chrome.driver","D:\\dxmtools\\myxm\\js\\chromedriver.exe");//chromedriver服务地址
+        WebDriver browser =new ChromeDriver(options);
+        int size = qList.size();
+        for(int i = 0 ;i<size;i++) {
+        	String url = String.format("https://i.qq.com/?key=%s",qList.get(i));
+        	if(i == 0) {
+        		browser.get(url);
+        	}else {
+        		 ((JavascriptExecutor) browser).executeScript("window.open(\""+url+"\");");
+        	}
+        }
+        Set<String> winHandels = browser.getWindowHandles();
+        List<String> itList = new ArrayList<String>(winHandels);
+        for(String it:itList) {
+        	 browser.switchTo().window(it);
+             String[] urlArr = browser.getCurrentUrl().split("=");
+             String kq = "";
+             if(urlArr.length >= 2) {
+             	kq = urlArr[1];
+             	String p = qmap.get(kq);
+             	 System.out.println(kq+"--"+p);
+                 loginq(browser, kq, p);
+                 Thread.sleep(5000);
+             }
+        }
+	}
+	
 	
 	@Test
 	public void testSql() throws Exception {

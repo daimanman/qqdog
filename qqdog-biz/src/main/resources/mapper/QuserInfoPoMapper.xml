@@ -111,5 +111,12 @@
 	<select id="getAllColsByTableName" resultType="string" >
 		select COLUMN_NAME from information_schema.COLUMNS where table_name = #{tableName} 
 	</select>
+	
+	<select id="getNeedLoginSessionUids" resultType="string">
+	<![CDATA[
+		select uid from qsession_info where flag <> 0 
+	]]>
+		
+	</select>
   
 </mapper>

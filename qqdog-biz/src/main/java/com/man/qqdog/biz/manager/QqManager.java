@@ -1089,15 +1089,17 @@ public class QqManager {
 				e.printStackTrace();
 			}
 		}
-		if (msgUidsList.size() > 0) {
-			downAllMsg(uid);
+		if (photoUidsList.size() > 0) {
+			downAllPhoto(uid);
 		}
 		if (emotUidsList.size() > 0) {
 			downAllEmot(uid);
 		}
-		if (photoUidsList.size() > 0) {
-			downAllPhoto(uid);
+		if (msgUidsList.size() > 0) {
+			downAllMsg(uid);
 		}
+		
+		
 
 	}
 

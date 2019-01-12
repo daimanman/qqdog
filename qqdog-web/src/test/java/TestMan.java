@@ -335,6 +335,64 @@ public class TestMan {
 		System.out.println(qmsgService.getEsUserInfo("1003705722"));
 	}
 	@Test
+	public void testQemotCommentInfo() {
+		ElasticSearchManager es = new ElasticSearchManager();
+		es.setClusterName("elasticsearch");
+		es.setHosts("192.168.1.53:9300");
+		TransportClient client = es.initClient();
+		String uid = "1003672421";
+		List<String> emotIds = Arrays.asList(
+				"5611033211896852",
+				"5611033211896832",
+				"5611033211896846",
+				"5611033211896850"
+				);
+		QemotServiceImpl qemotService = new QemotServiceImpl();
+		qemotService.esManager = es;
+		System.out.println(qemotService.getEmotCommentList(uid, emotIds));
+	}
+	
+	@Test
+	public void testQemotPicInfo() {
+		ElasticSearchManager es = new ElasticSearchManager();
+		es.setClusterName("elasticsearch");
+		es.setHosts("192.168.1.53:9300");
+		TransportClient client = es.initClient();
+		String uid = "1003672421";
+		List<String> emotIds = Arrays.asList(
+				"5611033211896852",
+				"5611033211896832",
+				"5611033211896846",
+				"5611033211896850"
+				);
+		QemotServiceImpl qemotService = new QemotServiceImpl();
+		qemotService.esManager = es;
+		System.out.println(qemotService.getEmotPicList(uid, emotIds));
+	}
+	@Test
+	public void testQemotInfoWithCommentsAndPics() {
+		ElasticSearchManager es = new ElasticSearchManager();
+		es.setClusterName("elasticsearch");
+		es.setHosts("192.168.1.53:9300");
+		TransportClient client = es.initClient();
+		String uid = "1003672421";
+		
+		QemotServiceImpl qemotService = new QemotServiceImpl();
+		qemotService.esManager = es;
+		ReqParam param = new ReqParam();
+		param.put("page","7");
+		param.put("pageSize","10");
+		param.put("uid",uid);
+		System.out.println(JSON.toJSONString(qemotService.queryEsEmotPageWithCommentAndPic(param)));
+	}
+	
+	@Test
+	public void testDate() {
+		String time = "1503220629";
+		System.out.println(ObjectUtil.getQqDate(time));
+	}
+	
+	@Test
 	public void testMsgMax() {
 		ElasticSearchManager es = new ElasticSearchManager();
 		es.setClusterName("elasticsearch");
@@ -431,6 +489,13 @@ public class TestMan {
 		//IOUtils.write(res,new FileOutputStream(new File("D:\\q.json")));
 
 		
+	}
+	
+	
+	@Test
+	public void testUrl3() {
+		String url3 =  "http://b382.photo.store.qq.com/psb?/V147SUUn10UXIm/*OyV8P3hwn.BOd58CSFlWlFnXIEgcHSU254o9Qg2GQI!/b/dH4BAAAAAAAA&bo=OgJWAToCVgERECc!";
+		System.out.println(url3.replaceAll("&bo=*",""));
 	}
 	
 }

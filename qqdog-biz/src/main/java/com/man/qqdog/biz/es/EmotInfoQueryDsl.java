@@ -9,6 +9,7 @@ import com.man.basequery.QueryTypeEnum;
 import com.man.constants.IdxConstant;
 import com.man.pageinfo.QueryParams;
 import com.man.utils.ObjectUtil;
+import com.man.utils.ReqParam;
 
 /**
  * 查询解析 类似Mapper文件的地位 将前端的参数构造成符合Elasticsearch 规范的DSL查询语句
@@ -24,7 +25,7 @@ public class EmotInfoQueryDsl extends BaseQueryDsl {
 	 * @param bizParams
 	 * @return
 	 */
-	public static QueryParams parseListDsl(Map<String, Object> bizParams) {
+	public static QueryParams parseEmotDsl(Map<String, Object> bizParams) {
 		QueryParams dslParams = new QueryParams();
 		// 分页信息
 		dslParams.setPage(ObjectUtil.parseInt(bizParams.get("page")));
@@ -68,6 +69,28 @@ public class EmotInfoQueryDsl extends BaseQueryDsl {
 
 		dslParams.setQueryItems(queryItems);
 		dslParams.setSorts(parseSortParams(bizParams));
+		return dslParams;
+	}
+	
+	public static QueryParams parseEmotCommentDsl(ReqParam bizParams) {
+		QueryParams dslParams = new QueryParams();
+		// 分页信息
+		dslParams.setPage(ObjectUtil.parseInt(bizParams.get("page")));
+		dslParams.setPageSize(ObjectUtil.parseInt(bizParams.get("pageSize")));
+		
+		List<QueryItem> queryItems = new ArrayList<QueryItem>();
+		// UID in 查询
+		String uid = bizParams.getStr("uid");
+		if (!ObjectUtil.isNull(uid)) {
+			QueryItem uidItem = new QueryItem("uid", uid, QueryTypeEnum.IN.getType());
+			queryItems.add(uidItem);
+		}
+		List emotIds = bizParams.getList("emotIds");
+		if(emotIds.size() > 0) {
+			QueryItem uidsItem = new QueryItem("emot_id",emotIds, QueryTypeEnum.IN.getType());
+			queryItems.add(uidsItem);
+		}
+		dslParams.setQueryItems(queryItems);
 		return dslParams;
 	}
 

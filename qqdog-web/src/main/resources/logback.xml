@@ -6,7 +6,7 @@
   <property name="LOG_PATH" value="/home/dxm/logs"/>
  <property name="LOG_PATH" value="/home/admin"/>
  -->
-      <property name="LOG_PATH" value="D:/admin/"/>
+     <property name="LOG_PATH" value="/home/dxm/logs"/>
     <!-- %m输出的信息,%p日志级别,%t线程名,%d日期,%c类的全名,%i索引【从数字0开始递增】,,, -->    
     <!-- appender是configuration的子节点，是负责写日志的组件。 -->
     <!-- ConsoleAppender：把日志输出到控制台 -->
@@ -164,7 +164,7 @@
     <root level="info">   
          <appender-ref ref="info" /> 
          <appender-ref ref="error" /> 
-         <appender-ref ref="STDOUT" /> 
+        
     </root>    
     
     <!-- 指定项目中某个包，当有日志操作行为时的日志记录级别 -->

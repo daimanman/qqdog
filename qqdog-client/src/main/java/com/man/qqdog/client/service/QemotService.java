@@ -25,4 +25,11 @@ public  int  insertQemotInfoBatch(List<QemotInfoPo> qemotInfoList);
 	public PageResult<Map<String,Object>> queryEsEmotPage(ReqParam params);
 	
 	public long getEmotNum(String uid);
+	
+	public List<Map<String,Object>> getEmotCommentList(String uid,List<String> emotIds);
+	
+	public List<Map<String,Object>> getEmotPicList(String uid,List<String> emotIds);
+	
+	
+	public PageResult<Map<String,Object>> queryEsEmotPageWithCommentAndPic(ReqParam params);
 }

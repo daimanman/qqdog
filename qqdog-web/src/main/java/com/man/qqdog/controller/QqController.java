@@ -74,5 +74,11 @@ public class QqController extends BaseController {
 		sendDefaultJson(response, resultJson);
 	}
 	
+	@RequestMapping("/queryEmotWithCommentAndPics")
+	public void queryEmotWithCommentAndPics(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam params = getParams(request);
+		sendDefaultJson(response,qemotService.queryEsEmotPageWithCommentAndPic(params));
+	}
+	
 	
 }

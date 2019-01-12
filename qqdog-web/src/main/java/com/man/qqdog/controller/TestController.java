@@ -503,6 +503,11 @@ public class TestController extends BaseController {
 	}
 	
 	
+	@RequestMapping("/getNeedUid")
+	public void getNeedUid(HttpServletResponse response) throws IOException {
+		sendDefaultJson(response,userInfoMapper.getNeedLoginSessionUids());
+	}
+	
 	
 	
 	

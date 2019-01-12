@@ -1,6 +1,7 @@
 package com.man.qqdog.client.po;
 
 import java.util.Date;
+import java.util.List;
 
 public class QemotInfoPo implements java.io.Serializable {
 	
@@ -52,8 +53,32 @@ public class QemotInfoPo implements java.io.Serializable {
     public Date createGmt;
 
     public String content;
+    
+    
+    public List<QemotCommentPo> emotComments;
+    
+    
+    public List<String> emotPics;
+    
+    
 
-    public Long getId() {
+    public List<QemotCommentPo> getEmotComments() {
+		return emotComments;
+	}
+
+	public void setEmotComments(List<QemotCommentPo> emotComments) {
+		this.emotComments = emotComments;
+	}
+
+	public List<String> getEmotPics() {
+		return emotPics;
+	}
+
+	public void setEmotPics(List<String> emotPics) {
+		this.emotPics = emotPics;
+	}
+
+	public Long getId() {
         return id;
     }
 
