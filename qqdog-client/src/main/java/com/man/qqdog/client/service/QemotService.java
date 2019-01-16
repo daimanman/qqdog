@@ -3,6 +3,7 @@ package com.man.qqdog.client.service;
 import java.util.List;
 import java.util.Map;
 
+import com.man.dto.CountSingleDto;
 import com.man.pageinfo.PageResult;
 import com.man.qqdog.client.po.QemotCommentPo;
 import com.man.qqdog.client.po.QemotCommentReplyPo;
@@ -32,4 +33,7 @@ public  int  insertQemotInfoBatch(List<QemotInfoPo> qemotInfoList);
 	
 	
 	public PageResult<Map<String,Object>> queryEsEmotPageWithCommentAndPic(ReqParam params);
+	
+	
+	public List<CountSingleDto> countCommentMuid(ReqParam params);
 }

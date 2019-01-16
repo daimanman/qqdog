@@ -508,6 +508,13 @@ public class TestController extends BaseController {
 		sendDefaultJson(response,userInfoMapper.getNeedLoginSessionUids());
 	}
 	
+	@RequestMapping("/getDataBySql")
+	public void getDataBySql(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam param = getParams(request);
+		String sql = param.getStr("sql");
+		sendDefaultJson(response, userInfoMapper.getDataBySql(sql));
+	}
+	
 	
 	
 	

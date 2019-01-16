@@ -12,7 +12,7 @@ import com.man.utils.ReqParam;
 public class MsgInfoQueryDsl extends BaseQueryDsl {
 
 	
-	public static QueryParams parseListDsl(ReqParam params) {
+	public static QueryParams parseMsgListDsl(ReqParam params) {
 		QueryParams dslParams = new QueryParams();
 		// 分页信息
 		dslParams.setPage(params.getInt("page"));
@@ -30,6 +30,18 @@ public class MsgInfoQueryDsl extends BaseQueryDsl {
 		if (!ObjectUtil.isNull(uid)) {
 			QueryItem uidItem = new QueryItem("uid", uid, QueryTypeEnum.IN.getType());
 			queryItems.add(uidItem);
+		}
+		
+		String uin = params.getStr("uin");
+		if(!ObjectUtil.isNull(uin)) {
+			QueryItem uinItem = new QueryItem("uin",uin,QueryTypeEnum.IN.getType());
+			queryItems.add(uinItem);
+		}
+		
+		String content = params.getStr("content");
+		if(!ObjectUtil.isNull(content)) {
+			QueryItem contentItem = new QueryItem("html_content",content,QueryTypeEnum.LIKE.getType());
+			queryItems.add(contentItem);
 		}
 		dslParams.setQueryItems(queryItems);
 		return dslParams;

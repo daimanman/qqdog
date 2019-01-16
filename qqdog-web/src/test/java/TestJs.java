@@ -289,7 +289,8 @@ public class TestJs {
 		List<String> qList1 = getQList();
 		List<String> qList = new ArrayList<>();
 		int size = qList1.size();
-        int end = size/2;
+        //int end = size/2;
+		int end = 0;
         for(int i = end ;i<size;i++) {
         	qList.add(qList1.get(i));
         }
@@ -304,11 +305,44 @@ public class TestJs {
         for(Object cmk:cmList) {
         	cmMap.put(ObjectUtil.toString(cmk,""),cm);
         }
-        System.out.println(cmMap.keySet());
+       // System.out.println(cmMap.keySet());
+        Map<String,String> qmap = getQMap();
+		List<String> qList2 = new ArrayList();
         for(String q:qList) {
         	if(cmMap.get(q)==null) {
+        		qList2.add(q);
         		System.out.println(q);
         	}
+        }
+        
+        
+		
+		ChromeOptions options = new ChromeOptions();
+		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-192.crx"));
+		System.setProperty("webdriver.chrome.driver","D:\\dxmtools\\myxm\\js\\chromedriver.exe");//chromedriver服务地址
+        WebDriver browser =new ChromeDriver(options);
+        int size1 = qList2.size();
+        for(int i = 0 ;i<size1;i++) {
+        	String url = String.format("https://i.qq.com/?key=%s",qList.get(i));
+        	if(i == 0) {
+        		browser.get(url);
+        	}else {
+        		 ((JavascriptExecutor) browser).executeScript("window.open(\""+url+"\");");
+        	}
+        }
+        Set<String> winHandels = browser.getWindowHandles();
+        List<String> itList = new ArrayList<String>(winHandels);
+        for(String it:itList) {
+        	 browser.switchTo().window(it);
+             String[] urlArr = browser.getCurrentUrl().split("=");
+             String kq = "";
+             if(urlArr.length >= 2) {
+             	kq = urlArr[1];
+             	String p = qmap.get(kq);
+             	 System.out.println(kq+"--"+p);
+                 loginq(browser, kq, p);
+                 Thread.sleep(5000);
+             }
         }
         
         

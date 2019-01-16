@@ -1,6 +1,7 @@
 package com.man.qqdog.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.man.dto.CountSingleDto;
 import com.man.qqdog.client.service.QUserService;
 import com.man.qqdog.client.service.QemotService;
 import com.man.qqdog.client.service.QmsgService;
@@ -80,5 +82,25 @@ public class QqController extends BaseController {
 		sendDefaultJson(response,qemotService.queryEsEmotPageWithCommentAndPic(params));
 	}
 	
+	@RequestMapping("/queryEsMsgPage")
+	public void queryEsMsgPage(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ReqParam param = getParams(request);
+		sendDefaultJson(response, qmsgService.queryEsMsgPage(param));
+	}
 	
+	//top 100
+	@RequestMapping("/getTopEmotComments")
+	public void getTopEmotComments(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ResultJson<List<CountSingleDto>> rj = new ResultJson<>();
+		rj.setData(qemotService.countCommentMuid(getParams(request)));
+		sendDefaultJson(response,rj);
+	}
+	
+	//top 100
+	@RequestMapping("/getTopMsgComments")
+	public void getTopMsgComments(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		ResultJson<List<CountSingleDto>> rj = new ResultJson<>();
+		rj.setData(qmsgService.countMsgUin(getParams(request)));
+		sendDefaultJson(response,rj);
+	}
 }

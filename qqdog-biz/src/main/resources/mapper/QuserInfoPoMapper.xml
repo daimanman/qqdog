@@ -94,7 +94,9 @@
 		select count(1) num 
 		  from ${tableName} 
 		  <if test="maxid > 0 ">
-				where id > #{maxid}
+				<![CDATA[
+					where id > #{maxid}
+				]]>
 			</if>
 	</select>
 	
@@ -102,7 +104,9 @@
 		select min(id) startId,max(id) endId from (
 			select id from ${tableName}
 			<if test="maxid > 0">
-				where id > #{maxid}
+				<![CDATA[
+					where id > #{maxid}
+				]]>
 			</if>
 			 limit #{offset},#{pageSize}
 		) a
@@ -116,7 +120,15 @@
 	<![CDATA[
 		select uid from qsession_info where flag <> 0 
 	]]>
-		
 	</select>
+	
+	<select id="getDataBySql" resultType="map">
+		${sql}
+	</select>
+	
+	
+	
+	
+	
   
 </mapper>

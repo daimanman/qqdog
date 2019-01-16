@@ -324,6 +324,17 @@ public class QqManager {
 			}
 		}
 	}
+	
+	public void initSessionByDatas(List<QsessionInfoPo> list) {
+		List<QsessionInfoPo> datas = list;
+		if (null != datas && datas.size() > 0) {
+			initList();
+			for (QsessionInfoPo data : datas) {
+				sessionMap.put(data.uid, data);
+				addUids(data.uid);
+			}
+		}
+	}
 
 	private void resetUids() {
 		emotUidsList = new LinkedList<>();
@@ -562,8 +573,40 @@ public class QqManager {
 		}
 		String effectUid = getPhotoUid();
 		QsessionInfoPo session = sessionMap.get(effectUid);
+//		g_tk: 1054386212
+//		callback: shine0_Callback
+//		t: 637219642
+//		mode: 0
+//		idcNum: 4
+//		hostUin: 1003769227
+//		topicId: V13nQSkZ0GqAiT
+//		noTopic: 0
+//		uin: 3246615477
+//		pageStart: 0
+//		pageNum: 30
+//		skipCmtCount: 0
+//		singleurl: 1
+//		batchId: 
+//		notice: 0
+//		appid: 4
+//		inCharset: utf-8
+//		outCharset: utf-8
+//		source: qzone
+//		plat: qzone
+//		outstyle: json
+//		format: jsonp
+//		json_esc: 1
+//		question: 
+//		answer: 
+//		callbackFun: shine0
 		// 获取参数
 		Map<String, Object> originMap = session.paramsMap;
+		if(null == originMap) {
+			originMap  = JSON.parseObject(session.params,Map.class);
+		}
+		if(null == session.cookieMap) {
+			session.cookieMap = JSON.parseObject(session.cookie,Map.class);
+		}
 		Map<String, Object> newParamMap = new HashMap<String, Object>();
 		newParamMap.put("g_tk", originMap.get("g_tk"));
 		newParamMap.put("qzonetoken", originMap.get("qzonetoken"));
@@ -576,11 +619,11 @@ public class QqManager {
 		newParamMap.put("pageStart", pos);
 		newParamMap.put("mode", "0");
 		newParamMap.put("idcNum", "0");
+		//newParamMap.put("idcNum", "4");
 		newParamMap.put("noTopic", "0");
 		newParamMap.put("skipCmtCount", "0");
 		newParamMap.put("singleurl", "1");
 		newParamMap.put("batchId", "");
-		newParamMap.put("notice", "0");
 		newParamMap.put("appid", "4");
 		newParamMap.put("inCharset", "utf-8");
 		newParamMap.put("outCharset", "utf-8");
@@ -588,6 +631,7 @@ public class QqManager {
 		newParamMap.put("plat", "qzone");
 		newParamMap.put("outstyle", "json");
 		newParamMap.put("format", "json");
+		newParamMap.put("notice","0");//new 
 		newParamMap.put("json_esc", "1");
 
 		// 获取会话信息
@@ -620,6 +664,96 @@ public class QqManager {
 		clearRemove(effectUid);
 		return contentMap;
 	}
+	
+	// get img info 相册中图片
+		public String crawlQzoneImgInfo_test(String uid, int pos, String topicId) {
+			if (photoUidsList == null || photoUidsList.size() == 0) {
+				logger.info("################### imgInfo is over ######################");
+				return null;
+			}
+			String effectUid = getPhotoUid();
+			QsessionInfoPo session = sessionMap.get(effectUid);
+//			g_tk: 1054386212
+//			callback: shine0_Callback
+//			t: 637219642
+//			mode: 0
+//			idcNum: 4
+//			hostUin: 1003769227
+//			topicId: V13nQSkZ0GqAiT
+//			noTopic: 0
+//			uin: 3246615477
+//			pageStart: 0
+//			pageNum: 30
+//			skipCmtCount: 0
+//			singleurl: 1
+//			batchId: 
+//			notice: 0
+//			appid: 4
+//			inCharset: utf-8
+//			outCharset: utf-8
+//			source: qzone
+//			plat: qzone
+//			outstyle: json
+//			format: jsonp
+//			json_esc: 1
+//			question: 
+//			answer: 
+//			callbackFun: shine0
+			// 获取参数
+			Map<String, Object> originMap = session.paramsMap;
+			if(null == originMap) {
+				originMap  = JSON.parseObject(session.params,Map.class);
+			}
+			if(null == session.cookieMap) {
+				session.cookieMap = JSON.parseObject(session.cookie,Map.class);
+			}
+			Map<String, Object> newParamMap = new HashMap<String, Object>();
+			newParamMap.put("g_tk", originMap.get("g_tk"));
+			//newParamMap.put("qzonetoken", originMap.get("qzonetoken"));
+			newParamMap.put("format", "json");
+			newParamMap.put("num", QqConfig.DEFAULT_MSG_NUM);
+			newParamMap.put("hostUin", uid);
+			newParamMap.put("topicId", topicId);
+			newParamMap.put("uin", effectUid);
+			newParamMap.put("pageNum", QqConfig.DEFAULT_IMG_NUM);
+			newParamMap.put("pageStart", pos);
+			newParamMap.put("mode", "0");
+			newParamMap.put("idcNum", "0");
+			newParamMap.put("noTopic", "0");
+			newParamMap.put("skipCmtCount", "0");
+			newParamMap.put("singleurl", "1");
+			newParamMap.put("batchId", "");
+			newParamMap.put("appid", "4");
+			newParamMap.put("inCharset", "utf-8");
+			newParamMap.put("outCharset", "utf-8");
+			newParamMap.put("source", "qzone");
+			newParamMap.put("plat", "qzone");
+			newParamMap.put("outstyle", "json");
+			newParamMap.put("format", "json");
+			newParamMap.put("notice","0");//new 
+			newParamMap.put("json_esc", "1");
+			
+			
+			newParamMap.put("question", "");
+			newParamMap.put("answer", "");
+			newParamMap.put("format", "jsonp");
+			newParamMap.put("callback", "shine0_Callback");
+			newParamMap.put("idcNum", "4");
+			
+			
+
+			// 获取会话信息
+			Map<String, String> cookieMap = session.cookieMap;
+			cookieMap.put("referer", "https://qzs.qq.com/qzone/photo/v7/page/photo.html?init=photo.v7/module/photoList2/index&navBar=1&normal=1&aid=V13nQSkZ0GqAiT");
+			//:authority: h5.qzone.qq.com
+			//:method: GET
+			//:path: /proxy/domain/photo.qzone.qq.com/fcgi-bin/cgi_list_photo?g_tk=1054386212&callback=shine0_Callback&t=637219642&mode=0&idcNum=4&hostUin=1003769227&topicId=V13nQSkZ0GqAiT&noTopic=0&uin=3246615477&pageStart=0&pageNum=30&skipCmtCount=0&singleurl=1&batchId=&notice=0&appid=4&inCharset=utf-8&outCharset=utf-8&source=qzone&plat=qzone&outstyle=json&format=jsonp&json_esc=1&question=&answer=&callbackFun=shine0&_=1547433170944
+			cookieMap.put(":authority","h5.qzone.qq.com");
+			cookieMap.put(":method","GET");
+			cookieMap.put(":path","/proxy/domain/photo.qzone.qq.com/fcgi-bin/cgi_list_photo?g_tk=1054386212&callback=shine0_Callback&t=637219642&mode=0&idcNum=4&hostUin=1003769227&topicId=V13nQSkZ0GqAiT&noTopic=0&uin=3246615477&pageStart=0&pageNum=30&skipCmtCount=0&singleurl=1&batchId=&notice=0&appid=4&inCharset=utf-8&outCharset=utf-8&source=qzone&plat=qzone&outstyle=json&format=jsonp&json_esc=1&question=&answer=&callbackFun=shine0&_=1547433170944");
+			String content = YhHttpUtil.sendHttpGetWithRetry(QqConfig.QQ_IMGINFO_URL, newParamMap, cookieMap);
+			return content;
+		}
 
 	// 获取相册里的视频文件
 	public Map<String, Object> crawlImgVedio(String uid, String topicId, String picKey) {

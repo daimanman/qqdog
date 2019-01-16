@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.man.constants.IdxConstant;
+import com.man.dto.CountSingleDto;
 import com.man.es.manager.ElasticSearchManager;
 import com.man.pageinfo.PageResult;
 import com.man.pageinfo.QueryParams;
@@ -219,10 +220,8 @@ public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
 					emotPics = new ArrayList<>();
 					emotPicsMap.put(emotId,emotPics);
 				}
-				if(emotPics.size() < 9) {
-					String url3 = ObjectUtil.getStr(picMap,"url3");
-					emotPics.add(url3);
-				}
+				String url3 = ObjectUtil.getStr(picMap,"url3");
+				emotPics.add(url3);
 			}
 		}
 		
@@ -251,6 +250,11 @@ public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
 			emotData.put("create_time",ObjectUtil.getQqDate(ObjectUtil.getStr(emotData,"created_time")));
 		}
 		return pageResult;
+	}
+
+	@Override
+	public List<CountSingleDto> countCommentMuid(ReqParam params) {
+		return esManager.countGroupOneField(IdxConstant.QEMOT_COMMENT_IDX,IdxConstant.QEMOT_COMMENT_TYPE,"muid",100,EmotInfoQueryDsl.parseEmotCommentDsl(params));
 	}
 
 }

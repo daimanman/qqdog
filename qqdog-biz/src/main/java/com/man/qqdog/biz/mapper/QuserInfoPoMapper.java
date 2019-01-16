@@ -26,4 +26,6 @@ public interface QuserInfoPoMapper {
 	public List<String> getAllColsByTableName(@Param("tableName") String tableName);
 	
 	public List<String> getNeedLoginSessionUids();
+	
+	public List<Map> getDataBySql(@Param("sql")String sql);
 }

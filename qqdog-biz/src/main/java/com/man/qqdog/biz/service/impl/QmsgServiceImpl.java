@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.man.constants.IdxConstant;
+import com.man.dto.CountSingleDto;
 import com.man.es.manager.ElasticSearchManager;
 import com.man.pageinfo.PageResult;
 import com.man.pageinfo.QueryParams;
@@ -96,7 +97,7 @@ public class QmsgServiceImpl extends BaseServiceImpl implements QmsgService {
 
 	@Override
 	public PageResult<Map<String, Object>> queryEsMsgPage(ReqParam params) {
-		QueryParams queryParams = MsgInfoQueryDsl.parseListDsl(params);
+		QueryParams queryParams = MsgInfoQueryDsl.parseMsgListDsl(params);
 		return esManager.filterPage(IdxConstant.QMSG_INFO_IDX,IdxConstant.QMSG_INFO_TYPE, queryParams);
 	}
 
@@ -108,6 +109,11 @@ public class QmsgServiceImpl extends BaseServiceImpl implements QmsgService {
 		params.put("pageSize","1");
 		PageResult<Map<String,Object>> pageResult = queryEsMsgPage(params);
 		return pageResult.getTotal();
+	}
+
+	@Override
+	public List<CountSingleDto> countMsgUin(ReqParam param) {
+		return esManager.countGroupOneField(IdxConstant.QMSG_INFO_IDX,IdxConstant.QMSG_INFO_TYPE,"uin",100,MsgInfoQueryDsl.parseMsgListDsl(param));
 	}
 
 }
