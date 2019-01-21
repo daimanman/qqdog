@@ -194,7 +194,10 @@ public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
 		params.put("sord","desc");
 		params.put("sidx","created_time");
 		String uid = params.getStr("uid");
-		
+		String muid = params.getStr("muid");
+		if(!ObjectUtil.isNull(muid)) {
+			params.put("ids",getEmotIdsByMuidAndUid(uid, muid));
+		}
 		PageResult<Map<String,Object>> pageResult = queryEsEmotPage(params);
 		List<Map<String,Object>> emotDatas = pageResult.datas;
 		if(null == emotDatas || emotDatas.size() == 0) {
@@ -207,7 +210,6 @@ public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
 			String emotId = ObjectUtil.getStr(emotData,"id");
 			emotIds.add(emotId);
 		}
-		
 		
 		Map<String,List<String>> emotPicsMap = new HashMap<>();
 		//pic
@@ -255,6 +257,26 @@ public class QemotServiceImpl extends BaseServiceImpl implements QemotService {
 	@Override
 	public List<CountSingleDto> countCommentMuid(ReqParam params) {
 		return esManager.countGroupOneField(IdxConstant.QEMOT_COMMENT_IDX,IdxConstant.QEMOT_COMMENT_TYPE,"muid",100,EmotInfoQueryDsl.parseEmotCommentDsl(params));
+	}
+
+	@Override
+	public List<Map<String, Object>> getEmotCommentByMuidAndUid(String uid, String muid) {
+		ReqParam params = new ReqParam();
+		params.put("uid",uid);
+		params.put("muid",muid);
+		return esManager.queryList(IdxConstant.QEMOT_COMMENT_IDX,IdxConstant.QEMOT_COMMENT_TYPE, EmotInfoQueryDsl.parseEmotCommentDsl(params));
+	}
+
+	@Override
+	public List<Long> getEmotIdsByMuidAndUid(String uid, String muid) {
+		List<Long> ids  = new ArrayList<>();
+		List<Map<String,Object>> datas = getEmotCommentByMuidAndUid(uid, muid);
+		if(null != datas && datas.size() > 0) {
+			for(Map<String,Object> data:datas) {
+				ids.add(ObjectUtil.parseLong(data.get("emot_id")));
+			}
+		}
+		return ids;
 	}
 
 }

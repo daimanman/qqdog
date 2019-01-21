@@ -18,7 +18,7 @@ import com.man.utils.ObjectUtil;
  * @author daixm
  *
  */
-public class UserInfoQueryDsl {
+public class UserInfoQueryDsl extends BaseQueryDsl  {
 
 	/**
 	 * 用户查询列表DSL
@@ -105,6 +105,7 @@ public class UserInfoQueryDsl {
 			queryItems.add(companyItem);
 		}
 		dslParams.setQueryItems(queryItems);
+		dslParams.setSorts(parseSortParams(bizParams));
 		return dslParams;
 	}
 }

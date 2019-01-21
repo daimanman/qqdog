@@ -29,6 +29,11 @@ public  int  insertQemotInfoBatch(List<QemotInfoPo> qemotInfoList);
 	
 	public List<Map<String,Object>> getEmotCommentList(String uid,List<String> emotIds);
 	
+	public List<Map<String,Object>> getEmotCommentByMuidAndUid(String uid,String muid);
+	
+	public List<Long> getEmotIdsByMuidAndUid(String uid,String muid);
+
+	
 	public List<Map<String,Object>> getEmotPicList(String uid,List<String> emotIds);
 	
 	

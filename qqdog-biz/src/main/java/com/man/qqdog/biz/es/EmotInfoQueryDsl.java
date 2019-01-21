@@ -32,6 +32,13 @@ public class EmotInfoQueryDsl extends BaseQueryDsl {
 		dslParams.setPageSize(ObjectUtil.parseInt(bizParams.get("pageSize")));
 
 		List<QueryItem> queryItems = new ArrayList<QueryItem>();
+		
+		List ids = ObjectUtil.castListObj(bizParams.get("ids"));
+		if(ObjectUtil.getSize(ids) > 0) {
+			QueryItem uidItem = new QueryItem("id", ids, QueryTypeEnum.IN.getType());
+			queryItems.add(uidItem);
+		}
+		
 		// 业务查询字段
 		// content like 查询
 		String content = ObjectUtil.toString(bizParams.get("content"));
@@ -90,6 +97,13 @@ public class EmotInfoQueryDsl extends BaseQueryDsl {
 			QueryItem uidsItem = new QueryItem("emot_id",emotIds, QueryTypeEnum.IN.getType());
 			queryItems.add(uidsItem);
 		}
+		
+		String muid = bizParams.getStr("muid");
+		if(!ObjectUtil.isNull(muid)) {
+			QueryItem uidItem = new QueryItem("muid", muid, QueryTypeEnum.IN.getType());
+			queryItems.add(uidItem);
+		}
+		
 		dslParams.setQueryItems(queryItems);
 		return dslParams;
 	}
