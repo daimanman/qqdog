@@ -73,11 +73,11 @@ public class QqModelTransform {
 		
 		Map lbsMap = ObjectUtil.castMapObj(qqmap.get("lbs"));
 		info.lbsId = ObjectUtil.toString(lbsMap.get("id"));
-		info.lbsIdname = ObjectUtil.toString(lbsMap.get("idname"));
-		info.lbsName = ObjectUtil.toString(lbsMap.get("name"));
+		info.lbsIdname = ObjectUtil.toString(lbsMap.get("idname"),200);
+		info.lbsName = ObjectUtil.toString(lbsMap.get("name"),200);
 		info.lbsPosX = ObjectUtil.toString(lbsMap.get("pos_x"));
 		info.lbsPosY = ObjectUtil.toString(lbsMap.get("pos_y"));
-		info.sourceName = ObjectUtil.toString(qqmap.get("source_name"));
+		info.sourceName = ObjectUtil.toString(qqmap.get("source_name"),200);
 		info.content = ObjectUtil.toString(qqmap.get("content"));
 		
 		return info;

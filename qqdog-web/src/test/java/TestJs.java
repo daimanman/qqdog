@@ -177,7 +177,7 @@ public class TestJs {
 		Map<String,String> qmap = getQMap();
 		List<String> qList = getQList();
 		ChromeOptions options = new ChromeOptions();
-		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-192.crx"));
+		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-193.crx"));
 		System.setProperty("webdriver.chrome.driver","D:\\dxmtools\\myxm\\js\\chromedriver.exe");//chromedriver服务地址
         WebDriver browser =new ChromeDriver(options);
         int size = qList.size();
@@ -201,7 +201,7 @@ public class TestJs {
              	String p = qmap.get(kq);
              	 System.out.println(kq+"--"+p);
                  loginq(browser, kq, p);
-                 Thread.sleep(5000);
+                 Thread.sleep(2000);
              }
         }
 	}
@@ -211,7 +211,7 @@ public class TestJs {
 		Map<String,String> qmap = getQMap();
 		List<String> qList = getQList();
 		ChromeOptions options = new ChromeOptions();
-		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-192.crx"));
+		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-193.crx"));
 		System.setProperty("webdriver.chrome.driver","D:\\dxmtools\\myxm\\js\\chromedriver.exe");//chromedriver服务地址
         WebDriver browser =new ChromeDriver(options);
         int size = qList.size();
@@ -235,7 +235,7 @@ public class TestJs {
              	String p = qmap.get(kq);
              	 System.out.println(kq+"--"+p);
                  loginq(browser, kq, p);
-                 Thread.sleep(5000);
+                 Thread.sleep(2000);
              }
         }
 	}
@@ -361,8 +361,8 @@ public class TestJs {
         Thread.sleep(500);
         browser.findElement(By.id("p")).sendKeys(p);
         
-       // Thread.sleep(500);
-        //browser.findElement(By.id("login_button")).click();
+        Thread.sleep(2000);
+        browser.findElement(By.id("login_button")).click();
 }
 	@Test
 	public void testDemoLoginQzone() throws Exception {

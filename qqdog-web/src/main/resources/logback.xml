@@ -164,6 +164,7 @@
     <root level="info">   
          <appender-ref ref="info" /> 
          <appender-ref ref="error" /> 
+         <appender-ref ref="STDOUT" /> 
     </root>    
     
     <!-- 指定项目中某个包，当有日志操作行为时的日志记录级别 -->
