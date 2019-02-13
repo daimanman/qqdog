@@ -49,7 +49,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 function(info){
 	//console.info("HEADERS---"+JSON.stringify(info));
 	$.ajax({
-		url:"http://192.168.1.192:54321/getQ",
+		url:"http://127.0.0.1:54321/getQ",
 		type:"post",
 		contentType:"application/jaon;charset=utf-8",
 		data:JSON.stringify(info)

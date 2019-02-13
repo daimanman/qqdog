@@ -23,3 +23,10 @@ select max(uin) maxuid from (
 		order by uid desc limit 10
 		) b
 		) c
+		
+select a.nickname,a.age,b.getnum,a.uid,name from (
+select uid,age,nickname from quser_info where sex = 2 and age > 20 and age < 30
+)  a
+join (
+select uid,`name`,getnum from qphoto_info where name like '%毕业%' and getnum > 0 
+) b on a.uid = b.uid 

@@ -242,7 +242,7 @@ public class TestJs {
 	
 	@Test
 	public void testDemoAgain() throws Exception {
-		String content = YhHttpUtil.sendHttpGet("http://192.168.1.192:54321/getNeedUid", null, null);
+		String content = YhHttpUtil.sendHttpGet("http://192.168.1.193:54321/getNeedUid", null, null);
 		System.out.println(content);
 		if("".equals(content)) {
 			return;
@@ -255,7 +255,7 @@ public class TestJs {
 			return;
 		}
 		ChromeOptions options = new ChromeOptions();
-		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-192.crx"));
+		options.addExtensions(new File("D:\\dxmtools\\myxm\\helper-193.crx"));
 		System.setProperty("webdriver.chrome.driver","D:\\dxmtools\\myxm\\js\\chromedriver.exe");//chromedriver服务地址
         WebDriver browser =new ChromeDriver(options);
         int size = qList.size();
