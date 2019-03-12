@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.qqdog.biz.mapper.MtMeishiInfoPoMapper" >
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.MtMeishiInfoPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="cmt_num" property="cmtNum" jdbcType="INTEGER" />
+    <result column="avg_price" property="avgPrice" jdbcType="DOUBLE" />
+    <result column="avg_score" property="avgScore" jdbcType="DOUBLE" />
+    <result column="front_img" property="frontImg" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+    <result column="area_pid" property="areaPid" jdbcType="INTEGER" />
+    <result column="lat" property="lat" jdbcType="DOUBLE" />
+    <result column="lng" property="lng" jdbcType="DOUBLE" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="city_name" property="cityName" jdbcType="VARCHAR" />
+    <result column="show_status" property="showStatus" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="open_time" property="openTime" jdbcType="VARCHAR" />
+    <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="has_food_safe_info" property="hasFoodSafeInfo" jdbcType="INTEGER" />
+    <result column="is_mei_shi" property="isMeiShi" jdbcType="INTEGER" />
+    <result column="extra_info" property="extraInfo" jdbcType="VARCHAR" />
+    <result column="deal_num" property="dealNum" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <insert id="insertMeishiInfoBatch" >
+    insert into mt_meishi_info (id, address, title, 
+      cmt_num, avg_price, avg_score, 
+      front_img, area_id, area_name, 
+      area_pid, lat, lng, city_id, 
+      city_name, show_status, phone, 
+      open_time, brand_id, brand_name, 
+      has_food_safe_info, is_mei_shi, extra_info, 
+      deal_num)
+    values 
+    <foreach collection="list"  item="po" separator=",">
+    
+     (#{po.id,jdbcType=BIGINT}, #{po.address,jdbcType=VARCHAR}, #{po.title,jdbcType=VARCHAR}, 
+      #{po.cmtNum,jdbcType=INTEGER}, #{po.avgPrice,jdbcType=DOUBLE}, #{po.avgScore,jdbcType=DOUBLE}, 
+      #{po.frontImg,jdbcType=VARCHAR}, #{po.areaId,jdbcType=INTEGER}, #{po.areaName,jdbcType=VARCHAR}, 
+      #{po.areaPid,jdbcType=INTEGER}, #{po.lat,jdbcType=DOUBLE}, #{po.lng,jdbcType=DOUBLE}, #{po.cityId,jdbcType=INTEGER}, 
+      #{po.cityName,jdbcType=VARCHAR}, #{po.showStatus,jdbcType=INTEGER}, #{po.phone,jdbcType=VARCHAR}, 
+      #{po.openTime,jdbcType=VARCHAR}, #{po.brandId,jdbcType=INTEGER}, #{po.brandName,jdbcType=VARCHAR}, 
+      #{po.hasFoodSafeInfo,jdbcType=INTEGER}, #{po.isMeiShi,jdbcType=INTEGER}, #{po.extraInfo,jdbcType=VARCHAR}, 
+      #{po.dealNum,jdbcType=INTEGER})
+    
+    </foreach>
+   
+  </insert>
+  
+  <update id="updateSelective" parameterType="com.man.qqdog.client.po.MtMeishiInfoPo" >
+    update mt_meishi_info
+    <set >
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="cmtNum != null" >
+        cmt_num = #{cmtNum,jdbcType=INTEGER},
+      </if>
+      <if test="avgPrice != null" >
+        avg_price = #{avgPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="avgScore != null" >
+        avg_score = #{avgScore,jdbcType=DOUBLE},
+      </if>
+      <if test="frontImg != null" >
+        front_img = #{frontImg,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="areaName != null" >
+        area_name = #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="areaPid != null" >
+        area_pid = #{areaPid,jdbcType=INTEGER},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=DOUBLE},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cityName != null" >
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="showStatus != null" >
+        show_status = #{showStatus,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="openTime != null" >
+        open_time = #{openTime,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null" >
+        brand_id = #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="brandName != null" >
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="hasFoodSafeInfo != null" >
+        has_food_safe_info = #{hasFoodSafeInfo,jdbcType=INTEGER},
+      </if>
+      <if test="isMeiShi != null" >
+        is_mei_shi = #{isMeiShi,jdbcType=INTEGER},
+      </if>
+      <if test="extraInfo != null" >
+        extra_info = #{extraInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="dealNum != null" >
+        deal_num = #{dealNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+ 
+</mapper>

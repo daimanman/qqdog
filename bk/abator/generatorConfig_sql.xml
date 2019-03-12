@@ -15,7 +15,7 @@
 		</commentGenerator>
 
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://127.0.0.1:3306/cdata_1?useUnicode=true&amp;characterEncoding=UTF-8"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/mt_city_info?useUnicode=true&amp;characterEncoding=UTF-8"
 			userId="root" password="zmmdxm">
 		</jdbcConnection>
 

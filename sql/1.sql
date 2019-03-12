@@ -30,3 +30,5 @@ select uid,age,nickname from quser_info where sex = 2 and age > 20 and age < 30
 join (
 select uid,`name`,getnum from qphoto_info where name like '%毕业%' and getnum > 0 
 ) b on a.uid = b.uid 
+
+select CONCAT('ZZ-',gender,'-',name,'-',age,'-',SUBSTR(native_place FROM 1 FOR 6)) name ,mobile from user_info where age >= 25 and LENGTH(mobile) = 11

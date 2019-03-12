@@ -126,6 +126,10 @@
 		${sql}
 	</select>
 	
+	<update id="execSql">
+		${sql}
+	</update>
+	
 	
 	
 	

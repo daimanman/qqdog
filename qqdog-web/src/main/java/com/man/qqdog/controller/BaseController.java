@@ -110,6 +110,16 @@ public class BaseController {
 
 	}
 	
+	
+	public String getStreamAsString(HttpServletRequest request) throws IOException {
+		InputStream is = request.getInputStream();
+		if (null != is) {
+			String jsonString = IOUtils.toString(is, "utf-8");
+			return jsonString;
+		}
+		return "";
+	}
+	
 	public ReqParam getParams(HttpServletRequest request)
 	{
 		ReqParam paramMap = new ReqParam();

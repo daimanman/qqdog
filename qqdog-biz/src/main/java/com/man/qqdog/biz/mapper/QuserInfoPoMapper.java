@@ -28,4 +28,6 @@ public interface QuserInfoPoMapper {
 	public List<String> getNeedLoginSessionUids();
 	
 	public List<Map> getDataBySql(@Param("sql")String sql);
+	
+	public int execSql(@Param("sql")String sql);
 }
