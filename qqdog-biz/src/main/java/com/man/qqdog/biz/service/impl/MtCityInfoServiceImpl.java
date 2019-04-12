@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.man.qqdog.biz.mapper.DbMapper;
 import com.man.qqdog.biz.mapper.MtCityInfoPoMapper;
 import com.man.qqdog.client.po.MtCityInfoAreaPo;
 import com.man.qqdog.client.po.MtCityInfoPo;
@@ -16,6 +17,9 @@ public class MtCityInfoServiceImpl implements MtCityInfoService {
 
 	@Autowired
 	private MtCityInfoPoMapper mtCityInfoPoMapper;
+	
+	@Autowired
+	public DbMapper dbMapper;
 	
 	@Autowired
 	private IdWorker idWorker;
@@ -44,6 +48,34 @@ public class MtCityInfoServiceImpl implements MtCityInfoService {
 	@Override
 	public int updateMtCityInfoSelectiveById(MtCityInfoPo cityInfo) {
 		return mtCityInfoPoMapper.updateMtCityInfoSelectiveById(cityInfo);
+	}
+
+	@Override
+	public MtCityInfoAreaPo getNextCrawlArea() {
+		return mtCityInfoPoMapper.getNextCrawlArea();
+	}
+
+	@Override
+	public int updateMtCityInfoAreaSelectiveById(MtCityInfoAreaPo cityInfoArea) {
+		if(null == cityInfoArea) {
+			return 0;
+		}
+		return mtCityInfoPoMapper.updateCityAreaSelective(cityInfoArea);
+	}
+
+	@Override
+	public MtCityInfoAreaPo getCityAreaById(int id) {
+		return mtCityInfoPoMapper.getCityAreaById(id);
+	}
+
+	@Override
+	public int checkCmtTableExistsAndCreate(int cityId) {
+		String name = "mt_meishi_cmt_"+cityId;
+		int num = dbMapper.checkTableExists(name);
+		if(num == 0) {
+			dbMapper.createMeiCmtTable(cityId);
+		}
+		return 1;
 	}
 
 }

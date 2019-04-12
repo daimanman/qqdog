@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.LjAreaInfoPoCustomMapper">
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.LjAreaInfoPo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="py" jdbcType="VARCHAR" property="py" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="pid" jdbcType="BIGINT" property="pid" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="parent_name" jdbcType="VARCHAR" property="parentName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, city_id, city_name, py, url, pid, level, num, parent_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lj_area_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="com.man.qqdog.client.po.LjAreaInfoPo">
+    insert into lj_area_info (id, name, city_id, 
+      city_name, py, url, 
+      pid, level, num, parent_name
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER}, 
+      #{cityName,jdbcType=VARCHAR}, #{py,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{pid,jdbcType=BIGINT}, #{level,jdbcType=INTEGER}, #{num,jdbcType=INTEGER}, #{parentName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.man.qqdog.client.po.LjAreaInfoPo">
+    insert into lj_area_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="cityName != null">
+        city_name,
+      </if>
+      <if test="py != null">
+        py,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="parentName != null">
+        parent_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="py != null">
+        #{py,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="parentName != null">
+        #{parentName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateSelective" parameterType="com.man.qqdog.client.po.LjAreaInfoPo">
+    update lj_area_info
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cityName != null">
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="py != null">
+        py = #{py,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="parentName != null">
+        parent_name = #{parentName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

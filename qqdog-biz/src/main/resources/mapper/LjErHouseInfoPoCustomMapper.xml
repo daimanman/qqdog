@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.qqdog.biz.mapper.LjErHouseInfoPoCustomMapper" >
+
+  <select id="getByHid" parameterType="long" resultMap="BaseResultMap">
+  	select * from lj_er_house_info where hid = #{hid} limit 1
+  </select>
+  
+  <select id="getNeedDetailHid" resultMap="BaseResultMap">
+	  <![CDATA[
+	  	select id,hid,city_name,xiaoqu_id from lj_er_house_info where dml_flag = 0 and hid > 0 limit #{num}
+	  ]]>
+  </select>
+  
+  <update id="updateDetailStatus" >
+  	<![CDATA[
+  		update lj_er_house_info set dml_flag = #{dmlFlag} where hid in
+  	]]>
+  	<foreach collection="hids" item="hid" separator="," open="(" close=")" >
+  		#{hid}
+  	</foreach>
+  </update>
+  	
+ 
+</mapper>

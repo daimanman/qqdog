@@ -51,8 +51,29 @@ public class MtMeishiInfoPo implements java.io.Serializable {
     public String extraInfo;
 
     public Integer dealNum;
+    
+    public Integer cmtGet;
+    
+    public Integer down;
+    
 
-    public Long getId() {
+    public Integer getDown() {
+		return down;
+	}
+
+	public void setDown(Integer down) {
+		this.down = down;
+	}
+
+	public Integer getCmtGet() {
+		return cmtGet;
+	}
+
+	public void setCmtGet(Integer cmtGet) {
+		this.cmtGet = cmtGet;
+	}
+
+	public Long getId() {
         return id;
     }
 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>测试任务</title>
+<script src="js/jquery-1.11.0.min.js"></script>
+
+<style type="text/css">
+    
+    #normalDivEle{
+        border:1px solid #eee;
+        padding:10px;
+        width:50%;
+    }
+
+</style>
+</head>
+<body>
+    <fieldset>
+        <div id="normalDivEle">
+            <span>serverText:</span><input type="text" value="http://127.0.0.1:54321/" id="serverText"/> <br/>
+            <span>openText:</span><input type="text" value="0" id="openText"/> <br/>
+            <span>numText:</span><input type="number" name="num" value="4" id="numText" /><br/>
+            <span>btn:</span><input type="button" value="startCmt" id="cmtBtn" /><br/>
+            <span>oks:</span><input type="button" value="test" onclick="checkCmtOpen();"/>
+            <span>normal</span>
+        </div>
+    </fieldset>
+
+</body>
+</html>
+<script type="text/javascript">
+ function checkCmtOpen(){
+    console.info("start check logs ");
+    $.ajax({
+      url:"http://127.0.0.1:54321/mt/getCmtLog",
+      type:"POST",
+      contentType:"application/json;charset=utf-8",
+      dataType:"json",
+      async:true,
+      timeout:1000*10,
+      data:JSON.stringify({"ids":
+      	[262702, 150586979, 95421327, 5783327, 156873418, 50945237, 51339908]}),
+      success:function(logs){
+    	  console.info("dxmmdmdm");
+        console.info(logs);
+      }
+    });
+  }
+    (function(){
+
+
+       $("#cmtBtn").on("click",function(e){
+           var num = ($("#numText").val() || 1) ;
+           if(num <= 0){
+            num = 1;
+           }
+           console.info(parseInt($("#openText").val()));
+           var url = $("#serverText").text()+"/mt/startCmtMeishi";
+           $.ajax({
+            url:url,
+            data:{"num":num},
+            dataType:"json",
+            success:function(datas){
+                console.info(datas);
+                if(datas && datas.length){
+                   parseInt($("#openText").val()) && $(datas).each(function(i,data){
+                        if(data["poiUrl"]){
+                            window.open(data["poiUrl"]);
+                        }
+                    });
+                }
+            }
+           });
+
+
+       });
+       
+       
+       
+      
+
+    })();
+
+</script>

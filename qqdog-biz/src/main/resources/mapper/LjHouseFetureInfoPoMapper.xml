@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.LjHouseFetureInfoPoCustomMapper">
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.LjHouseFetureInfoPo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="hid" jdbcType="BIGINT" property="hid" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="contents" jdbcType="LONGVARCHAR" property="contents" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, hid, order_num, title, contents
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lj_house_feture_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="com.man.qqdog.client.po.LjHouseFetureInfoPo">
+    insert into lj_house_feture_info (id, hid, order_num, 
+      title, contents)
+    values (#{id,jdbcType=BIGINT}, #{hid,jdbcType=BIGINT}, #{orderNum,jdbcType=INTEGER}, 
+      #{title,jdbcType=VARCHAR}, #{contents,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.man.qqdog.client.po.LjHouseFetureInfoPo">
+    insert into lj_house_feture_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hid != null">
+        hid,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="contents != null">
+        contents,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="hid != null">
+        #{hid,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="contents != null">
+        #{contents,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateSelective" parameterType="com.man.qqdog.client.po.LjHouseFetureInfoPo">
+    update lj_house_feture_info
+    <set>
+      <if test="hid != null">
+        hid = #{hid,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="contents != null">
+        contents = #{contents,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -49,6 +49,21 @@
 
 		<table tableName="mt_meishi_info" domainObjectName="MtMeishiInfoPo">
 		</table>
+
+		<table tableName="mt_meishi_deal" domainObjectName="MtMeishiDealPo">
+		</table>
+
+		<table tableName="mt_img" domainObjectName="MtImgPo">
+		</table>
+
+		<table tableName="mt_meishi_cmt" domainObjectName="MtMeishiCmtPo">
+		</table>
+
+		<table tableName="mt_meishi_tag" domainObjectName="MtMeishiTagPo">
+		</table>
+
+		<table tableName="mt_city_cookie" domainObjectName="MtCityCookiePo">
+		</table>
 		
 
 

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Area Meishi</title>
+<script src="js/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+    <div id="dataEl">
+        
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    
+    var startUrl = "http://192.168.1.53:54321/mt/getNextCityAreaMeishi";
+    (function(){
+        $.ajax({
+            url:startUrl,
+            type:"get",
+            success:function(data){
+                console.info(data);
+                $("#dataEl").html(JSON.stringify(data,null,'<br/><br/>'));
+                if(data.nextUrl){
+                    setTimeout(function(){
+                        window.location.href = data.nextUrl;
+                    },3000)
+                }
+            }
+        })
+    })();
+</script>

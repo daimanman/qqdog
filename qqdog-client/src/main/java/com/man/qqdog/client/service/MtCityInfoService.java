@@ -15,5 +15,12 @@ public interface MtCityInfoService {
 	
 	public int updateMtCityInfoSelectiveById(MtCityInfoPo cityInfo);
 	
+	public MtCityInfoAreaPo getNextCrawlArea();
+	
+	public int updateMtCityInfoAreaSelectiveById(MtCityInfoAreaPo cityInfoArea);
+	
+	public MtCityInfoAreaPo getCityAreaById(int id);
+	
+	public int checkCmtTableExistsAndCreate(int cityId);
 	
 }

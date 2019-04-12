@@ -27,5 +27,13 @@
   			<version>3.4.4</version>
   			<scope>provided</scope>
 		</dependency>
+		<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>net.sourceforge.jchardet</groupId>
+		    <artifactId>jchardet</artifactId>
+		</dependency>
 	</dependencies>
 </project>

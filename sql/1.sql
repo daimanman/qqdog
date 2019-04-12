@@ -32,3 +32,8 @@ select uid,`name`,getnum from qphoto_info where name like '%毕业%' and getnum 
 ) b on a.uid = b.uid 
 
 select CONCAT('ZZ-',gender,'-',name,'-',age,'-',SUBSTR(native_place FROM 1 FOR 6)) name ,mobile from user_info where age >= 25 and LENGTH(mobile) = 11
+
+
+
+select city_name,count(1) num,SUM(cmt_num) from mt_meishi_info GROUP BY city_name
+

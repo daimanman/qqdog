@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE generatorConfiguration  
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!-- org.mybatis.generator:mybatis-generator-maven-plugin:1.3.1:generate -->
+<generatorConfiguration>
+	<!-- 这里填个数据库连接器的jar包位置 -->
+	<classPathEntry location=".\mysql-connector-java-5.1.38.jar" />
+
+	<context id="MySqlTables" targetRuntime="MyBatis3">
+		<commentGenerator>
+			<property name="suppressDate" value="true" />
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/lj_01?useUnicode=true&amp;characterEncoding=UTF-8"
+			userId="root" password="zmmdxm">
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<javaModelGenerator targetPackage="com.man.qqdog.client.po"
+			targetProject="dxm">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		
+		<sqlMapGenerator targetPackage="com.man.qqdog.biz.mapper"
+			targetProject="dxm">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.man.qqdog.biz.mapper" targetProject="dxm">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		
+		
+		
+		<table tableName="lj_er_house_info"  
+                enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+                domainObjectName="LjErHouseInfoPo">
+		</table>
+
+		<table tableName="lj_area_info"
+                enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+                domainObjectName="LjAreaInfoPo">
+		</table>
+
+		<table tableName="lj_city_info"
+            enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+         domainObjectName="LjCityInfoPo">
+		</table>
+
+		<table tableName="lj_house_detail_info"
+            enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+         domainObjectName="LjHouseDetailInfoPo">
+		</table>
+
+
+
+        <table tableName="lj_img_info"
+            enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+         domainObjectName="LjImgInfoPo">
+        </table>
+
+
+         <table tableName="lj_house_feture_info"
+            enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+         domainObjectName="LjHouseFetureInfoPo">
+        </table>
+
+
+
+
+
+		
+		
+
+
+
+
+		
+		
+		
+		
+		
+		
+	</context>
+</generatorConfiguration>

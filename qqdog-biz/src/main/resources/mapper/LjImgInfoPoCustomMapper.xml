@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.LjImgInfoPoCustomMapper">
+  
+  	
+  	<insert id="addImgBatch" >
+    insert into lj_img_info (id, hid, url, order_num,alt
+      )
+    values 
+    <foreach collection="list" item="po" separator=",">
+	    (#{po.id,jdbcType=BIGINT}, 
+	    #{po.hid,jdbcType=BIGINT}, 
+	    #{po.url,jdbcType=VARCHAR}, 
+	    #{po.orderNum,jdbcType=INTEGER},
+	    #{po.alt}
+          )
+    </foreach>
+  	</insert>
+  	
+</mapper>

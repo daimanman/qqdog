@@ -21,6 +21,11 @@
     <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="meishi_num" property="meishiNum" jdbcType="INTEGER" />
+    <result column="has_child" property="hasChild" jdbcType="INTEGER" />
+    <result column="crawl_flag" property="crawlFlag" jdbcType="INTEGER" />
+    <result column="get_num" property="getNum" jdbcType="INTEGER" />
+    <result column="total_pn" property="totalPn" jdbcType="INTEGER" />
+    <result column="get_pn" property="getPn" jdbcType="INTEGER" />
   </resultMap>
   
   
@@ -121,8 +126,51 @@
       <if test="meishiNum != null" >
         meishi_num = #{meishiNum,jdbcType=INTEGER},
       </if>
+      <if test="hasChild != null" >
+        has_child = #{hasChild,jdbcType=INTEGER},
+      </if>
+      <if test="crawlFlag != null" >
+        crawl_flag = #{crawlFlag,jdbcType=INTEGER},
+      </if>
+      <if test="getNum != null" >
+        get_num = #{getNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalPn != null" >
+        total_pn = #{totalPn,jdbcType=INTEGER},
+      </if>
+      <if test="getPn != null" >
+        get_pn = #{getPn,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  
+  <select id="getNextCrawlArea" resultMap="CityInfoAreaResultMap">
+  	<![CDATA[
+  	
+  			select * from mt_city_info_area where 
+  			pid <> city_id and total_pn is null or 
+  			(ifnull(get_pn,0) < ifnull(total_pn,0)) 
+  			order by city_id,id  limit 1
+  	]]>
+  </select>
+  
+   <select id="getNextCrawlAreaDesc" resultMap="CityInfoAreaResultMap">
+  	<![CDATA[
+  	
+  			select * from mt_city_info_area where 
+  			pid <> city_id and total_pn is null or 
+  			(ifnull(get_pn,0) < ifnull(total_pn,0)) 
+  			order by city_id desc,id desc  limit 1
+  	]]>
+  </select>
+  
+  
+  
+  <select id="getAllCityId" resultType="int">
+  	SELECT DISTINCT(id) FROM mt_city_info
+  </select>
+  
   
 </mapper>

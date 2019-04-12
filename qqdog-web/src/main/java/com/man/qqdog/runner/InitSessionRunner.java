@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 import com.man.qqdog.biz.manager.QqManager;
 import com.man.qqdog.client.service.QUserService;
 
-@Component
-@Order(1)
+//@Component
+//@Order(1)
 public class InitSessionRunner implements ApplicationRunner {
 
 	Logger logger = LoggerFactory.getLogger(InitSessionRunner.class);

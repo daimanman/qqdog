@@ -13,6 +13,72 @@ public class MtCrawlInfoDto {
 	public int type;
 	
 	public int ci;
+	
+	public int totalPn;
+	
+	public int curPn;
+	
+	public String cityName;
+	
+	public int areaId;
+	
+	public String areaName;
+	
+	public long poiId;
+	
+	
+	
+	
+
+	
+
+	public long getPoiId() {
+		return poiId;
+	}
+
+	public void setPoiId(long poiId) {
+		this.poiId = poiId;
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+	public int getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(int areaId) {
+		this.areaId = areaId;
+	}
+
+	public String getAreaName() {
+		return areaName;
+	}
+
+	public void setAreaName(String areaName) {
+		this.areaName = areaName;
+	}
+
+	public int getTotalPn() {
+		return totalPn;
+	}
+
+	public void setTotalPn(int totalPn) {
+		this.totalPn = totalPn;
+	}
+
+	public int getCurPn() {
+		return curPn;
+	}
+
+	public void setCurPn(int curPn) {
+		this.curPn = curPn;
+	}
 
 	public int getCi() {
 		return ci;

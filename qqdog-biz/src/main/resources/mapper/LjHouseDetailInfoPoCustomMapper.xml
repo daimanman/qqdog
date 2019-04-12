@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.qqdog.biz.mapper.LjHouseDetailInfoPoCustomMapper" >
+  
+  
+  <insert id="addDetailBatchs" >
+    insert into lj_house_detail_info (id, hid, item_name, 
+      item_size, arient, window, 
+      order_num)
+    values 
+    <foreach collection="list" item="po" separator=",">
+  	(#{po.id,jdbcType=BIGINT}, #{po.hid,jdbcType=BIGINT}, #{po.itemName,jdbcType=VARCHAR}, 
+          #{po.itemSize}, #{po.arient,jdbcType=VARCHAR}, #{po.window,jdbcType=VARCHAR}, 
+          #{po.orderNum,jdbcType=INTEGER})
+    </foreach>
+    
+  </insert>
+ 
+</mapper>

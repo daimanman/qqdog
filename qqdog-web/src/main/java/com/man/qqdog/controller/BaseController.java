@@ -50,6 +50,13 @@ public class BaseController {
 		IOUtils.write(html, os, "utf-8");
 		IOUtils.closeQuietly(os);
 	}
+	
+	protected void sendHtmlGbk(HttpServletResponse response,String html) throws IOException {
+		response.setContentType("text/html;charset=gbk");
+		OutputStream os = response.getOutputStream();
+		IOUtils.write(html, os, "utf-8");
+		IOUtils.closeQuietly(os);
+	}
 
 	protected void sendJsonWithDateFormat(HttpServletResponse response, Object targetObj, String dateFormat,
 			SerializerFeature... sf) throws IOException {

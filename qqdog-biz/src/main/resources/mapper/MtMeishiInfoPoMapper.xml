@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.man.qqdog.biz.mapper.MtMeishiInfoPoMapper" >
   <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.MtMeishiInfoPo" >
-    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="id" property="id" jdbcType="BIGINT" />
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="cmt_get" property="cmtGet" jdbcType="INTEGER" />
     <result column="cmt_num" property="cmtNum" jdbcType="INTEGER" />
     <result column="avg_price" property="avgPrice" jdbcType="DOUBLE" />
     <result column="avg_score" property="avgScore" jdbcType="DOUBLE" />
@@ -25,7 +26,70 @@
     <result column="is_mei_shi" property="isMeiShi" jdbcType="INTEGER" />
     <result column="extra_info" property="extraInfo" jdbcType="VARCHAR" />
     <result column="deal_num" property="dealNum" jdbcType="INTEGER" />
+    <result column="down" property="down" jdbcType="INTEGER" />
   </resultMap>
+  
+  <resultMap id="MtImgPoResultMap" type="com.man.qqdog.client.po.MtImgPo" >
+    <result column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+  </resultMap>
+  
+   <resultMap id="MtMeishiDealPoResultMap" type="com.man.qqdog.client.po.MtMeishiDealPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="front_img_url" property="frontImgUrl" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="sold_num" property="soldNum" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="value_price" property="valuePrice" jdbcType="DOUBLE" />
+    <result column="poi_id" property="poiId" jdbcType="BIGINT" />
+  </resultMap>
+  
+  
+   <resultMap id="MtMeishiCmtResultMap" type="com.man.qqdog.client.po.MtMeishiCmtPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_url" property="userUrl" jdbcType="VARCHAR" />
+    <result column="avg_price" property="avgPrice" jdbcType="DOUBLE" />
+    <result column="comment_time" property="commentTime" jdbcType="BIGINT" />
+    <result column="reply_cnt" property="replyCnt" jdbcType="INTEGER" />
+    <result column="zan_cnt" property="zanCnt" jdbcType="INTEGER" />
+    <result column="read_cnt" property="readCnt" jdbcType="INTEGER" />
+    <result column="hilignt" property="hilignt" jdbcType="VARCHAR" />
+    <result column="user_level" property="userLevel" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="utype" property="utype" jdbcType="INTEGER" />
+    <result column="star" property="star" jdbcType="INTEGER" />
+    <result column="quality" property="quality" jdbcType="TINYINT" />
+    <result column="already_zzz" property="alreadyZzz" jdbcType="TINYINT" />
+    <result column="review_id" property="reviewId" jdbcType="BIGINT" />
+    <result column="menu" property="menu" jdbcType="VARCHAR" />
+    <result column="did" property="did" jdbcType="BIGINT" />
+    <result column="deal_endtime" property="dealEndtime" jdbcType="BIGINT" />
+    <result column="anonymous" property="anonymous" jdbcType="TINYINT" />
+    <result column="poi_id" property="poiId" jdbcType="BIGINT" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="comment" property="comment" jdbcType="LONGVARCHAR" />
+    <result column="merchant_comment" property="merchantComment" jdbcType="LONGVARCHAR" />
+    <result column="pic_urls" property="picUrls" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <resultMap id="MtMeishiTagResultMap" type="com.man.qqdog.client.po.MtMeishiTagPo" >
+    <result column="poi_id" property="poiId" jdbcType="INTEGER" />
+    <result column="tag" property="tag" jdbcType="VARCHAR" />
+    <result column="count_num" property="countNum" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap id="MtCmtLogResultMap" type="com.man.qqdog.client.dto.MtCmtLog" >
+    <result column="cmt_num" property="cmtNum" jdbcType="INTEGER" />
+     <result column="cmt_get" property="cmtGet" jdbcType="INTEGER" />
+     <result column="poi_id" property="poiId" jdbcType="BIGINT" />
+   
+  </resultMap>
+  
+  
+  
   
   <insert id="insertMeishiInfoBatch" >
     insert into mt_meishi_info (id, address, title, 
@@ -52,7 +116,12 @@
    
   </insert>
   
-  <update id="updateSelective" parameterType="com.man.qqdog.client.po.MtMeishiInfoPo" >
+  <select id="getMeishiInfoById" resultMap="BaseResultMap">
+  	select * from  mt_meishi_info where id = #{id} limit 1
+  </select>
+  
+  
+  <update id="updateMeishiInfoSelective" parameterType="com.man.qqdog.client.po.MtMeishiInfoPo" >
     update mt_meishi_info
     <set >
       <if test="address != null" >
@@ -121,8 +190,163 @@
       <if test="dealNum != null" >
         deal_num = #{dealNum,jdbcType=INTEGER},
       </if>
+      <if test="cmtGet != null">
+      	cmt_get = #{cmtGet},
+      </if>
+      <if test="down != null">
+      	down = #{down},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <insert id="insertMtImgBatch" >
+    insert into mt_img (item_id, type, url, 
+      city_id)
+    values 
+    <foreach collection="list" separator="," item="po">
+	    (#{po.itemId,jdbcType=INTEGER}, #{po.type,jdbcType=INTEGER}, #{po.url,jdbcType=VARCHAR}, 
+          #{po.cityId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  
+  <insert id="insertMtMeishiDealBatch"  >
+    insert into mt_meishi_deal (id, front_img_url, price, 
+      sold_num, title, value_price, 
+      poi_id)
+    values 
+    <foreach collection="list" separator="," item="po">
+	    (#{po.id}, #{po.frontImgUrl,jdbcType=VARCHAR}, #{po.price,jdbcType=DOUBLE}, 
+	      #{po.soldNum,jdbcType=INTEGER}, #{po.title,jdbcType=VARCHAR}, #{po.valuePrice,jdbcType=DOUBLE}, 
+	      #{po.poiId,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+  
+  
+  <insert id="insertCityMeiShiCmtBatch" parameterType="com.man.qqdog.client.po.MtMeishiCmtPo" >
+    insert into mt_meishi_cmt_${cityId} (id, user_name, user_url, 
+      avg_price, comment_time, reply_cnt, 
+      zan_cnt, read_cnt, hilignt, 
+      user_level, user_id, utype, 
+      star, quality, already_zzz, 
+      review_id, menu, did, 
+      deal_endtime, anonymous, poi_id, 
+      city_id, comment, merchant_comment, 
+      pic_urls)
+    values 
+    <foreach collection="datas" separator="," item="po">
+    (#{po.id,jdbcType=BIGINT}, #{po.userName,jdbcType=VARCHAR}, #{po.userUrl,jdbcType=VARCHAR}, 
+      #{po.avgPrice,jdbcType=DOUBLE}, #{po.commentTime,jdbcType=BIGINT}, #{po.replyCnt,jdbcType=INTEGER}, 
+      #{po.zanCnt,jdbcType=INTEGER}, #{po.readCnt,jdbcType=INTEGER}, #{po.hilignt,jdbcType=VARCHAR}, 
+      #{po.userLevel,jdbcType=INTEGER}, #{po.userId,jdbcType=BIGINT}, #{po.utype,jdbcType=INTEGER}, 
+      #{po.star,jdbcType=INTEGER}, #{po.quality,jdbcType=TINYINT}, #{po.alreadyZzz,jdbcType=TINYINT}, 
+      #{po.reviewId,jdbcType=BIGINT}, #{po.menu,jdbcType=VARCHAR}, #{po.did,jdbcType=BIGINT}, 
+      #{po.dealEndtime,jdbcType=BIGINT}, #{po.anonymous,jdbcType=TINYINT}, #{po.poiId,jdbcType=BIGINT}, 
+      #{po.cityId,jdbcType=INTEGER}, #{po.comment,jdbcType=LONGVARCHAR}, #{po.merchantComment,jdbcType=LONGVARCHAR}, 
+      #{po.picUrls,jdbcType=LONGVARCHAR})
+    </foreach>
+   
+  </insert>
+  
+  <insert id="insertMtMeishiTagBatch">
+    insert into mt_meishi_tag (poi_id, tag, count_num
+      )
+    values 
+    <foreach collection="list" item="po" separator=",">
+	     (
+        #{po.poiId,jdbcType=INTEGER}, #{po.tag,jdbcType=VARCHAR}, #{po.countNum,jdbcType=INTEGER}
+       )
+    </foreach>
+    
+  </insert>
+  
+  
+  <select id="getNextCmtMeishiTop100" resultMap="BaseResultMap">
+  		<![CDATA[
+  			select a.* from mt_meishi_info a where ifnull(a.cmt_get,0) < a.cmt_num and a.id not in 
+  		]]>
+  		<foreach collection="ids" open="(" close=")" separator="," item="id">
+  			#{id}
+  		</foreach>
+  		<![CDATA[
+  		   or show_status is null
+  			limit 100
+  		]]>
+  </select>
+  
+  <select id="getNextCmt" resultMap="BaseResultMap">
+	  <![CDATA[
+	  	select * from mt_meishi_info a where ifnull(a.cmt_get,0)+2 < a.cmt_num and a.city_id = #{cityId} and a.id not in
+	  ]]>	
+  	<foreach collection="ids" open="(" close=")" separator="," item="id">
+  			#{id}
+  	</foreach>
+  	<![CDATA[
+  		limit 1
+  	]]>
+  </select>
+  
+  <update id="addCmtNum" >
+    <![CDATA[
+    	update mt_meishi_info a set a.cmt_get = ifnull(a.cmt_get,0) + #{num} where a.id = #{id}
+    ]]>
+  </update>
+  
+  <select id="getMeishiInfoByIds" resultMap="BaseResultMap">
+     select * from mt_meishi_info where id in 
+     <foreach collection="ids" item="id" separator="," open="(" close=")">
+     	#{id}
+     </foreach>
+  </select>
+  
+  <select id="getExistsIds" resultType="long">
+  	select id from mt_meishi_info where id in 
+     <foreach collection="ids" item="id" separator="," open="(" close=")">
+     	#{id}
+     </foreach>
+  </select>
+  
+  <select id="getSumCmtNum" resultMap="MtCmtLogResultMap">
+ 	select sum(cmt_get) cmt_get,sum(cmt_num) cmt_num from mt_meishi_info where cmt_get is not null and  id in 
+ 	<foreach collection="ids" separator="," open="(" close=")" item="id">
+ 		#{id}
+ 	</foreach>
+  </select>
+  
+  <select id="getPoiCmtNum" resultMap="MtCmtLogResultMap">
+  select ifnull(cmt_get,-1) cmt_get, cmt_num,id as poi_id from mt_meishi_info where   id in 
+ 	<foreach collection="ids" separator="," open="(" close=")" item="id">
+ 		#{id}
+ 	</foreach>
+  </select>
+  
+  <select id="getNextMeishiDetail" resultMap="BaseResultMap" >
+  <![CDATA[
+  	select * from mt_meishi_info where city_id = #{cityId} and  ifnull(down,0) = 0 limit 1
+  ]]>
+  </select>
+  
+   <select id="getNextDetail" resultMap="BaseResultMap" >
+  <![CDATA[
+  	select * from mt_meishi_info where ifnull(down,0) = 0 and id not in 
+  ]]>
+  <foreach collection="ids" item="id" separator="," open="(" close=")">
+  	#{id}
+  </foreach>
+  <if test="cityId > 0 ">
+   and city_id = #{cityId}
+  </if>
+  <![CDATA[
+  	limit 1
+  ]]>
+  </select>
+  	
+  
+  
+  
+  
+  
+  
+  
  
 </mapper>

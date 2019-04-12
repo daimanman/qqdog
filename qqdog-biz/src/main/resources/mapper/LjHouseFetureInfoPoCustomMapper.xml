@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.LjHouseFetureInfoPoCustomMapper">
+ 
+ 	<insert id="addFetureBatchs">
+    insert into lj_house_feture_info (id, hid, order_num, 
+      title, contents)
+    values
+    <foreach collection="list" item="po" separator=",">
+    (#{po.id,jdbcType=BIGINT}, #{po.hid,jdbcType=BIGINT}, #{po.orderNum,jdbcType=INTEGER}, 
+      #{po.title,jdbcType=VARCHAR}, #{po.contents,jdbcType=LONGVARCHAR})
+    </foreach>
+     
+ 	</insert>
+</mapper>

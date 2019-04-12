@@ -22,5 +22,13 @@ public interface MtCityInfoPoMapper {
 	
 	public int updateCityAreaSelective(MtCityInfoAreaPo data);
 	
+	// get next to be need crawl
+	public MtCityInfoAreaPo getNextCrawlArea();
+	
+	// get next to be need crawl to be
+	public MtCityInfoAreaPo getNextCrawlAreaDesc();
+	
+	public List<Integer> getAllCityId();
+	
 	
 }

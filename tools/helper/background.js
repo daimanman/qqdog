@@ -45,7 +45,7 @@ function(info){
   ["requestHeaders","blocking"]
 ) 
 
-chrome.webRequest.onBeforeSendHeaders.addListener(
+0 && chrome.webRequest.onBeforeSendHeaders.addListener(
 function(info){
 	//console.info("HEADERS---"+JSON.stringify(info));
 	$.ajax({
@@ -62,3 +62,23 @@ function(info){
   },
   ["requestHeaders","blocking"]
 )  
+
+
+ chrome.webRequest.onBeforeSendHeaders.addListener(
+function(info){
+	//console.info("HEADERS---"+JSON.stringify(info));
+	$.ajax({
+		url:"http://127.0.0.1:54321/mt/saveCookie",
+		type:"post",
+		contentType:"application/jaon;charset=utf-8",
+		data:JSON.stringify(info)
+	});
+},
+ {
+    urls: [
+      "http://www.meituan.com/meishi/*",
+      "https://www.meituan.com/meishi/*"
+    ]
+  },
+  ["requestHeaders","blocking"]
+) 

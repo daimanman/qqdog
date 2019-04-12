@@ -41,7 +41,7 @@ public class TestAlo {
 	
 	@Test
 	public void  testBit02() {
-		BitSet bm=new BitSet();
-		
+		//BitSet bm=new BitSet();
+		System.out.println((0+15-1)/15);
 	}
 }

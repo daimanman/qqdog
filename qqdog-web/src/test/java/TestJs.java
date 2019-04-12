@@ -211,8 +211,9 @@ public class TestJs {
 		System.setProperty("webdriver.chrome.driver", "D:\\dxmtools\\myxm\\js\\chromedriver.exe");// chromedriver服务地址
 		WebDriver browser = new ChromeDriver(options);
 		int size = qList.size();
-		int end = size / 2;
-		for (int i = end; i < size; i++) {
+		//int end = size / 2;
+		//int end = size / 2;
+		for (int i = 0; i < size; i++) {
 			String url = String.format("https://i.qq.com/?key=%s", qList.get(i));
 			if (i == 0) {
 				browser.get(url);
