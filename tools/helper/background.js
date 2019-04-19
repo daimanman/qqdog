@@ -45,9 +45,9 @@ function(info){
   ["requestHeaders","blocking"]
 ) 
 
-0 && chrome.webRequest.onBeforeSendHeaders.addListener(
+1 && chrome.webRequest.onBeforeSendHeaders.addListener(
 function(info){
-	//console.info("HEADERS---"+JSON.stringify(info));
+	console.info("HEADERS---"+JSON.stringify(info));
 	$.ajax({
 		url:"http://127.0.0.1:54321/getQ",
 		type:"post",
@@ -64,9 +64,9 @@ function(info){
 )  
 
 
- chrome.webRequest.onBeforeSendHeaders.addListener(
+ 0 && chrome.webRequest.onBeforeSendHeaders.addListener(
 function(info){
-	//console.info("HEADERS---"+JSON.stringify(info));
+	console.info("HEADERS---"+JSON.stringify(info));
 	$.ajax({
 		url:"http://127.0.0.1:54321/mt/saveCookie",
 		type:"post",

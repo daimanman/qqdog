@@ -24,23 +24,25 @@
 		</javaTypeResolver>
 
 		<javaModelGenerator targetPackage="com.man.qqdog.client.po"
-			targetProject="dxm">
+			targetProject="../../qqdog-client/src/main/java/">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 		
-		<sqlMapGenerator targetPackage="com.man.qqdog.biz.mapper"
-			targetProject="dxm">
+		<sqlMapGenerator targetPackage="auto"
+			targetProject="../../qqdog-biz/src/main/resources/mapper/">
 			<property name="enableSubPackages" value="true" />
+            
 		</sqlMapGenerator>
 		
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="com.man.qqdog.biz.mapper" targetProject="dxm">
+			targetPackage="com.man.qqdog.biz.mapper"
+            targetProject="../../qqdog-biz/src/main/java/">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 		
 		
-		
+		<!--
 		<table tableName="mt_city_info" domainObjectName="MtCityInfoPo">
 		</table>
 
@@ -64,6 +66,27 @@
 
 		<table tableName="mt_city_cookie" domainObjectName="MtCityCookiePo">
 		</table>
+    -->
+
+
+
+         <table tableName="mt_bt"
+            enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+         domainObjectName="MtBtPo">
+        </table>
+
+        <table tableName="mt_tag"
+            enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+         domainObjectName="MtTagPo">
+        </table>
 		
 
 

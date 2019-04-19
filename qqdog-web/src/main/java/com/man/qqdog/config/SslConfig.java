@@ -17,7 +17,7 @@ public class SslConfig {
         undertowFactory.addBuilderCustomizers(new UndertowBuilderCustomizer() {
             @Override
             public void customize(Builder builder) {
-                builder.addHttpListener(54321, "0.0.0.0");
+                builder.addHttpListener(54323, "0.0.0.0");
             }
         });
         return undertowFactory;

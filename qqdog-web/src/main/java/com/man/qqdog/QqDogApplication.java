@@ -6,7 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@MapperScan("com.man.qqdog.biz.mapper") 
+@MapperScan(
+		{
+			"com.man.qqdog.biz.mapper"
+		}
+		) 
 @EnableScheduling
 public class QqDogApplication {
 

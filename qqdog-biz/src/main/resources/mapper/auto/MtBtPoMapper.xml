@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.MtBtPoCustomMapper">
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.MtBtPo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="tag" jdbcType="VARCHAR" property="tag" />
+    <result column="hash" jdbcType="VARCHAR" property="hash" />
+    <result column="dml_date" jdbcType="VARCHAR" property="dmlDate" />
+    <result column="link" jdbcType="VARCHAR" property="link" />
+    <result column="size" jdbcType="VARCHAR" property="size" />
+    <result column="sort_name" jdbcType="VARCHAR" property="sortName" />
+    <result column="torrent" jdbcType="LONGVARCHAR" property="torrent" />
+    <result column="tid" jdbcType="INTEGER" property="tid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, tag, hash, dml_date, link, size, sort_name, torrent, tid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mt_bt
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="com.man.qqdog.client.po.MtBtPo">
+    insert into mt_bt (id, title, tag, 
+      hash, dml_date, link, 
+      size, sort_name, torrent, 
+      tid)
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{tag,jdbcType=VARCHAR}, 
+      #{hash,jdbcType=VARCHAR}, #{dmlDate,jdbcType=VARCHAR}, #{link,jdbcType=VARCHAR}, 
+      #{size,jdbcType=VARCHAR}, #{sortName,jdbcType=VARCHAR}, #{torrent,jdbcType=LONGVARCHAR}, 
+      #{tid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.man.qqdog.client.po.MtBtPo">
+    insert into mt_bt
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="tag != null">
+        tag,
+      </if>
+      <if test="hash != null">
+        hash,
+      </if>
+      <if test="dmlDate != null">
+        dml_date,
+      </if>
+      <if test="link != null">
+        link,
+      </if>
+      <if test="size != null">
+        size,
+      </if>
+      <if test="sortName != null">
+        sort_name,
+      </if>
+      <if test="torrent != null">
+        torrent,
+      </if>
+      <if test="tid != null">
+        tid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null">
+        #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="hash != null">
+        #{hash,jdbcType=VARCHAR},
+      </if>
+      <if test="dmlDate != null">
+        #{dmlDate,jdbcType=VARCHAR},
+      </if>
+      <if test="link != null">
+        #{link,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="sortName != null">
+        #{sortName,jdbcType=VARCHAR},
+      </if>
+      <if test="torrent != null">
+        #{torrent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateSelective" parameterType="com.man.qqdog.client.po.MtBtPo">
+    update mt_bt
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null">
+        tag = #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="hash != null">
+        hash = #{hash,jdbcType=VARCHAR},
+      </if>
+      <if test="dmlDate != null">
+        dml_date = #{dmlDate,jdbcType=VARCHAR},
+      </if>
+      <if test="link != null">
+        link = #{link,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        size = #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="sortName != null">
+        sort_name = #{sortName,jdbcType=VARCHAR},
+      </if>
+      <if test="torrent != null">
+        torrent = #{torrent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="tid != null">
+        tid = #{tid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

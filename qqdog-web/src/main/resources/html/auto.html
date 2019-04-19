@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auto Login</title>
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>>
+</head>
+<body>
+    <h2>Auto Login</h2>
+</body>
+</html>
+<script type="text/javascript">
+    
+    (function(){
+        $.ajax({
+            url:"http://www.ttlsa.com/wp-content/themes/begin/js/sticky.js?ver=1.6.0",
+            type:"head",
+            dataType:"script",
+        complete:function(jqXHR,textStatus){
+            console.info(jqXHR.responseText);
+            console.info(jqXHR.status);
+            console.info(jqXHR.readyState);
+            console.info(jqXHR.statusText);
+            /*弹出其他两个参数的信息*/
+            console.info(textStatus);
+        }
+        })
+    })();
+
+</script>
