@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.EleMeishiInfoPoCustomMapper">
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.EleMeishiInfoPo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="act_tag" jdbcType="INTEGER" property="actTag" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="authentic_id" jdbcType="BIGINT" property="authenticId" />
+    <result column="delivery_fee_discount" jdbcType="INTEGER" property="deliveryFeeDiscount" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="flavors" jdbcType="LONGVARCHAR" property="flavors" />
+    <result column="float_delivery_fee" jdbcType="DOUBLE" property="floatDeliveryFee" />
+    <result column="float_minimum_order_amount" jdbcType="DOUBLE" property="floatMinimumOrderAmount" />
+    <result column="folding_restaurant_brand" jdbcType="VARCHAR" property="foldingRestaurantBrand" />
+    <result column="has_story" jdbcType="BIT" property="hasStory" />
+    <result column="image_path" jdbcType="VARCHAR" property="imagePath" />
+    <result column="is_new" jdbcType="BIT" property="isNew" />
+    <result column="is_premium" jdbcType="BIT" property="isPremium" />
+    <result column="is_star" jdbcType="BIT" property="isStar" />
+    <result column="is_valid" jdbcType="BIT" property="isValid" />
+    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="max_applied_quantity_per_order" jdbcType="INTEGER" property="maxAppliedQuantityPerOrder" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="next_business_time" jdbcType="VARCHAR" property="nextBusinessTime" />
+    <result column="opening_hours" jdbcType="VARCHAR" property="openingHours" />
+    <result column="order_lead_time" jdbcType="INTEGER" property="orderLeadTime" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="rating" jdbcType="DOUBLE" property="rating" />
+    <result column="rating_count" jdbcType="INTEGER" property="ratingCount" />
+    <result column="recent_order_num" jdbcType="INTEGER" property="recentOrderNum" />
+    <result column="scheme" jdbcType="VARCHAR" property="scheme" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="promotion_info" jdbcType="VARCHAR" property="promotionInfo" />
+    <result column="point_id" jdbcType="BIGINT" property="pointId" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, act_tag, address, authentic_id, delivery_fee_discount, description, flavors, 
+    float_delivery_fee, float_minimum_order_amount, folding_restaurant_brand, has_story, 
+    image_path, is_new, is_premium, is_star, is_valid, latitude, longitude, max_applied_quantity_per_order, 
+    name, next_business_time, opening_hours, order_lead_time, phone, rating, rating_count, 
+    recent_order_num, scheme, status, type, flag, create_time, promotion_info, point_id, 
+    city_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ele_meishi_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" parameterType="com.man.qqdog.client.po.EleMeishiInfoPo">
+    insert into ele_meishi_info (id, act_tag, address, 
+      authentic_id, delivery_fee_discount, description, 
+      flavors, float_delivery_fee, float_minimum_order_amount, 
+      folding_restaurant_brand, has_story, image_path, 
+      is_new, is_premium, is_star, is_valid, 
+      latitude, longitude, max_applied_quantity_per_order, 
+      name, next_business_time, opening_hours, 
+      order_lead_time, phone, rating, 
+      rating_count, recent_order_num, scheme, 
+      status, type, flag, 
+      create_time, promotion_info, point_id, 
+      city_id)
+    values (#{id,jdbcType=VARCHAR}, #{actTag,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+      #{authenticId,jdbcType=BIGINT}, #{deliveryFeeDiscount,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{flavors,jdbcType=LONGVARCHAR}, #{floatDeliveryFee,jdbcType=DOUBLE}, #{floatMinimumOrderAmount,jdbcType=DOUBLE}, 
+      #{foldingRestaurantBrand,jdbcType=VARCHAR}, #{hasStory,jdbcType=BIT}, #{imagePath,jdbcType=VARCHAR}, 
+      #{isNew,jdbcType=BIT}, #{isPremium,jdbcType=BIT}, #{isStar,jdbcType=BIT}, #{isValid,jdbcType=BIT}, 
+      #{latitude,jdbcType=DOUBLE}, #{longitude,jdbcType=DOUBLE}, #{maxAppliedQuantityPerOrder,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{nextBusinessTime,jdbcType=VARCHAR}, #{openingHours,jdbcType=VARCHAR}, 
+      #{orderLeadTime,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{rating,jdbcType=DOUBLE}, 
+      #{ratingCount,jdbcType=INTEGER}, #{recentOrderNum,jdbcType=INTEGER}, #{scheme,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{promotionInfo,jdbcType=VARCHAR}, #{pointId,jdbcType=BIGINT}, 
+      #{cityId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.man.qqdog.client.po.EleMeishiInfoPo">
+    insert into ele_meishi_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="actTag != null">
+        act_tag,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="authenticId != null">
+        authentic_id,
+      </if>
+      <if test="deliveryFeeDiscount != null">
+        delivery_fee_discount,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="flavors != null">
+        flavors,
+      </if>
+      <if test="floatDeliveryFee != null">
+        float_delivery_fee,
+      </if>
+      <if test="floatMinimumOrderAmount != null">
+        float_minimum_order_amount,
+      </if>
+      <if test="foldingRestaurantBrand != null">
+        folding_restaurant_brand,
+      </if>
+      <if test="hasStory != null">
+        has_story,
+      </if>
+      <if test="imagePath != null">
+        image_path,
+      </if>
+      <if test="isNew != null">
+        is_new,
+      </if>
+      <if test="isPremium != null">
+        is_premium,
+      </if>
+      <if test="isStar != null">
+        is_star,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="maxAppliedQuantityPerOrder != null">
+        max_applied_quantity_per_order,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="nextBusinessTime != null">
+        next_business_time,
+      </if>
+      <if test="openingHours != null">
+        opening_hours,
+      </if>
+      <if test="orderLeadTime != null">
+        order_lead_time,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="rating != null">
+        rating,
+      </if>
+      <if test="ratingCount != null">
+        rating_count,
+      </if>
+      <if test="recentOrderNum != null">
+        recent_order_num,
+      </if>
+      <if test="scheme != null">
+        scheme,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="promotionInfo != null">
+        promotion_info,
+      </if>
+      <if test="pointId != null">
+        point_id,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="actTag != null">
+        #{actTag,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="authenticId != null">
+        #{authenticId,jdbcType=BIGINT},
+      </if>
+      <if test="deliveryFeeDiscount != null">
+        #{deliveryFeeDiscount,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="flavors != null">
+        #{flavors,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="floatDeliveryFee != null">
+        #{floatDeliveryFee,jdbcType=DOUBLE},
+      </if>
+      <if test="floatMinimumOrderAmount != null">
+        #{floatMinimumOrderAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="foldingRestaurantBrand != null">
+        #{foldingRestaurantBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="hasStory != null">
+        #{hasStory,jdbcType=BIT},
+      </if>
+      <if test="imagePath != null">
+        #{imagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="isNew != null">
+        #{isNew,jdbcType=BIT},
+      </if>
+      <if test="isPremium != null">
+        #{isPremium,jdbcType=BIT},
+      </if>
+      <if test="isStar != null">
+        #{isStar,jdbcType=BIT},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=BIT},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="maxAppliedQuantityPerOrder != null">
+        #{maxAppliedQuantityPerOrder,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="nextBusinessTime != null">
+        #{nextBusinessTime,jdbcType=VARCHAR},
+      </if>
+      <if test="openingHours != null">
+        #{openingHours,jdbcType=VARCHAR},
+      </if>
+      <if test="orderLeadTime != null">
+        #{orderLeadTime,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="rating != null">
+        #{rating,jdbcType=DOUBLE},
+      </if>
+      <if test="ratingCount != null">
+        #{ratingCount,jdbcType=INTEGER},
+      </if>
+      <if test="recentOrderNum != null">
+        #{recentOrderNum,jdbcType=INTEGER},
+      </if>
+      <if test="scheme != null">
+        #{scheme,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="promotionInfo != null">
+        #{promotionInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="pointId != null">
+        #{pointId,jdbcType=BIGINT},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateSelective" parameterType="com.man.qqdog.client.po.EleMeishiInfoPo">
+    update ele_meishi_info
+    <set>
+      <if test="actTag != null">
+        act_tag = #{actTag,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="authenticId != null">
+        authentic_id = #{authenticId,jdbcType=BIGINT},
+      </if>
+      <if test="deliveryFeeDiscount != null">
+        delivery_fee_discount = #{deliveryFeeDiscount,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="flavors != null">
+        flavors = #{flavors,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="floatDeliveryFee != null">
+        float_delivery_fee = #{floatDeliveryFee,jdbcType=DOUBLE},
+      </if>
+      <if test="floatMinimumOrderAmount != null">
+        float_minimum_order_amount = #{floatMinimumOrderAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="foldingRestaurantBrand != null">
+        folding_restaurant_brand = #{foldingRestaurantBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="hasStory != null">
+        has_story = #{hasStory,jdbcType=BIT},
+      </if>
+      <if test="imagePath != null">
+        image_path = #{imagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="isNew != null">
+        is_new = #{isNew,jdbcType=BIT},
+      </if>
+      <if test="isPremium != null">
+        is_premium = #{isPremium,jdbcType=BIT},
+      </if>
+      <if test="isStar != null">
+        is_star = #{isStar,jdbcType=BIT},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=BIT},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="maxAppliedQuantityPerOrder != null">
+        max_applied_quantity_per_order = #{maxAppliedQuantityPerOrder,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="nextBusinessTime != null">
+        next_business_time = #{nextBusinessTime,jdbcType=VARCHAR},
+      </if>
+      <if test="openingHours != null">
+        opening_hours = #{openingHours,jdbcType=VARCHAR},
+      </if>
+      <if test="orderLeadTime != null">
+        order_lead_time = #{orderLeadTime,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="rating != null">
+        rating = #{rating,jdbcType=DOUBLE},
+      </if>
+      <if test="ratingCount != null">
+        rating_count = #{ratingCount,jdbcType=INTEGER},
+      </if>
+      <if test="recentOrderNum != null">
+        recent_order_num = #{recentOrderNum,jdbcType=INTEGER},
+      </if>
+      <if test="scheme != null">
+        scheme = #{scheme,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="promotionInfo != null">
+        promotion_info = #{promotionInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="pointId != null">
+        point_id = #{pointId,jdbcType=BIGINT},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

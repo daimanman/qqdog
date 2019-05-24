@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.AuthorInfoPoCustomMapper">
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.AuthorInfoPo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="chao_dai" jdbcType="VARCHAR" property="chaoDai" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="url_md5" jdbcType="VARCHAR" property="urlMd5" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="topic_type" jdbcType="INTEGER" property="topicType" />
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+    <result column="tag" jdbcType="VARCHAR" property="tag" />
+    <result column="qs" jdbcType="VARCHAR" property="qs" />
+    <result column="js" jdbcType="VARCHAR" property="js" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, chao_dai, name, url_md5, url, topic_type, remark, tag, qs, js, num
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from author_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="com.man.qqdog.client.po.AuthorInfoPo">
+    insert into author_info (id, chao_dai, name, 
+      url_md5, url, topic_type, 
+      remark, tag, qs, 
+      js, num)
+    values (#{id,jdbcType=BIGINT}, #{chaoDai,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{urlMd5,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{topicType,jdbcType=INTEGER}, 
+      #{remark,jdbcType=LONGVARCHAR}, #{tag,jdbcType=VARCHAR}, #{qs,jdbcType=VARCHAR}, 
+      #{js,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.man.qqdog.client.po.AuthorInfoPo">
+    insert into author_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="chaoDai != null">
+        chao_dai,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="urlMd5 != null">
+        url_md5,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="topicType != null">
+        topic_type,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="tag != null">
+        tag,
+      </if>
+      <if test="qs != null">
+        qs,
+      </if>
+      <if test="js != null">
+        js,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="chaoDai != null">
+        #{chaoDai,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="urlMd5 != null">
+        #{urlMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="topicType != null">
+        #{topicType,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="tag != null">
+        #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="qs != null">
+        #{qs,jdbcType=VARCHAR},
+      </if>
+      <if test="js != null">
+        #{js,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateSelective" parameterType="com.man.qqdog.client.po.AuthorInfoPo">
+    update author_info
+    <set>
+      <if test="chaoDai != null">
+        chao_dai = #{chaoDai,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="urlMd5 != null">
+        url_md5 = #{urlMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="topicType != null">
+        topic_type = #{topicType,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="tag != null">
+        tag = #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="qs != null">
+        qs = #{qs,jdbcType=VARCHAR},
+      </if>
+      <if test="js != null">
+        js = #{js,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

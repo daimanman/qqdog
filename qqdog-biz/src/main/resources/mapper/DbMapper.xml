@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.qqdog.biz.mapper.DbMapper" >
+  <update id="createMeiCmtTable" parameterType="integer">
+  	<![CDATA[
+  		CREATE TABLE `mt_meishi_cmt_${cityId}` (
+			  `id` bigint(20) NOT NULL,
+			  `user_name` varchar(255) DEFAULT NULL,
+			  `user_url` varchar(255) DEFAULT NULL,
+			  `avg_price` double DEFAULT NULL,
+			  `comment` text,
+			  `merchant_comment` text,
+			  `pic_urls` text,
+			  `comment_time` bigint(20) DEFAULT NULL,
+			  `reply_cnt` int(3) DEFAULT NULL,
+			  `zan_cnt` int(3) DEFAULT NULL,
+			  `read_cnt` int(3) DEFAULT NULL,
+			  `hilignt` varchar(255) DEFAULT NULL,
+			  `user_level` int(3) DEFAULT NULL,
+			  `user_id` bigint(15) DEFAULT NULL,
+			  `utype` int(3) DEFAULT NULL,
+			  `star` int(4) DEFAULT NULL,
+			  `quality` tinyint(4) DEFAULT NULL,
+			  `already_zzz` tinyint(4) DEFAULT NULL,
+			  `review_id` bigint(15) DEFAULT NULL,
+			  `menu` varchar(255) DEFAULT NULL,
+			  `did` bigint(15) DEFAULT NULL,
+			  `deal_endtime` bigint(20) DEFAULT NULL,
+			  `anonymous` tinyint(4) DEFAULT NULL,
+			  `poi_id` bigint(20) DEFAULT NULL,
+			  `city_id` int(10) DEFAULT NULL,
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+  	]]>
+  </update>
+  
+  
+  <update id="createEleMeishiTable" parameterType="integer">
+  	<![CDATA[
+  		CREATE TABLE `ele_meishi_info_${cityId}` (
+		  `id` varchar(100) NOT NULL,
+		  `act_tag` int(1) DEFAULT NULL,
+		  `address` varchar(255) DEFAULT NULL,
+		  `authentic_id` bigint(20) DEFAULT NULL,
+		  `delivery_fee_discount` int(11) DEFAULT NULL,
+		  `description` varchar(255) DEFAULT NULL,
+		  `flavors` text,
+		  `float_delivery_fee` double DEFAULT NULL,
+		  `float_minimum_order_amount` double DEFAULT NULL,
+		  `folding_restaurant_brand` varchar(255) DEFAULT NULL,
+		  `has_story` bit(1) DEFAULT NULL,
+		  `image_path` varchar(255) DEFAULT NULL,
+		  `is_new` bit(1) DEFAULT NULL,
+		  `is_premium` bit(1) DEFAULT NULL,
+		  `is_star` bit(1) DEFAULT NULL,
+		  `is_valid` bit(1) DEFAULT NULL,
+		  `latitude` double DEFAULT NULL,
+		  `longitude` double DEFAULT NULL,
+		  `max_applied_quantity_per_order` int(11) DEFAULT NULL,
+		  `name` varchar(255) DEFAULT NULL,
+		  `next_business_time` varchar(255) DEFAULT NULL,
+		  `opening_hours` varchar(255) DEFAULT NULL,
+		  `order_lead_time` int(11) DEFAULT NULL,
+		  `phone` varchar(255) DEFAULT NULL,
+		  `rating` double DEFAULT NULL,
+		  `rating_count` int(11) DEFAULT NULL,
+		  `recent_order_num` int(11) DEFAULT NULL,
+		  `scheme` varchar(255) DEFAULT NULL,
+		  `status` int(11) DEFAULT NULL,
+		  `type` int(11) DEFAULT NULL,
+		  `flag` int(11) DEFAULT NULL,
+		  `create_time` datetime DEFAULT NULL,
+		  `promotion_info` varchar(255) DEFAULT NULL,
+		  `point_id` bigint(20) DEFAULT NULL,
+		  `city_id` int(11) DEFAULT NULL,
+		  PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+		
+
+  	]]>
+  </update>
+  
+  
+  
+  <select id="checkTableExists" parameterType="string" resultType="int">
+  	select count(1) from information_schema.`TABLES`   where TABLE_NAME = #{tableName}
+  </select>
+</mapper>

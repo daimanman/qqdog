@@ -37,3 +37,15 @@ select CONCAT('ZZ-',gender,'-',name,'-',age,'-',SUBSTR(native_place FROM 1 FOR 6
 
 select city_name,count(1) num,SUM(cmt_num) from mt_meishi_info GROUP BY city_name
 
+
+select c.url,concat(c.id,'_',c.uid,'_',replace(replace(d.name,' ',''),'_',''),d.getnum) from qphoto_img c join qphoto_info d on c.photo_id = d.id where c.uid in (
+select DISTINCT(b.uid) from (
+select uid,age,nickname from quser_info where sex = 2 and age > 20 and age < 30
+)  a
+join (
+select uid,`name`,getnum from qphoto_info where (name like '%毕业%' or name like '%大学%') and getnum > 0 
+) b on a.uid = b.uid 
+) 
+
+
+

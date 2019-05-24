@@ -2,4 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.man.qqdog.biz.mapper.MtBtPoCustomMapper">
   
+  <select id="getByHash" resultType="integer">
+  	select count(1) num from mt_bt where hash = #{hash} 
+  </select>
+  
+  <select id="getClearDatas" resultType="string">
+  	select group_concat(id) tag from mt_bt group by hash having count(1) <![CDATA[ > ]]> 1 
+  </select>
+  
+  <update id="deleteBatch">
+    	delete from mt_bt where id in 
+    	<foreach collection="list" item="id" separator="," open="(" close=")">
+    		#{id}
+    	</foreach>
+  </update>
+  	
 </mapper>

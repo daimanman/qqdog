@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.ElePoiInfoPoCustomMapper">
+  <resultMap id="BaseResultMap" type="com.man.qqdog.client.po.ElePoiInfoPo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="lat" jdbcType="DOUBLE" property="lat" />
+    <result column="lng" jdbcType="DOUBLE" property="lng" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="offset_num" jdbcType="INTEGER" property="offsetNum" />
+    <result column="geohash" jdbcType="VARCHAR" property="geohash" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, lat, lng, city_id, flag, num, offset_num, geohash, url
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ele_poi_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="com.man.qqdog.client.po.ElePoiInfoPo">
+    insert into ele_poi_info (id, lat, lng, city_id, 
+      flag, num, offset_num, 
+      geohash, url)
+    values (#{id,jdbcType=BIGINT}, #{lat,jdbcType=DOUBLE}, #{lng,jdbcType=DOUBLE}, #{cityId,jdbcType=INTEGER}, 
+      #{flag,jdbcType=INTEGER}, #{num,jdbcType=INTEGER}, #{offsetNum,jdbcType=INTEGER}, 
+      #{geohash,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.man.qqdog.client.po.ElePoiInfoPo">
+    insert into ele_poi_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="lng != null">
+        lng,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="offsetNum != null">
+        offset_num,
+      </if>
+      <if test="geohash != null">
+        geohash,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="lng != null">
+        #{lng,jdbcType=DOUBLE},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="offsetNum != null">
+        #{offsetNum,jdbcType=INTEGER},
+      </if>
+      <if test="geohash != null">
+        #{geohash,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateSelective" parameterType="com.man.qqdog.client.po.ElePoiInfoPo">
+    update ele_poi_info
+    <set>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="lng != null">
+        lng = #{lng,jdbcType=DOUBLE},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="offsetNum != null">
+        offset_num = #{offsetNum,jdbcType=INTEGER},
+      </if>
+      <if test="geohash != null">
+        geohash = #{geohash,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

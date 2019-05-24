@@ -32,7 +32,7 @@
 		<sqlMapGenerator targetPackage="auto"
 			targetProject="../../qqdog-biz/src/main/resources/mapper/">
 			<property name="enableSubPackages" value="true" />
-            
+
 		</sqlMapGenerator>
 		
 		<javaClientGenerator type="XMLMAPPER"
@@ -66,7 +66,7 @@
 
 		<table tableName="mt_city_cookie" domainObjectName="MtCityCookiePo">
 		</table>
-    -->
+    
 
 
 
@@ -87,6 +87,61 @@
                 selectByExampleQueryId="false"
          domainObjectName="MtTagPo">
         </table>
+
+         <table tableName="ele_city_info"
+            enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+         domainObjectName="EleCityInfoPo">
+        </table>
+
+<table tableName="ele_poi_info"
+            enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+         domainObjectName="ElePoiInfoPo">
+        </table>
+
+         <table tableName="ele_meishi_info"
+            enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+         domainObjectName="EleMeishiInfoPo">
+        </table>
+
+        -->
+
+
+
+         <table tableName="author_info"
+            enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+         domainObjectName="AuthorInfoPo">
+        </table>
+
+         <table tableName="shi_info"
+            enableCountByExample="false" 
+                enableUpdateByExample="false"
+                enableDeleteByExample="false" 
+                enableSelectByExample="false"
+                selectByExampleQueryId="false"
+         domainObjectName="ShiInfoPo">
+        </table>
+
+
+
+         
+        
+        
 		
 
 

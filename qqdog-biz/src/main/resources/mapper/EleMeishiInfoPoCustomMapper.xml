@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.EleMeishiInfoPoCustomMapper">
+  
+  <insert id="insertBatch">
+    insert into ele_meishi_info (id, act_tag, address, 
+      authentic_id, delivery_fee_discount, description, 
+      flavors, float_delivery_fee, float_minimum_order_amount, 
+      folding_restaurant_brand, has_story, image_path, 
+      is_new, is_premium, is_star, is_valid, 
+      latitude, longitude, max_applied_quantity_per_order, 
+      name, next_business_time, opening_hours, 
+      order_lead_time, phone, rating, 
+      rating_count, recent_order_num, scheme, 
+      status, type, flag, 
+      create_time, promotion_info,point_id,city_id)
+    values
+    <foreach collection="datas" item="po" separator=",">
+    (#{po.id,jdbcType=VARCHAR}, #{po.actTag,jdbcType=INTEGER}, #{po.address,jdbcType=VARCHAR}, 
+      #{po.authenticId,jdbcType=BIGINT}, #{po.deliveryFeeDiscount,jdbcType=INTEGER}, #{po.description,jdbcType=VARCHAR}, 
+      #{po.flavors,jdbcType=LONGVARCHAR}, #{po.floatDeliveryFee,jdbcType=DOUBLE}, #{po.floatMinimumOrderAmount,jdbcType=DOUBLE}, 
+      #{po.foldingRestaurantBrand,jdbcType=VARCHAR}, #{po.hasStory,jdbcType=BIT}, #{po.imagePath,jdbcType=VARCHAR}, 
+      #{po.isNew,jdbcType=BIT}, #{po.isPremium,jdbcType=BIT}, #{po.isStar,jdbcType=BIT}, #{po.isValid,jdbcType=BIT}, 
+      #{po.latitude,jdbcType=DOUBLE}, #{po.longitude,jdbcType=DOUBLE}, #{po.maxAppliedQuantityPerOrder,jdbcType=INTEGER}, 
+      #{po.name,jdbcType=VARCHAR}, #{po.nextBusinessTime,jdbcType=VARCHAR}, #{po.openingHours,jdbcType=VARCHAR}, 
+      #{po.orderLeadTime,jdbcType=INTEGER}, #{po.phone,jdbcType=VARCHAR}, #{po.rating,jdbcType=DOUBLE}, 
+      #{po.ratingCount,jdbcType=INTEGER}, #{po.recentOrderNum,jdbcType=INTEGER}, #{po.scheme,jdbcType=VARCHAR}, 
+      #{po.status,jdbcType=INTEGER}, #{po.type,jdbcType=INTEGER}, #{po.flag,jdbcType=INTEGER}, 
+      #{po.createTime,jdbcType=TIMESTAMP}, #{po.promotionInfo,jdbcType=VARCHAR},#{po.pointId},#{po.cityId})
+    </foreach>
+     
+  </insert>
+  
+  <select id="getExistIds" resultType="string">
+  	select id  from ele_meishi_info where id in
+  	<foreach collection="ids" item="id" open="(" close=")" separator=",">
+  		#{id}
+  	</foreach>
+  </select>
+  
+  <select id="getTopK" resultMap="BaseResultMap">
+  	<![CDATA[
+  		select a.* from ele_meishi_info a where a.city_id = #{cityId} order by a.recent_order_num desc limit #{num}
+  	]]>
+  </select>
+ 
+</mapper>

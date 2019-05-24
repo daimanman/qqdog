@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.AuthorInfoPoCustomMapper">
+  
+  <select id="getByMd5Code" parameterType="string" resultMap="BaseResultMap">
+  	select * from author_info where url_md5 = #{urlMd5} limit 1
+  </select>
+  
+  <update id="updateNumByMd5Code">
+  	update author_info set num = #{num} where url_md5 = #{urlMd5}
+  </update>
+  
+</mapper>

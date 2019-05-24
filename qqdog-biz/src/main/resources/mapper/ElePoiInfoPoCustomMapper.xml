@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.ElePoiInfoPoCustomMapper">
+  
+  <select id="getNextPoi" resultMap="BaseResultMap">
+  <![CDATA[
+  	select * from ele_poi_info where city_id=#{cityId} and ifnull(flag,0) < 10 limit 1
+  ]]>
+  </select>
+  
+  <insert id="insertBatch">
+  
+  	insert into ele_poi_info (id, lat, lng, city_id, 
+      flag, num, offset_num
+      )
+    values 
+    <foreach collection="list" item="po" separator=",">
+    (#{po.id,jdbcType=BIGINT}, #{po.lat,jdbcType=DOUBLE}, #{po.lng,jdbcType=DOUBLE}, #{po.cityId,jdbcType=INTEGER}, 
+      #{po.flag,jdbcType=INTEGER}, #{po.num,jdbcType=INTEGER}, #{po.offsetNum,jdbcType=INTEGER}
+      )
+    </foreach>
+    
+  </insert>
+  
+</mapper>

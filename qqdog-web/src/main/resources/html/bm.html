@@ -1,0 +1,238 @@
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>1.html</title>
+    
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    <style type="text/css">   
+    html { height:100% }   
+    body { height:100%; margin:0px; padding:0px }  
+    #container { height:100% }   
+    </style>   
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.14&key=ef13f413012861d159ef42fffed32b62"></script> 
+    <script type="text/javascript" src="js/jquery.min.js"></script>  
+    
+
+  </head>
+  
+  
+   <body >     
+    test 京东数科第三节课<input type="button" value="获取全部" id="allBtn" /><input type="button" value="points" id="poiBtn" />
+    <textarea id="bigtext" style="width: 600px;height: 70px;"></textarea>
+        <div id="container"></div> 
+    </body>  
+ 
+</html>
+
+<script type="text/javascript" src="js/data.js"></script>
+<script type="text/javascript"> 
+//http://restapi.amap.com/v3/geocode/geo?key=cedf6a1ed705d60c2ee9b02abc25cc19&address=洛阳市&output=JSON
+var cityId = 3;    
+var xianLat = [108.939842,34.34127];
+var wuhLat = [114.305252, 30.59276];
+var beijingLat = [116.407173,39.90469]
+var AllPoints = AllPoints_bj1;
+var mapObj = new AMap.Map("container",{
+                resizeEnable: true,
+                zoom:11,
+                center:beijingLat 
+            });   
+        function initialize() {   
+        
+            // 创建地图实例   
+            //var point = new AMap.LngLat(116.404, 39.915); // 创建点坐标   
+            //mapObj.addOverlays(point); // 设置地图中心点坐标   
+            
+           
+           
+              //北京：北纬39度54分20秒，东经116度25分29秒；全市南北跨纬度1度37分，东西跨经度2度05分。
+              
+             //北京区域所在经度
+             var leftX=117.2829,leftTopX=117.2829,rightTopX=115.2529,rightX=115.2529;
+             //北京区域所在纬度
+             var leftY=40.92220,leftTopY=39.2620,rightTopY=39.2620,rightY=40.92220;
+             
+             //设置经纬度分为多少段
+             var partX=2,partY=2;
+             
+             //计算经纬度相差数量
+             var differX=leftX-rightX;
+             var differY=leftY-leftTopY;
+             //计算经纬度每段间隔多少
+             var intervalX=differX/partX;
+             var intervalY=differY/partY;
+            // alert(intervalX+":"+intervalY);
+             //以上参数设置完毕后，这里是按照从左到右的顺序来确定各个区域的经纬度
+             
+             var lX,lTopX,rTopX,rX;
+             var lY,lTopY,rTopY,rY;
+             
+             var num=0;//设置多边形id
+             
+              for(var i=0;i<=partX;i++){
+                   for(var j=0;j<=partY;j++){
+                            var arr = new Array();//经纬度坐标数组 
+                                
+                                lX= (leftX-intervalX*i).toString();
+                                lTopX= (leftX-intervalX*i).toString();
+                                rTopX= (leftX-intervalX*(i+1)).toString();
+                                rX= (leftX-intervalX*(i+1)).toString();
+                                
+                                lY= (leftY-intervalY*j).toString();;
+                                lTopY= (leftY-intervalY*(j+1)).toString();
+                                rTopY= (leftY-intervalY*(j+1)).toString();
+                                rY= (leftY-intervalY*j).toString();
+                                
+                            
+                                
+                                arr.push(new AMap.LngLat(lX,lY));    
+                                arr.push(new AMap.LngLat(lTopX,lTopY));    
+                                arr.push(new AMap.LngLat(rTopX,rTopY)); 
+                                arr.push(new AMap.LngLat(rX,rY));  
+                                
+                                
+                                var polygon=new AMap.Polygon({   
+                                    id:"polygon"+num,//多边形ID   
+                                    path:arr,//多边形顶点经纬度数组   
+                                    strokeColor:"#0000ff",//线颜色   
+                                    strokeOpacity:0.2,//线透明度   
+                                    strokeWeight:3, //线宽   
+                                    fillColor: "#f5deb3",//填充色   
+                                    fillOpacity: 0.35 //填充透明度   
+                                });   
+                               // mapObj.addOverlays(polygon); 
+
+                                mapObj.add(polygon);   
+            
+                              
+                        num++;
+                      }
+             
+                   
+                   }
+                
+            
+              
+    
+        }   
+
+
+        function getIcon(type){
+            imgname = (type == 1) ? "mark_red.png"  : "mark_gray.png";
+            return new AMap.Icon({            
+                        image: imgname,
+                        size: new AMap.Size(32,32),  //图标大小
+                        imageSize: new AMap.Size(28,28)
+                    });
+        }
+        function createPoint(lng,lat,type,index){
+            var config = {
+                position: new AMap.LngLat(lng,lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title:"lng: "+lng+",  lat: "+lat+",index: "+index,
+                clickable:true,
+                icon:getIcon(type), 
+            };
+            
+            var marker =  new AMap.Marker(config);
+            marker.lat = lat;
+            marker.lng = lng;
+            marker.type = type;
+            marker.on("click",function(e){
+                var _this = this;
+                var typeMap = {"1":0,"0":1};
+                var newType = typeMap[_this.type+""];
+                _this.type = newType;
+                e.target.setIcon(getIcon(newType));
+            });
+            return marker;
+        }
+
+
+
+
+
+        (function(){
+
+               var points =  [];
+               var pindex = 0;
+               var latArrayMap = {};
+               
+
+               for(index in AllPoints){
+                    var ps = AllPoints[index];
+                    for(var i in ps ){
+                        var lng = ps[i][0];
+                        var lat = ps[i][1];
+                        var latStr = (lat+"").substr(0,6);
+                        var arrayIndex = latArrayMap[latStr];
+                        if(!arrayIndex){
+                            arrayIndex = [];
+                            latArrayMap[latStr] = arrayIndex;
+                        }
+                        points.push(createPoint(lng,lat,0,pindex));
+                        arrayIndex.push(pindex);
+                        pindex++;
+                    }
+               }
+               
+               
+
+               mapObj.add(points)
+
+
+
+               $("#allBtn").on("click",function(e){
+                
+                    var ps =  mapObj.getAllOverlays("marker");
+                    var datas = [];
+                    $(ps).each(function(i,obj){
+                        if(obj.type){
+                            datas.push({"lng":obj.lng,"lat":obj.lat})
+                        }
+                    });
+                    $("#bigtext").text(JSON.stringify(datas));
+
+                    
+
+               });
+
+               $("#poiBtn").on("click",function(e){
+                 var ps =  mapObj.getAllOverlays("marker");
+                    var datas = [];
+                    $(ps).each(function(i,obj){
+                        if(!obj.type){
+                            datas.push({"lng":obj.lng,"lat":obj.lat})
+                        }
+                    });
+
+                    console.info(datas);
+
+                     $.ajax({
+                            url:"http://127.0.0.1:54323/ele/saveCityPoints",
+                            data:JSON.stringify({"cityId":cityId,"pois":datas}),
+                            contentType:"application/json;charset=UTF-8",
+                            type:"post",
+                            success:function(data){
+                                console.info(data);
+                            }
+                        });
+                });
+
+
+
+
+          
+               
+
+
+                
+
+        })();
+    </script>  

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test OSS</title>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.14&key=ef13f413012861d159ef42fffed32b62"></script> 
+    <script type="text/javascript" src="js/jquery.min.js"></script> 
+    <script src="https://webapi.amap.com/ui/1.0/main.js"></script> 
+    <style type="text/css">
+        html { height:100% }   
+        body { height:100%; margin:0px; padding:0px }  
+        #container {
+         height:90%;
+         margin-top:30px;
+        } 
+        .label_c{
+            background: #eee;
+            color:blue;
+            font-size: 8px;
+
+        }
+    </style>
+</head>
+<body>
+<div id="optDiv">
+    city:<input type="text" name="name" id="nameText" />&nbsp;&nbsp;
+    num:<input type="number" name="num" id="numText" /><input type="button" value="click" id="searchBtn" />
+</div>
+<div id="container"></div> 
+</body>
+</html>
+<script type="text/javascript">
+    var dxmIp = "http://127.0.0.1:54323/ele/"
+    function createMarker(poi){
+        var config = {
+                position: new AMap.LngLat(poi.lng,poi.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title:"测试01",
+                clickable:true, 
+            };
+            var marker =  new AMap.Marker(config);
+            return marker;
+    }
+    var mapObj = new AMap.Map("container",{
+                resizeEnable: true,
+                zoom:11,
+                center: [113.624931, 34.74725]
+            });   
+
+
+    function initPage(SimpleMarker,pois) {
+        pois && pois.length && $(pois).each(function(i,poi){
+        //创建SimpleMarker实例
+                new SimpleMarker({
+                    //前景文字
+                    iconLabel:poi.recentOrderNum+"",
+                    //图标主题
+                    iconTheme: 'numv1',
+                    //背景图标样式
+                    iconStyle: 'blue',
+                    //...其他Marker选项...，不包括content
+                    map: mapObj,
+                    position: [poi.longitude,poi.latitude],
+                    showPositionPoint:true,
+                    title:poi.name,
+                    label1: {
+                            content: "<div class='label_c'>"+poi.name+"</div>",
+                            offset: new AMap.Pixel(3,10),
+                            direction:"right",
+                        }
+                });
+        });
+    
+
+    }
+    var SM;
+    (function(){
+        //mapObj.add(createMarker({"lng":113.676983,"lat":34.793837}));
+        $("#searchBtn").on("click",function(e){
+           // mapObj.setCenter && mapObj.setCenter([102.833221,24.87966]);
+           var cityName = $("#nameText").val();
+           $.ajax({
+            url:dxmIp+"/getTopK",
+            data:{"cityName":cityName,"num":$("#numText").val()},
+            success:function(resp){
+              mapObj.clearMap &&  mapObj.clearMap();
+                var city = resp.city;
+               city &&  mapObj.setCenter([city["longitude"],city["latitude"]]);
+                var pois = resp.pois;
+                initPage(SM,pois);
+
+            }
+           })
+        });
+        //引入SimpleMarker，loadUI的路径参数为模块名中 'ui/' 之后的部分
+        AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
+            //启动页面
+            SM = SimpleMarker;
+            initPage(SimpleMarker);
+        });
+    })();
+</script>

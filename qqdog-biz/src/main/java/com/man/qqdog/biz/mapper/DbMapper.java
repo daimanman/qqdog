@@ -6,5 +6,7 @@ public interface DbMapper {
 
 	public int createMeiCmtTable(@Param("cityId") int cityId);
 	
+	public int createEleMeishiTable(@Param("cityId") int cityId);
+	
 	public int checkTableExists(@Param("tableName") String tableName);
 }

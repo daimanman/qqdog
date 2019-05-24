@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.man.qqdog.biz.mapper.EleCityInfoPoCustomMapper">
+  	<insert id="insertBatch">
+    insert into ele_city_info (id, name, latitude, 
+      longitude, pinyin, abbr, 
+      geohash)
+    values 
+    <foreach collection="list" item="po" separator=",">
+     (#{po.id,jdbcType=INTEGER}, #{po.name,jdbcType=VARCHAR}, #{po.latitude,jdbcType=DECIMAL}, 
+      #{po.longitude,jdbcType=DECIMAL}, #{po.pinyin,jdbcType=VARCHAR}, #{po.abbr,jdbcType=VARCHAR}, 
+      #{po.geohash,jdbcType=VARCHAR})
+    </foreach>
+   
+  </insert>
+  
+  <select id="getCityByName" resultMap="BaseResultMap" parameterType="string">
+  	select * from ele_city_info where name like concat('%',#{cityName},'%') limit 1
+  </select>
+</mapper>
